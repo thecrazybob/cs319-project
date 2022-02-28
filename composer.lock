@@ -4,8 +4,73 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "714b77e9a36fbbcbcc2c1d2ef89179ef",
+    "content-hash": "ca3672af6d8f097c6faf9647e2c3a6cc",
     "packages": [
+        {
+            "name": "akaunting/laravel-money",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/akaunting/laravel-money.git",
+                "reference": "eaa684e940e1fa866276409614f65a5b91279238"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/akaunting/laravel-money/zipball/eaa684e940e1fa866276409614f65a5b91279238",
+                "reference": "eaa684e940e1fa866276409614f65a5b91279238",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=8.0",
+                "illuminate/view": ">=8.0",
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": ">=1.4",
+                "phpunit/phpunit": ">=9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Akaunting\\Money\\Provider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Akaunting\\Money\\": "./src"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Denis Duliçi",
+                    "email": "info@akaunting.com",
+                    "homepage": "https://akaunting.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Currency formatting and conversion package for Laravel",
+            "keywords": [
+                "convert",
+                "currency",
+                "format",
+                "laravel",
+                "money"
+            ],
+            "support": {
+                "issues": "https://github.com/akaunting/laravel-money/issues",
+                "source": "https://github.com/akaunting/laravel-money/tree/2.0.1"
+            },
+            "time": "2022-01-31T17:11:27+00:00"
+        },
         {
             "name": "bacon/bacon-qr-code",
             "version": "2.0.6",
@@ -794,6 +859,59 @@
                 "source": "https://github.com/laravel-filament/filament"
             },
             "time": "2022-02-24T21:09:44+00:00"
+        },
+        {
+            "name": "filament/tables",
+            "version": "v2.10.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-filament/tables.git",
+                "reference": "64b86fa22ec078d9fd35c7e85a5f74647a8f8953"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-filament/tables/zipball/64b86fa22ec078d9fd35c7e85a5f74647a8f8953",
+                "reference": "64b86fa22ec078d9fd35c7e85a5f74647a8f8953",
+                "shasum": ""
+            },
+            "require": {
+                "akaunting/laravel-money": "^1.2|^2.0",
+                "blade-ui-kit/blade-heroicons": "^1.2",
+                "filament/forms": "self.version",
+                "illuminate/console": "^8.6|^9.0",
+                "illuminate/contracts": "^8.6|^9.0",
+                "illuminate/database": "^8.6|^9.0",
+                "illuminate/filesystem": "^8.6|^9.0",
+                "illuminate/support": "^8.6|^9.0",
+                "illuminate/view": "^8.6|^9.0",
+                "livewire/livewire": "^2.6",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.9"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Filament\\Tables\\TablesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Filament\\Tables\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Effortlessly build TALL-powered tables.",
+            "homepage": "https://github.com/laravel-filament/filament",
+            "support": {
+                "issues": "https://github.com/laravel-filament/filament/issues",
+                "source": "https://github.com/laravel-filament/filament"
+            },
+            "time": "2022-02-24T12:47:50+00:00"
         },
         {
             "name": "fruitcake/php-cors",
