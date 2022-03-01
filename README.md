@@ -36,3 +36,10 @@ Rough description of the Health Management Software to be implemented
 * Create/edit/view announcements
 * Reply to messages
 * View patient’s diagnosis
+
+## Team Members
+* Abdullah Riaz (22001296)
+* Ahmet Faruk Ulutaş (21803717)
+* Dilay Yiğit (21602059)
+* Mohammed Sohail (22001513)
+* Mostafa Khaled A. Mohamed Higazy (22001062)
