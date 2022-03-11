@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\Form;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+// Temporary: for testing purpose
+//Route::get('/', Form::class);
+
+Route::middleware(['aauth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
