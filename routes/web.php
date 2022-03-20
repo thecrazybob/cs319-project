@@ -17,6 +17,61 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// 0. Staff’s Dashboard
+Route::get('/staff/dashboard', function () {
+    return view('staff.dashboard');
+});
+
+// 1. Patient’s Dashboard
+Route::get('/patient/dashboard', function () {
+    return view('patient.dashboard');
+});
+
+// 2. Support / Messaging View
+Route::get('/support', function () {
+    return view('support');
+});
+
+// 3. Patient's Tests
+Route::get('/patient/tests', function () {
+    return view('patient.tests');
+});
+
+// 4. Patient's Diagnosis
+Route::get('/patient/diagnosis', function () {
+    return view('patient.diagnosis');
+});
+
+// 5. Patient's Reports
+Route::get('/patient/reports', function () {
+    return view('patient.reports');
+});
+
+// 6. Patient's Documents
+Route::get('/patient/documents', function () {
+    return view('patient.documents');
+});
+
+// 7. Patient's Vaccines
+Route::get('/patient/vaccines', function () {
+    return view('patient.vaccines');
+});
+
+//  8. Previous Visits
+Route::get('/patient/visits', function () {
+    return view('patient.visits');
+});
+
+//  9. Patient’s Summary
+Route::get('/staff/patient-summary', function () {
+    return view('staff.patient-summary');
+});
+
+// 10. Managing Patients
+Route::get('/staff/patients', function () {
+    return view('staff.patients');
+});
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
