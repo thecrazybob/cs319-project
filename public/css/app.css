@@ -3280,6 +3280,10 @@ select{
   height: 2.75rem;
 }
 
+.h-64{
+  height: 16rem;
+}
+
 .max-h-60{
   max-height: 15rem;
 }
