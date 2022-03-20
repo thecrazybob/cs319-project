@@ -3,10 +3,15 @@
         <div class="flex justify-between items-center">
             <div>
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tests') }}
+            {{ __('My Support Queries') }}
         </h2>
-        <p class="mt-2 text-sm text-gray-700">A list of all your tests in the health center.</p>
+        <p class="mt-2 text-sm text-gray-700">A list of all the support queries you have created so far.</p>
             </div>
+        <div>
+            <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+                {{ __('Create a ticket') }}
+            </x-jet-button>
+        </div>
     </div>
     </x-slot>
 
@@ -22,16 +27,19 @@
                                     <tr>
                                         <th scope="col"
                                             class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                                            ID</th>
+                                            Subject</th>
                                         <th scope="col"
                                             class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                            Reference Doctor</th>
+                                            ID</th>
                                         <th scope="col"
                                             class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                             Department</th>
                                         <th scope="col"
                                             class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                            Date</th>
+                                            Status</th>
+                                        <th scope="col"
+                                            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                            Priority</th>
                                         <th scope="col"
                                             class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                            Action
@@ -43,11 +51,13 @@
                                     <tr>
                                         <td
                                             class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                            #235343</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Dr. John Doe</td>
+                                            Unable to request an appointment</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">#0000003</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                            Pathology</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">10th March 2022
+                                            Reception</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">New
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">LOW
                                         </td>
 
                                         <td
@@ -59,11 +69,13 @@
                                     <tr class="bg-gray-100">
                                         <td
                                             class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                            #223923</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Dr. John Doe</td>
+                                            Inquiry about blood donation</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">#0000002</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                            Radiology</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">3rd January 2022
+                                            Blood Donation</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Closed
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">HIGH
                                         </td>
 
                                         <td
@@ -75,11 +87,13 @@
                                     <tr>
                                         <td
                                             class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                            #198394</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Dr. John Doe</td>
+                                            Requesting PDF report</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">#0000001</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                            Pathology</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">5th August 2021
+                                            Reception</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">New
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">HIGH
                                         </td>
 
                                         <td
