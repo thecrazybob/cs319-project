@@ -4164,6 +4164,11 @@ select{
   background-color: rgb(255 241 242 / var(--tw-bg-opacity));
 }
 
+.bg-red-300{
+  --tw-bg-opacity: 1;
+  background-color: rgb(252 165 165 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-25{
   --tw-bg-opacity: 0.25;
 }

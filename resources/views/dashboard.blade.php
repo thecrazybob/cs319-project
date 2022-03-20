@@ -32,18 +32,18 @@
                     </div>
                     <div class="border-t border-gray-200 bg-gray-50 grid grid-cols-1 divide-y divide-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
                       <div class="px-6 py-5 text-sm font-medium text-center">
-                        <span class="text-gray-900">12</span>
-                        <span class="text-gray-600">Vacation days left</span>
+                        <span class="text-gray-900">1</span>
+                        <span class="text-gray-600">Upcoming Appointment</span>
                       </div>
 
                       <div class="px-6 py-5 text-sm font-medium text-center">
                         <span class="text-gray-900">4</span>
-                        <span class="text-gray-600">Sick days left</span>
+                        <span class="text-gray-600">Vaccine Doses Registered</span>
                       </div>
 
                       <div class="px-6 py-5 text-sm font-medium text-center">
-                        <span class="text-gray-900">2</span>
-                        <span class="text-gray-600">Personal days left</span>
+                        <span class="text-gray-900">3</span>
+                        <span class="text-gray-600">Visits to Health Center</span>
                       </div>
                     </div>
                   </div>
@@ -68,7 +68,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            Request time off
+                            Request appointment
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -83,10 +83,9 @@
                     <div class="sm:rounded-tr-lg relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500">
                       <div>
                         <span class="rounded-lg inline-flex p-3 bg-purple-50 text-purple-700 ring-4 ring-white">
-                          <!-- Heroicon name: outline/badge-check -->
-                          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                          </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
                         </span>
                       </div>
                       <div class="mt-8">
@@ -94,7 +93,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            Benefits
+                            Create a ticket
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -120,7 +119,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            Schedule a one-on-one
+                            View my tests
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -146,7 +145,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            Payroll
+                            View my diagnosis
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -161,10 +160,9 @@
                     <div class="sm:rounded-bl-lg relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500">
                       <div>
                         <span class="rounded-lg inline-flex p-3 bg-rose-50 text-rose-700 ring-4 ring-white">
-                          <!-- Heroicon name: outline/receipt-refund -->
-                          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 15v-1a4 4 0 00-4-4H8m0 0l3 3m-3-3l3-3m9 14V5a2 2 0 00-2-2H6a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z" />
-                          </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                            </svg>
                         </span>
                       </div>
                       <div class="mt-8">
@@ -172,7 +170,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            Submit an expense
+                            View my documents
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -187,12 +185,14 @@
                     <div class="rounded-bl-lg rounded-br-lg sm:rounded-bl-none relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500">
                       <div>
                         <span class="rounded-lg inline-flex p-3 bg-indigo-50 text-indigo-700 ring-4 ring-white">
-                          <!-- Heroicon name: outline/academic-cap -->
-                          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                          </svg>
+                            <svg class="h-6 w-6" viewBox="0 0 48 48">
+                            <g>
+                                <path
+                                    d="M6.6,43l2.8,2.8l0,0l1.5,1.5l1.4-1.4l-1.5-1.5l5.4-5.3l1.5,1.5l0,0l3,2.9l1.4-1.4l-3-2.9l17.7-17.5   c0.6-0.6,0.9-1.3,0.9-2.1c0-0.8-0.3-1.5-0.9-2.1l3.3-3.2L39.5,10l8-8l-1.4-1.4l-8.1,8l-4.4-0.7l-3.3,3.3l0,0c-1.1-1.1-3-1.1-4.2,0   L8.5,28.6l-3-2.9l-1.4,1.4l3,2.9l0,0l1.5,1.5l-5.4,5.3l-1.5-1.5l-1.4,1.4L6.6,43z M34.4,10l3.2,0.5l0.5,3.1l-2.6,2.5L34,14.8   l-2.2-2.2L34.4,10z M27.6,12.5c0.4-0.4,1-0.4,1.3,0l6.5,6.4c0.2,0.2,0.3,0.4,0.3,0.6c0,0.2-0.1,0.5-0.3,0.6L33.7,22l-3.9-3.9   l-1.4,1.4l3.9,3.9l-2.2,2.2l-3.9-3.9l-1.4,1.4l3.9,3.9l-2.2,2.2l-3.9-3.9l-1.4,1.4l3.9,3.9l-2.2,2.2l-3.9-3.9l-1.4,1.4l3.9,3.9   l-3.7,3.6L9.9,30L27.6,12.5z M10,32.9l2.4,2.4l2.4,2.4L9.4,43l-4.8-4.7L10,32.9z" />
+                                <path
+                                    d="M40.7,24.7l-0.8-1.3L39,24.7c-0.7,1.1-7,11-7,14.9c0,4.3,3.5,7.8,7.9,7.8c4.3,0,7.9-3.5,7.9-7.8   C47.7,35.7,41.4,25.8,40.7,24.7z M39.8,45.4c-3.2,0-5.9-2.6-5.9-5.8c0-2.5,3.7-9,5.9-12.5c2.2,3.5,5.9,10,5.9,12.5   C45.7,42.8,43.1,45.4,39.8,45.4z" />
+                            </g>
+                        </svg>
                         </span>
                       </div>
                       <div class="mt-8">
@@ -200,7 +200,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            Training
+                            Show registered vaccines
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -230,10 +230,11 @@
                                 <a href="#" class="hover:underline focus:outline-none">
                                   <!-- Extend touch target to entire panel -->
                                   <span class="absolute inset-0" aria-hidden="true"></span>
-                                  Office closed on July 2nd
+                                  Kan aranıyor - Blood needed
                                 </a>
                               </h3>
-                              <p class="mt-1 text-sm text-gray-600 line-clamp-2">Cum qui rem deleniti. Suscipit in dolor veritatis sequi aut. Vero ut earum quis deleniti. Ut a sunt eum cum ut repudiandae possimus. Nihil ex tempora neque cum consectetur dolores.</p>
+                              <p class="mt-1 text-sm text-gray-600 line-clamp-2">Ankara TOBB ETU hastanesinde yatan bir hasta için çok acil AB RH(-) kan ihtiyacı vardır.
+                                .</p>
                             </div>
                           </li>
 
@@ -243,7 +244,7 @@
                                 <a href="#" class="hover:underline focus:outline-none">
                                   <!-- Extend touch target to entire panel -->
                                   <span class="absolute inset-0" aria-hidden="true"></span>
-                                  New password policy
+                                  New working hours
                                 </a>
                               </h3>
                               <p class="mt-1 text-sm text-gray-600 line-clamp-2">Alias inventore ut autem optio voluptas et repellendus. Facere totam quaerat quam quo laudantium cumque eaque excepturi vel. Accusamus maxime ipsam reprehenderit rerum id repellendus rerum. Culpa cum vel natus. Est sit autem mollitia.</p>
@@ -256,7 +257,7 @@
                                 <a href="#" class="hover:underline focus:outline-none">
                                   <!-- Extend touch target to entire panel -->
                                   <span class="absolute inset-0" aria-hidden="true"></span>
-                                  Office closed on July 2nd
+                                  Policy on COVID tests
                                 </a>
                               </h3>
                               <p class="mt-1 text-sm text-gray-600 line-clamp-2">Tenetur libero voluptatem rerum occaecati qui est molestiae exercitationem. Voluptate quisquam iure assumenda consequatur ex et recusandae. Alias consectetur voluptatibus. Accusamus a ab dicta et. Consequatur quis dignissimos voluptatem nisi.</p>
@@ -275,7 +276,7 @@
                 <section aria-labelledby="recent-hires-title">
                   <div class="rounded-lg bg-white overflow-hidden shadow">
                     <div class="p-6">
-                      <h2 class="text-base font-medium text-gray-900" id="recent-hires-title">Recent Hires</h2>
+                      <h2 class="text-base font-medium text-gray-900" id="recent-hires-title">Available Doctors</h2>
                       <div class="flow-root mt-6">
                         <ul role="list" class="-my-5 divide-y divide-gray-200">
                           <li class="py-4">
@@ -288,7 +289,7 @@
                                 <p class="text-sm text-gray-500 truncate">@leonardkrasner</p>
                               </div>
                               <div>
-                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> View </a>
+                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Appointment </a>
                               </div>
                             </div>
                           </li>
@@ -303,7 +304,7 @@
                                 <p class="text-sm text-gray-500 truncate">@floydmiles</p>
                               </div>
                               <div>
-                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> View </a>
+                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Appointment </a>
                               </div>
                             </div>
                           </li>
@@ -318,7 +319,7 @@
                                 <p class="text-sm text-gray-500 truncate">@emilyselman</p>
                               </div>
                               <div>
-                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> View </a>
+                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Appointment </a>
                               </div>
                             </div>
                           </li>
@@ -333,14 +334,11 @@
                                 <p class="text-sm text-gray-500 truncate">@kristinwatson</p>
                               </div>
                               <div>
-                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> View </a>
+                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Appointment </a>
                               </div>
                             </div>
                           </li>
                         </ul>
-                      </div>
-                      <div class="mt-6">
-                        <a href="#" class="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"> View all </a>
                       </div>
                     </div>
                   </div>

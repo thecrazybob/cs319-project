@@ -20,7 +20,7 @@ Route::get('/', function () {
 // 0. Staff’s Dashboard
 Route::get('/staff/dashboard', function () {
     return view('staff.dashboard');
-});
+})->name('staff.dashboard');
 
 // 2. Support / Messaging View
 Route::get('/support', function () {
