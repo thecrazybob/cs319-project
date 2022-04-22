@@ -1,14 +1,19 @@
 <x-app-layout>
+    
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('Documents') }}
-                </h2>
-                <p class="mt-2 text-sm text-gray-700">All of the documents provided to the health center.
-                </p>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ __('Documents') }}
+        </h2>
+        <p class="mt-2 text-sm text-gray-700">All of the documents provided to the health center.</p>
             </div>
+        <div>
+            <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+                {{ __('Create a document') }}
+            </x-jet-button>
         </div>
+    </div>
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto">
