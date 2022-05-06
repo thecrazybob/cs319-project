@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 // Temporary: for testing purpose
 Route::get('/', Form::class);
 
+
 //Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //    return view('dashboard');
 //})->name('dashboard');
