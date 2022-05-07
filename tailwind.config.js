@@ -9,7 +9,9 @@ module.exports = {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/**/*.blade.php',
-        './resources/views/*.blade.php'
+        './resources/views/*.blade.php',
+        './vendor/usernotnull/tall-toasts/config//*.php',
+        './vendor/usernotnull/tall-toasts/resources/views//*.blade.php'
     ],
 
     theme: {
