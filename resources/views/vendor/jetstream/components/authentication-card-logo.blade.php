@@ -1,5 +1,5 @@
 <a href="/">
-    <svg class="h-64 w-64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" {{ $attributes }} viewBox="0 0 6387 2282">
+    <svg class="w-80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" {{ $attributes }} viewBox="0 0 6387 2282">
         <defs>
           <style>
             .cls-1, .cls-2 {
