@@ -21,8 +21,8 @@
                           </div>
                           <div class="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                             <p class="text-sm font-medium text-gray-600">Welcome back,</p>
-                            <p class="text-xl font-bold text-gray-900 sm:text-2xl">Mohammed Sohail</p>
-                            <p class="text-sm font-medium text-gray-600">Student at Bilkent University</p>
+                            <p class="text-xl font-bold text-gray-900 sm:text-2xl">Dr. John Doe</p>
+                            <p class="text-sm font-medium text-gray-600">Doctor at Bilkent University</p>
                           </div>
                         </div>
                         <div class="mt-5 flex justify-center sm:mt-0">
@@ -30,20 +30,15 @@
                         </div>
                       </div>
                     </div>
-                    <div class="border-t border-gray-200 bg-gray-50 grid grid-cols-1 divide-y divide-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
+                    <div class="border-t border-gray-200 bg-gray-50 grid grid-cols-1 divide-y divide-gray-200 sm:grid-cols-2 sm:divide-y-0 sm:divide-x">
                       <div class="px-6 py-5 text-sm font-medium text-center">
-                        <span class="text-gray-900">1</span>
-                        <span class="text-gray-600">Upcoming Appointment</span>
+                        <span class="text-gray-900">16</span>
+                        <span class="text-gray-600">Patients Awaiting</span>
                       </div>
 
                       <div class="px-6 py-5 text-sm font-medium text-center">
-                        <span class="text-gray-900">4</span>
-                        <span class="text-gray-600">Vaccine Doses Registered</span>
-                      </div>
-
-                      <div class="px-6 py-5 text-sm font-medium text-center">
-                        <span class="text-gray-900">3</span>
-                        <span class="text-gray-600">Visits to Health Center</span>
+                        <span class="text-gray-900">5</span>
+                        <span class="text-gray-600">Appointments Today</span>
                       </div>
                     </div>
                   </div>
@@ -68,7 +63,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            Request appointment
+                            View assigned appointments
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -93,7 +88,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            Create a ticket
+                            Create a health report
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -119,7 +114,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            View my tests
+                            View my patients
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -145,7 +140,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            View my diagnosis
+                            Create a diagnosis
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -170,7 +165,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            View my documents
+                            View tests
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -185,14 +180,9 @@
                     <div class="rounded-bl-lg rounded-br-lg sm:rounded-bl-none relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-cyan-500">
                       <div>
                         <span class="rounded-lg inline-flex p-3 bg-indigo-50 text-indigo-700 ring-4 ring-white">
-                            <svg class="h-6 w-6" viewBox="0 0 48 48">
-                            <g>
-                                <path
-                                    d="M6.6,43l2.8,2.8l0,0l1.5,1.5l1.4-1.4l-1.5-1.5l5.4-5.3l1.5,1.5l0,0l3,2.9l1.4-1.4l-3-2.9l17.7-17.5   c0.6-0.6,0.9-1.3,0.9-2.1c0-0.8-0.3-1.5-0.9-2.1l3.3-3.2L39.5,10l8-8l-1.4-1.4l-8.1,8l-4.4-0.7l-3.3,3.3l0,0c-1.1-1.1-3-1.1-4.2,0   L8.5,28.6l-3-2.9l-1.4,1.4l3,2.9l0,0l1.5,1.5l-5.4,5.3l-1.5-1.5l-1.4,1.4L6.6,43z M34.4,10l3.2,0.5l0.5,3.1l-2.6,2.5L34,14.8   l-2.2-2.2L34.4,10z M27.6,12.5c0.4-0.4,1-0.4,1.3,0l6.5,6.4c0.2,0.2,0.3,0.4,0.3,0.6c0,0.2-0.1,0.5-0.3,0.6L33.7,22l-3.9-3.9   l-1.4,1.4l3.9,3.9l-2.2,2.2l-3.9-3.9l-1.4,1.4l3.9,3.9l-2.2,2.2l-3.9-3.9l-1.4,1.4l3.9,3.9l-2.2,2.2l-3.9-3.9l-1.4,1.4l3.9,3.9   l-3.7,3.6L9.9,30L27.6,12.5z M10,32.9l2.4,2.4l2.4,2.4L9.4,43l-4.8-4.7L10,32.9z" />
-                                <path
-                                    d="M40.7,24.7l-0.8-1.3L39,24.7c-0.7,1.1-7,11-7,14.9c0,4.3,3.5,7.8,7.9,7.8c4.3,0,7.9-3.5,7.9-7.8   C47.7,35.7,41.4,25.8,40.7,24.7z M39.8,45.4c-3.2,0-5.9-2.6-5.9-5.8c0-2.5,3.7-9,5.9-12.5c2.2,3.5,5.9,10,5.9,12.5   C45.7,42.8,43.1,45.4,39.8,45.4z" />
-                            </g>
-                        </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                            </svg>
                         </span>
                       </div>
                       <div class="mt-8">
@@ -200,7 +190,7 @@
                           <a href="#" class="focus:outline-none">
                             <!-- Extend touch target to entire panel -->
                             <span class="absolute inset-0" aria-hidden="true"></span>
-                            Show registered vaccines
+                            View reports
                           </a>
                         </h3>
                         <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et molestiae.</p>
@@ -276,7 +266,7 @@
                 <section aria-labelledby="recent-hires-title">
                   <div class="rounded-lg bg-white overflow-hidden shadow">
                     <div class="p-6">
-                      <h2 class="text-base font-medium text-gray-900" id="recent-hires-title">Available Doctors</h2>
+                      <h2 class="text-base font-medium text-gray-900" id="recent-hires-title">Recent Patients</h2>
                       <div class="flow-root mt-6">
                         <ul role="list" class="-my-5 divide-y divide-gray-200">
                           <li class="py-4">
@@ -289,7 +279,7 @@
                                 <p class="text-sm text-gray-500 truncate">@leonardkrasner</p>
                               </div>
                               <div>
-                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Appointment </a>
+                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Patient's Summary </a>
                               </div>
                             </div>
                           </li>
@@ -304,7 +294,7 @@
                                 <p class="text-sm text-gray-500 truncate">@floydmiles</p>
                               </div>
                               <div>
-                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Appointment </a>
+                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Patient's Summary </a>
                               </div>
                             </div>
                           </li>
@@ -319,7 +309,7 @@
                                 <p class="text-sm text-gray-500 truncate">@emilyselman</p>
                               </div>
                               <div>
-                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Appointment </a>
+                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Patient's Summary </a>
                               </div>
                             </div>
                           </li>
@@ -334,7 +324,7 @@
                                 <p class="text-sm text-gray-500 truncate">@kristinwatson</p>
                               </div>
                               <div>
-                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Appointment </a>
+                                <a href="#" class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"> Patient's Summary </a>
                               </div>
                             </div>
                           </li>
