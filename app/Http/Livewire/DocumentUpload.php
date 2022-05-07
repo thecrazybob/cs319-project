@@ -46,7 +46,7 @@ class DocumentUpload extends Component implements HasForms
         ], $this->form->getState());
         $document = Document::create($array);
         toast()->success('Successfully uploaded document')->push();
-        redirect('/patient/documents');
+        redirect('patient.documents');
     }
 
     public function render()
