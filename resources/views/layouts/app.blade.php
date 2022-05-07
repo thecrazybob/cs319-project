@@ -28,6 +28,7 @@
 </head>
 
 <body class="font-sans antialiased h-full">
+    <livewire:toasts />
     <x-jet-banner />
 
     <div class="min-h-screen bg-gray-100">

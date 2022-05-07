@@ -1,14 +1,20 @@
-<x-app-layout>
+ 
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('Documents') }}
-                </h2>
-                <p class="mt-2 text-sm text-gray-700">All of the documents provided to the health center.
-                </p>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ __('Documents') }}
+        </h2>
+        <p class="mt-2 text-sm text-gray-700">All of the documents provided to the health center.</p>
             </div>
+        <div>
+        <a href="{{ route('patient.documents.upload') }}">
+            <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+                {{ __('Create a document') }}
+            </x-jet-button>
+        </a>
         </div>
+    </div>
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto">
@@ -32,7 +38,7 @@
                                             Type</th>
                                         <th scope="col"
                                             class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                            Date</th>
+                                            Date Uploaded</th>
                                         <th scope="col"
                                             class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                             Action
@@ -40,57 +46,29 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white">
+                                    @foreach($documents as $document)
+                                        
                                     <!-- Odd row -->
                                     <tr>
                                         <td
                                             class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                            #235343</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Example.jpg</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">PDF</td>
-
-
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">10th March 2022
+                                            #{{$document->id}}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$document->name}}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$extension = pathinfo($document->file_path, PATHINFO_EXTENSION);}}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$document->created_at}}
                                         </td>
 
                                         <td
                                             class="relative whitespace-nowrap py-4 pl-3 pr-4 text-sm font-medium sm:pr-6">
-                                            <a href="#" class="text-red-600 hover:text-red-900">View</a>
+                                            <button wire:click="remove({{$document->id}})">
+                                                <div class="text-red-600 hover:text-red-900">Delete</div>
+                                            </button>
+                                            <button wire:click="export({{$document->id}})">
+                                                <div class="text-green-600 hover:text-green-900">Download</div>
+                                            </button>
                                         </td>
                                     </tr>
-
-                                    <tr class="bg-gray-100">
-                                        <td
-                                            class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                            #223923</td>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Report-from-another-Hospital.pdf</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Image</td>
-
-
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">3rd January 2022
-                                        </td>
-
-                                        <td
-                                            class="relative whitespace-nowrap py-4 pl-3 pr-4 text-sm font-medium sm:pr-6">
-                                            <a href="#" class="text-red-600 hover:text-red-900">View</a>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td
-                                            class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                            #198394</td>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Test-from-Lab.pdf</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">PDF</td>
-
-
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">5th August 2021
-                                        </td>
-
-                                        <td
-                                            class="relative whitespace-nowrap py-4 pl-3 pr-4 text-sm font-medium sm:pr-6">
-                                            <a href="#" class="text-red-600 hover:text-red-900">View</a>
-                                        </td>
-                                    </tr>
+                                    @endforeach
 
                                 </tbody>
                             </table>
@@ -102,4 +80,3 @@
 
 
     </div>
-</x-app-layout>

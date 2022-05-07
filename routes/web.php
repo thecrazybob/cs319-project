@@ -1,5 +1,6 @@
 <?php
-
+use App\Http\Livewire\DocumentUpload;
+use App\Http\Livewire\DocumentList;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,9 +44,12 @@ Route::get('/patient/reports', function () {
 })->name('patient.reports');
 
 // 6. Patient's Documents
-Route::get('/patient/documents', function () {
-    return view('patient.documents');
-})->name('patient.documents');
+Route::get('/patient/documents', DocumentList::class)
+->name('patient.documents');
+
+//Document Upload
+Route::get('/patient/documents/upload', DocumentUpload::class)
+->name('patient.documents.upload');
 
 // 7. Patient's Vaccines
 Route::get('/patient/vaccines', function () {
