@@ -13,9 +13,7 @@ class DiagnosisController extends Controller
      */
     public function index(Request $request)
     {
-        $diagnosis = Diagnosis::where('patient_id', $patient_id)->get();
-
-        return view('diagnosis.index', compact('diagnosis'));
+        return view('diagnosis.index');
     }
 
     /**
@@ -25,6 +23,7 @@ class DiagnosisController extends Controller
      */
     public function show(Request $request, Diagnosis $diagnosis)
     {
-        return view('diagnosis.show', compact('diagnosis'));
+        $file_path = $diagnosis->file->file_path;
+        return response()->download(storage_path('app/public/'.$file_path));
     }
 }
