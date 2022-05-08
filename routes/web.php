@@ -2,6 +2,7 @@
 
 use App\Http\Livewire\Form;
 use Illuminate\Support\Facades\Route;
+use App\Models\Patient;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,18 @@ use Illuminate\Support\Facades\Route;
 //});
 //Route::view('/form', 'form');
 // Temporary: for testing purpose
-Route::get('/', Form::class);
+
+Route::get('/', function () {
+    return view('patients', [
+        'patient' => Patient::all()
+    ]);
+});
+
+Route::get('patients/{patient}', function ($id) {
+    return view('patient', [
+        'patient' => Patient::findOrFail($id)
+    ]);
+});
 
 
 //Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
