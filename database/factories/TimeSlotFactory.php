@@ -24,8 +24,8 @@ class TimeSlotFactory extends Factory
     {
         return [
             'date' => $this->faker->date(),
-            'duration' => $this->faker->numberBetween(-10000, 10000),
-            'capacity' => $this->faker->numberBetween(-10000, 10000),
+            'duration' => $this->faker->randomElement([15, 30]),
+            'capacity' => $this->faker->numberBetween(0, 5),
         ];
     }
 }

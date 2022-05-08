@@ -24,7 +24,7 @@ class BloodDonationRequestFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::factory(),
+            'patient_id' => Patient::all()->random()->id,
             'blood_type' => $this->faker->randomElement(["AA","AO","BB","BO","AB","OO"]),
             'urgency' => $this->faker->randomElement(["low","medium","high","critical"]),
             'approved' => $this->faker->boolean,

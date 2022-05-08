@@ -24,7 +24,7 @@ class FileFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::factory(),
+            'patient_id' => Patient::all()->random()->id,
             'name' => $this->faker->name,
             'file_path' => $this->faker->word,
         ];

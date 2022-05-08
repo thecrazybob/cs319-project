@@ -14,6 +14,12 @@ class PaymentGatewaySeeder extends Seeder
      */
     public function run()
     {
-        PaymentGateway::factory()->count(5)->create();
+        $paymentGateways = [
+            ['gateway_name' => 'Credit Card'],
+            ['gateway_name' => 'Cash'],
+            ['gateway_name' => 'Bank Transfer'],
+        ];
+
+        collect($paymentGateways)->each(fn ($gateway) => PaymentGateway::create($gateway));
     }
 }

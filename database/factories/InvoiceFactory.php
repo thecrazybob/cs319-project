@@ -24,8 +24,8 @@ class InvoiceFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::factory(),
-            'amount' => $this->faker->randomFloat(0, 0, 9999999999.),
+            'patient_id' => Patient::all()->random()->id,
+            'amount' => $this->faker->randomFloat(0, 0, 9999.99),
             'status' => $this->faker->randomElement(["unpaid","paid","cancelled","refunded","partial"]),
             'description' => $this->faker->text,
         ];

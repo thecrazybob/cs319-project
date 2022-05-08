@@ -24,7 +24,7 @@ class VisitFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::factory(),
+            'patient_id' => Patient::all()->random()->id,
             'visit_date' => $this->faker->date(),
         ];
     }

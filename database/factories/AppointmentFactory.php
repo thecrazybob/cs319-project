@@ -26,8 +26,8 @@ class AppointmentFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::factory(),
-            'doctor_id' => Doctor::factory(),
+            'patient_id' => Patient::all()->random()->id,
+            'doctor_id' => Doctor::all()->random()->id,
             'department_id' => Department::all()->random()->id,
             'appointment_date' => $this->faker->date(),
             'description' => $this->faker->text,

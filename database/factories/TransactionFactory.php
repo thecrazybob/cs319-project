@@ -25,9 +25,9 @@ class TransactionFactory extends Factory
     public function definition()
     {
         return [
-            'invoice_id' => Invoice::factory(),
-            'payment_gateway_id' => PaymentGateway::factory(),
-            'amount' => $this->faker->randomFloat(2, 0, 999999.99),
+            'invoice_id' => Invoice::all()->random()->id,
+            'payment_gateway_id' => PaymentGateway::all()->random()->id,
+            'amount' => $this->faker->randomFloat(2, 0, 499.99),
             'description' => $this->faker->text,
         ];
     }

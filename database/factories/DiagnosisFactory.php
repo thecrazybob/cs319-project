@@ -27,10 +27,10 @@ class DiagnosisFactory extends Factory
     public function definition()
     {
         return [
-            'doctor_id' => Doctor::factory(),
-            'patient_id' => Patient::factory(),
+            'doctor_id' => Doctor::all()->random()->id,
+            'patient_id' => Patient::all()->random()->id,
             'department_id' => Department::all()->random()->id,
-            'file_id' => File::factory(),
+            'file_id' => File::all()->random()->id,
             'diagnosis_date' => $this->faker->date(),
             'diagnosis_type' => $this->faker->word,
         ];

@@ -25,10 +25,10 @@ class ReportFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::factory(),
-            'doctor_id' => Doctor::factory(),
+            'patient_id' => Patient::all()->random()->id,
+            'doctor_id' => Doctor::all()->random()->id,
             'subject' => $this->faker->word,
-            'days' => $this->faker->numberBetween(-10000, 10000),
+            'days' => $this->faker->numberBetween(1, 180),
             'report_date' => $this->faker->date(),
             'report_type' => $this->faker->word,
         ];

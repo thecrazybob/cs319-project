@@ -24,7 +24,7 @@ class VaccineFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::factory(),
+            'patient_id' => Patient::all()->random()->id,
             'vaccine_type' => $this->faker->randomElement(["covid","other"]),
             'vaccine_date' => $this->faker->date(),
             'dose_no' => $this->faker->numberBetween(1, 5),

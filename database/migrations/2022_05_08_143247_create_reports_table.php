@@ -20,7 +20,7 @@ class CreateReportsTable extends Migration
             $table->foreignId('patient_id')->constrained();
             $table->foreignId('doctor_id')->constrained();
             $table->string('subject');
-            $table->integer('days');
+            $table->unsignedInteger('days');
             $table->date('report_date');
             $table->string('report_type');
             $table->timestamps();

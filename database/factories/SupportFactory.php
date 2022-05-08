@@ -26,7 +26,7 @@ class SupportFactory extends Factory
     {
         return [
             'department_id' => Department::all()->random()->id,
-            'patient_id' => Patient::factory(),
+            'patient_id' => Patient::all()->random()->id,
             'subject' => $this->faker->word,
             'status' => $this->faker->randomElement(["new","answered","awaiting","hold","closed"]),
             'priority' => $this->faker->randomElement(["low","medium","high","critical"]),

@@ -18,7 +18,7 @@ class CreatePaymentGatewaysTable extends Migration
         Schema::create('payment_gateways', function (Blueprint $table) {
             $table->id();
             $table->string('gateway_name');
-            $table->boolean('enabled');
+            $table->boolean('enabled')->default(true);
             $table->timestamps();
         });
 

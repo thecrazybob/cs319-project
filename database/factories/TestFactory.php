@@ -27,10 +27,10 @@ class TestFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::factory(),
-            'doctor_id' => Doctor::factory(),
+            'patient_id' => Patient::all()->random()->id,
+            'doctor_id' => Doctor::all()->random()->id,
             'department_id' => Department::all()->random()->id,
-            'file_id' => File::factory(),
+            'file_id' => File::all()->random()->id,
             'test_type' => $this->faker->randomElement(["pcr","regular"]),
             'test_date' => $this->faker->dateTime(),
         ];

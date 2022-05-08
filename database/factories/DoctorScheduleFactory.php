@@ -24,7 +24,7 @@ class DoctorScheduleFactory extends Factory
     public function definition()
     {
         return [
-            'doctor_id' => Doctor::factory(),
+            'doctor_id' => Doctor::all()->random()->id,
         ];
     }
 }

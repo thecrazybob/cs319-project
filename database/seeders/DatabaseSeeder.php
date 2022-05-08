@@ -26,14 +26,15 @@ class DatabaseSeeder extends Seeder
             PatientSeeder::class,
             DoctorSeeder::class,
             DoctorScheduleSeeder::class,
+            TimeSlotSeeder::class,
 
             # Modules
+            FileSeeder::class,
             AnnouncementSeeder::class,
             AppointmentSeeder::class,
             BloodDonationRequestSeeder::class,
             DiagnosisSeeder::class,
             DocumentSeeder::class,
-            FileSeeder::class,
             ReportSeeder::class,
             TestSeeder::class,
             VaccineSeeder::class,

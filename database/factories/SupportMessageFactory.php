@@ -25,8 +25,8 @@ class SupportMessageFactory extends Factory
     public function definition()
     {
         return [
-            'support_id' => Support::factory(),
-            'user_id' => User::factory(),
+            'support_id' => Support::all()->random()->id,
+            'user_id' => User::all()->random()->id,
             'message' => $this->faker->text,
         ];
     }
