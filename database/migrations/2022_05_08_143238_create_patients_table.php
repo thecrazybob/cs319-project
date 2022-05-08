@@ -21,8 +21,8 @@ class CreatePatientsTable extends Migration
             $table->string('bilkent_id');
             $table->date('birth_date');
             $table->enum('gender', ["female","male","other"]);
-            $table->integer('height');
-            $table->integer('weight');
+            $table->unsignedInteger('height');
+            $table->unsignedInteger('weight');
             $table->longText('allergies');
             $table->longText('other_illness');
             $table->longText('current_medications');
