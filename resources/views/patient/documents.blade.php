@@ -63,8 +63,11 @@
                                             <button wire:click="remove({{$document->id}})">
                                                 <div class="text-red-600 hover:text-red-900">Delete</div>
                                             </button>
-                                            <button wire:click="export({{$document->id}})">
+                                            <button wire:click="download({{$document->id}})">
                                                 <div class="text-green-600 hover:text-green-900">Download</div>
+                                            </button>
+                                            <button wire:click="update({{$document->id}})">
+                                                <div class="text-green-600 hover:text-green-900">Update</div>
                                             </button>
                                         </td>
                                     </tr>
