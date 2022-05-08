@@ -1,7 +1,5 @@
 <?php
-use App\Http\Livewire\DocumentUpload;
-use App\Http\Livewire\DocumentUpdate;
-use App\Http\Livewire\DocumentList;
+
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <div>
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Diagnosis') }}
-        </h2>
-        <p class="mt-2 text-sm text-gray-700">A list of all the diagnosis provided by the health center.</p>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ __('Diagnosis') }}
+                </h2>
+                <p class="mt-2 text-sm text-gray-700">A list of all the diagnosis provided by the health center.</p>
             </div>
-    </div>
+        </div>
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto">
@@ -23,7 +23,6 @@
                 </div>
             </div>
         </div>
-
 
     </div>
 </x-app-layout>

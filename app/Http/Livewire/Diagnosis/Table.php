@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Livewire\Diagnosis;
+
 use App\Models\User;
 use App\Models\Diagnosis;
 use App\Models\Department;
