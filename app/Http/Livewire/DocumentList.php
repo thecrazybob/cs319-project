@@ -15,7 +15,7 @@ class DocumentList extends Component
         return view('patient.documents');
     }
 
-    public function export($id) 
+    public function download($id) 
     {
         $this->document = Document::find($id);
         $file_path = $this->document->file_path;
@@ -27,6 +27,10 @@ class DocumentList extends Component
         Document::find($id)->delete();
         
         toast()->success('Successfully deleted')->push();
+    }
+
+    public function update($id){
+        return redirect()->route('patient.documents.update', [ 'id' => $id ]);
     }
 }
 
