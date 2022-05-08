@@ -13,7 +13,7 @@ class DiagnosisController extends Controller
      */
     public function index(Request $request)
     {
-        $diagnosis = Diagnosi::where('patient_id', $patient_id)->get();
+        $diagnosis = Diagnosis::where('patient_id', $patient_id)->get();
 
         return view('diagnosis.index', compact('diagnosis'));
     }
@@ -23,7 +23,7 @@ class DiagnosisController extends Controller
      * @param \App\Models\Diagnosis $diagnosi
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Diagnosi $diagnosi)
+    public function show(Request $request, Diagnosis $diagnosis)
     {
         return view('diagnosis.show', compact('diagnosis'));
     }

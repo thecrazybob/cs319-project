@@ -13,9 +13,7 @@ class ReportController extends Controller
      */
     public function index(Request $request)
     {
-        $reports = Report::where('patient_id', $patient_id)->get();
-
-        return view('report.index', compact('reports'));
+        return view('report.index');
     }
 
     /**
@@ -25,6 +23,7 @@ class ReportController extends Controller
      */
     public function show(Request $request, Report $report)
     {
-        return view('report.show', compact('report'));
+        $file_path = $report->file->file_path;
+        return response()->download(storage_path('app/public/'.$file_path));
     }
 }
