@@ -60,7 +60,6 @@ class FormCreate extends Component implements HasForms
     {
         $array = array_merge([
             'patient_id' => auth()->user()->patient->id,
-            'type' => pathinfo($this->form->getState()['file_path'], PATHINFO_EXTENSION)
         ], $this->form->getState());
 
         $file = File::create($array);
