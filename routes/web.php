@@ -19,62 +19,43 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-
-    // 0. Staff’s Dashboard
-    Route::get('/staff/dashboard', function () {
-        return view('staff.dashboard');
-    })->name('staff.dashboard');
-
-    // 1. Patient dashboard
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // 2. Support / Messaging View
-    Route::get('/support', function () {
-        return view('support');
-    })->name('support');
+    Route::resource('patient', App\Http\Controllers\PatientController::class)->only('index');
 
-    // 3. Patient's Tests
-    Route::get('/patient/tests', function () {
-        return view('patient.tests');
-    })->name('patient.tests');
+    Route::resource('file', App\Http\Controllers\FileController::class)->only('show');
 
-    // 4. Patient's Diagnosis
-    Route::get('/patient/diagnosis', function () {
-        return view('patient.diagnosis');
-    })->name('patient.diagnosis');
+    Route::resource('support', App\Http\Controllers\SupportController::class)->except('edit', 'destroy');
 
-    // 5. Patient's Reports
-    Route::get('/patient/reports', function () {
-        return view('patient.reports');
-    })->name('patient.reports');
+    Route::resource('support-message', App\Http\Controllers\SupportMessageController::class)->only('index', 'store');
 
-    // 6. Patient's Documents
-    Route::get('/patient/documents', DocumentList::class)
-        ->name('patient.documents');
+    Route::resource('test', App\Http\Controllers\TestController::class)->only('index', 'show');
 
-    // Document Upload
-    Route::get('/patient/documents/upload', DocumentUpload::class)
-        ->name('patient.documents.upload');
+    Route::resource('diagnosis', App\Http\Controllers\DiagnosisController::class)->only('index', 'show');
 
-    // 7. Patient's Vaccines
-    Route::get('/patient/vaccines', function () {
-        return view('patient.vaccines');
-    })->name('patient.vaccines');
+    Route::resource('report', App\Http\Controllers\ReportController::class)->only('index', 'show');
 
-    //  8. Previous Visits
-    Route::get('/patient/visits', function () {
-        return view('patient.visits');
-    })->name('patient.visits');
+    Route::resource('document', App\Http\Controllers\DocumentController::class)->except('edit');
 
-    //  9. Patient’s Summary
-    Route::get('/staff/patient-summary', function () {
-        return view('staff.patient-summary');
-    });
+    Route::resource('vaccine', App\Http\Controllers\VaccineController::class)->except('edit');
 
-    // 10. Managing Patients
-    Route::get('/staff/patients', function () {
-        return view('staff.patients');
-    });
+    Route::resource('appointment', App\Http\Controllers\AppointmentController::class)->except('edit');
+
+    Route::resource('time-slot', App\Http\Controllers\TimeSlotController::class)->only('index', 'update');
+
+    Route::resource('doctor-schedule', App\Http\Controllers\DoctorScheduleController::class)->only('index');
+
+    Route::resource('visit', App\Http\Controllers\VisitController::class)->only('index', 'show');
+
+    Route::resource('announcement', App\Http\Controllers\AnnouncementController::class)->only('index', 'show');
+
+    Route::resource('payment-gateway', App\Http\Controllers\PaymentGatewayController::class)->only('index');
+
+    Route::resource('invoice', App\Http\Controllers\InvoiceController::class)->only('index', 'show');
+
+    Route::resource('transaction', App\Http\Controllers\TransactionController::class)->except('create', 'edit', 'show');
+
+    Route::resource('blood-donation-request', App\Http\Controllers\BloodDonationRequestController::class)->except('edit', 'show');
 });

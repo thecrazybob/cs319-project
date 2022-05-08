@@ -4,9 +4,11 @@ namespace Database\Factories;
 
 use App\Models\Team;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Doctor;
+use App\Models\Patient;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
 {
@@ -24,13 +26,24 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        return [
+        $isStaff = $this->faker->boolean;
+
+        if ($isStaff) {
+            $staffArray = ['doctor_id' => Doctor::factory()];
+        } else {
+            $staffArray = ['patient_id' => Patient::factory()];
+        }
+
+        $initArray = [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'staff' => $isStaff,
         ];
+
+        return array_merge($staffArray, $initArray);
     }
 
     /**
