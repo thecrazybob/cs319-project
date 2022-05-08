@@ -2,8 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\File;
+use App\Models\Doctor;
+use App\Models\Patient;
+use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+
 
 /**
  * @property int $id
