@@ -26,6 +26,7 @@ class Vaccine extends Model
     protected $fillable = [
         'patient_id',
         'vaccine_type',
+        'file_id',
         'vaccine_date',
         'dose_no',
     ];
@@ -38,6 +39,7 @@ class Vaccine extends Model
     protected $casts = [
         'id' => 'integer',
         'patient_id' => 'integer',
+        'file_id' => 'integer',
         'vaccine_date' => 'date',
     ];
 
