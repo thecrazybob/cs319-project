@@ -30,7 +30,7 @@ class FormCreate extends Component implements HasForms
         return [
             TextInput::make('name')
                 ->required()
-                ->label('Name:'),
+                ->label('File Name:'),
             Select::make('vaccine_type')->options([
                 'covid' => 'covid',
                 'other' => 'other',
