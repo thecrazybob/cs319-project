@@ -17,7 +17,6 @@ class CreatePatientsTable extends Migration
 
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
             $table->string('bilkent_id');
             $table->date('birth_date');
             $table->enum('gender', ["female","male","other"]);

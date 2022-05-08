@@ -24,7 +24,6 @@ class PatientFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::all()->random()->id,
             'bilkent_id' => $this->faker->word,
             'birth_date' => $this->faker->date(),
             'gender' => $this->faker->randomElement(["female","male","other"]),

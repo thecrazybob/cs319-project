@@ -13,43 +13,43 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('support') }}" :active="request()->routeIs('support')">
+                    <x-jet-nav-link href="{{ route('support.index') }}" :active="request()->routeIs('support.index')">
                         {{ __('Support') }}
                     </x-jet-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('patient.tests') }}" :active="request()->routeIs('patient.tests')">
+                    <x-jet-nav-link href="{{ route('test.index') }}" :active="request()->routeIs('test.index')">
                         {{ __('Tests') }}
                     </x-jet-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('patient.diagnosis') }}" :active="request()->routeIs('patient.diagnosis')">
+                    <x-jet-nav-link href="{{ route('diagnosis.index') }}" :active="request()->routeIs('diagnosis.index')">
                         {{ __('Diagnosis') }}
                     </x-jet-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('patient.reports') }}" :active="request()->routeIs('patient.reports')">
+                    <x-jet-nav-link href="{{ route('report.index') }}" :active="request()->routeIs('report.index')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('patient.documents') }}" :active="request()->routeIs('patient.documents')">
+                    <x-jet-nav-link href="{{ route('document.index') }}" :active="request()->routeIs('document.index')">
                         {{ __('Documents') }}
                     </x-jet-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('patient.vaccines') }}" :active="request()->routeIs('patient.vaccines')">
+                    <x-jet-nav-link href="{{ route('vaccine.index') }}" :active="request()->routeIs('vaccine.index')">
                         {{ __('Vaccines') }}
                     </x-jet-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('patient.visits') }}" :active="request()->routeIs('patient.visits')">
+                    <x-jet-nav-link href="{{ route('visit.index') }}" :active="request()->routeIs('visit.index')">
                         {{ __('Visits') }}
                     </x-jet-nav-link>
                 </div>

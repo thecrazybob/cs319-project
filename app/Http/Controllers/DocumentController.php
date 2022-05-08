@@ -16,7 +16,7 @@ class DocumentController extends Controller
      */
     public function index(Request $request)
     {
-        $documents = Document::where('patient_id', $patient_id)->get();
+        $documents = Document::where('patient_id', auth()->user()->patient->id)->get();
 
         return view('document.index', compact('documents'));
     }

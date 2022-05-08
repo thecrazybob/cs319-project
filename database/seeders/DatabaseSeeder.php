@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
 
             # Actors
             UserSeeder::class,
-            PatientSeeder::class,
-            DoctorSeeder::class,
+            // PatientSeeder::class,
+            // DoctorSeeder::class,
             DoctorScheduleSeeder::class,
             TimeSlotSeeder::class,
 
