@@ -39,7 +39,8 @@ class FormEdit extends Component implements HasForms
             FileUpload::make('file_path')
                 ->preserveFilenames()
                 ->maxSize(102400)
-                ->helperText('File size can not exceed 100 MegaBytes')
+                ->acceptedFileTypes(['application/pdf', 'image/jpg', 'image/jpeg', 'image/png'])
+                ->helperText('File size can not exceed 100MB and file must be of the type png, jpg, jpeg, pdf')
                 ->required()
                 ->label('Upload File:'),
         ];
