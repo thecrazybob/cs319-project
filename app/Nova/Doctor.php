@@ -2,12 +2,21 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Doctor extends Resource
 {
+    public function title()
+{
+    return \App\Models\User::where('doctor_id', $this->id)->first()->name;;
+}
+
     /**
      * The model the resource corresponds to.
      *
@@ -15,12 +24,6 @@ class Doctor extends Resource
      */
     public static $model = \App\Models\Doctor::class;
 
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -33,7 +36,7 @@ class Doctor extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
+
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
@@ -41,6 +44,14 @@ class Doctor extends Resource
     {
         return [
             ID::make()->sortable(),
+            Text::make('Name', function () {
+                return \App\Models\User::where('doctor_id', $this->id)->first()->name;
+            }),
+            BelongsTo::make('Department')->sortable(),
+            Boolean::make('Active')->sortable(),
+            Date::make('Created At')->sortable(),
+            Date::make('Updated At')->sortable(),
+
         ];
     }
 
