@@ -18,6 +18,7 @@ class CreateVaccinesTable extends Migration
         Schema::create('vaccines', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained();
+            $table->foreignId('file_id')->constrained();
             $table->enum('vaccine_type', ["covid","other"]);
             $table->date('vaccine_date');
             $table->unsignedInteger('dose_no');

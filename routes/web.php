@@ -36,7 +36,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::resource('document', App\Http\Controllers\DocumentController::class);
 
-    Route::resource('vaccine', App\Http\Controllers\VaccineController::class)->except('edit');
+    Route::resource('vaccine', App\Http\Controllers\VaccineController::class);
 
     Route::resource('appointment', App\Http\Controllers\AppointmentController::class)->except('edit');
 

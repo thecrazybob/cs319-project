@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
+use App\Models\File;
 use App\Models\Patient;
 use App\Models\Vaccine;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class VaccineFactory extends Factory
 {
@@ -26,6 +27,7 @@ class VaccineFactory extends Factory
         return [
             'patient_id' => Patient::all()->random()->id,
             'vaccine_type' => $this->faker->randomElement(["covid","other"]),
+            'file_id' => File::factory(),
             'vaccine_date' => $this->faker->dateTimeThisYear(),
             'dose_no' => $this->faker->numberBetween(1, 5),
         ];
