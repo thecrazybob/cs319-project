@@ -25,7 +25,7 @@ class VisitFactory extends Factory
     {
         return [
             'patient_id' => Patient::all()->random()->id,
-            'visit_date' => $this->faker->date(),
+            'visit_date' => $this->faker->dateTimeThisYear(),
         ];
     }
 }

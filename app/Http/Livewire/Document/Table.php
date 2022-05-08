@@ -27,7 +27,7 @@ class Table extends Component implements HasTable
         return [
             TextColumn::make('id'),
             TextColumn::make('name'),
-            TextColumn::make('type'),
+            TextColumn::make('file.type'),
             TextColumn::make('created_at')->date(),
             TextColumn::make('updated_at')->date(),
         ];

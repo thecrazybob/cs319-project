@@ -14,6 +14,21 @@ class TimeSlotSeeder extends Seeder
      */
     public function run()
     {
-        TimeSlot::factory()->count(5)->create();
+        $days = 7;
+        $slotsInDay = 24 * 2; // since each slot is half an hour
+        $totalSlots = $days * $slotsInDay;
+
+        $timeNow = now()->minute(60)->second(0);
+
+        for ($i = 0; $i < $totalSlots; $i++) {
+            $timeNow = $timeNow->addMinutes(30);
+
+            TimeSlot::factory()->create(
+                [
+                    'starting_time' => $timeNow,
+                    'duration' => 30,
+                ]
+            );
+        }
     }
 }

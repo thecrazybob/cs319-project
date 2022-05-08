@@ -20,7 +20,6 @@ class CreateDocumentsTable extends Migration
             $table->foreignId('patient_id')->constrained();
             $table->foreignId('file_id')->constrained();
             $table->string('name');
-            $table->string('type');
             $table->timestamps();
         });
 

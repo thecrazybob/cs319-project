@@ -32,7 +32,7 @@ class TestFactory extends Factory
             'department_id' => Department::all()->random()->id,
             'file_id' => File::factory(),
             'test_type' => $this->faker->randomElement(["pcr","regular"]),
-            'test_date' => $this->faker->dateTime(),
+            'test_date' => $this->faker->dateTimeThisYear(),
         ];
     }
 }

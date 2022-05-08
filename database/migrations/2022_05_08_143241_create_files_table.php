@@ -20,6 +20,7 @@ class CreateFilesTable extends Migration
             $table->foreignId('patient_id')->constrained();
             $table->string('name');
             $table->string('file_path');
+            $table->string('type');
             $table->timestamps();
         });
 

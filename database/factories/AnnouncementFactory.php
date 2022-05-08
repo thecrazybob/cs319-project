@@ -26,7 +26,7 @@ class AnnouncementFactory extends Factory
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->text,
             'private' => $this->faker->boolean,
-            'announcement_date' => $this->faker->date(),
+            'announcement_date' => $this->faker->dateTimeThisYear(),
         ];
     }
 }

@@ -18,7 +18,6 @@ class CreateWorkingDaysTable extends Migration
         Schema::create('working_days', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();
