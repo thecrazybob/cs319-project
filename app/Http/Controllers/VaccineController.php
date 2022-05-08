@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\VaccineStoreRequest;
-use App\Http\Requests\VaccineUpdateRequest;
 use App\Models\Vaccine;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use App\Http\Requests\VaccineStoreRequest;
+use App\Http\Requests\VaccineUpdateRequest;
 
 class VaccineController extends Controller
 {
@@ -15,9 +16,9 @@ class VaccineController extends Controller
      */
     public function index(Request $request)
     {
-        $vaccines = Vaccine::where('patient_id', $patient_id)->get();
+        $vaccines = Vaccine::where('patient_id', auth()->user()->patient_id)->get();
 
-        return view('vaccine.index', compact('vaccines'));
+        return view('vaccine.index');
     }
 
     /**
@@ -25,9 +26,11 @@ class VaccineController extends Controller
      * @param \App\Models\Vaccine $vaccine
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Vaccine $vaccine)
+    public function show($vaccine)
     {
-        return view('vaccine.show', compact('vaccine'));
+        $vaccine = Vaccine::find($vaccine);
+        $file_path = $vaccine->file->file_path;
+        return response()->download(storage_path('app/public/'.$file_path));
     }
 
     /**
@@ -37,6 +40,11 @@ class VaccineController extends Controller
     public function create(Request $request)
     {
         return view('vaccine.create');
+    }
+
+    public function edit(Request $request, Vaccine $vaccine)
+    {
+        return view('vaccine.edit', compact('vaccine'));
     }
 
     /**
