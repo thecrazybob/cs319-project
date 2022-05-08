@@ -16,3 +16,5 @@ yarn-error.log
 docker-compose.yml
 /public/js/app.js
 /public/css/app.css
+/draft.yaml
+/.blueprint
