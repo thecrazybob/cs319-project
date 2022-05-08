@@ -13,9 +13,7 @@ class TestController extends Controller
      */
     public function index(Request $request)
     {
-        $tests = Test::where('patient_id', $patient_id)->get();
-
-        return view('test.index', compact('tests'));
+        return view('test.index');
     }
 
     /**
@@ -25,6 +23,7 @@ class TestController extends Controller
      */
     public function show(Request $request, Test $test)
     {
-        return view('test.show', compact('test'));
+        $file_path = $test->file->file_path;
+        return response()->download(storage_path('app/public/'.$file_path));
     }
 }
