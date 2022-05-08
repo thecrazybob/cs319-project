@@ -26,10 +26,9 @@ class DocumentFactory extends Factory
     {
         return [
             'patient_id' => Patient::all()->random()->id,
-            'file_id' => File::all()->random()->id,
+            'file_id' => File::factory(),
             'name' => $this->faker->name,
             'type' => $this->faker->word,
-            'upload_date' => $this->faker->date(),
         ];
     }
 }

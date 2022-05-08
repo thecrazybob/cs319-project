@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\File;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int $id
@@ -28,6 +29,7 @@ class Report extends Model
     protected $fillable = [
         'patient_id',
         'doctor_id',
+        'file_id',
         'subject',
         'days',
         'report_date',
@@ -43,6 +45,7 @@ class Report extends Model
         'id' => 'integer',
         'patient_id' => 'integer',
         'doctor_id' => 'integer',
+        'file_id' => 'integer',
         'report_date' => 'date',
     ];
 
@@ -60,5 +63,13 @@ class Report extends Model
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function file()
+    {
+        return $this->belongsTo(File::class);
     }
 }

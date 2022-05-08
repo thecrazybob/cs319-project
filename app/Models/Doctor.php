@@ -23,7 +23,6 @@ class Doctor extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
         'department_id',
         'active',
     ];
@@ -35,18 +34,9 @@ class Doctor extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'user_id' => 'integer',
         'department_id' => 'integer',
         'active' => 'boolean',
     ];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

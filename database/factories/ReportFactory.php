@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
+use App\Models\File;
 use App\Models\Doctor;
-use App\Models\Patient;
 use App\Models\Report;
+use App\Models\Patient;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ReportFactory extends Factory
 {
@@ -27,6 +28,7 @@ class ReportFactory extends Factory
         return [
             'patient_id' => Patient::all()->random()->id,
             'doctor_id' => Doctor::all()->random()->id,
+            'file_id' => File::factory(),
             'subject' => $this->faker->word,
             'days' => $this->faker->numberBetween(1, 180),
             'report_date' => $this->faker->date(),

@@ -28,7 +28,8 @@ class DocumentController extends Controller
      */
     public function show(Request $request, Document $document)
     {
-        return view('document.show', compact('document'));
+        $file_path = $document->file->file_path;
+        return response()->download(storage_path('app/public/'.$file_path));
     }
 
     /**
@@ -38,6 +39,15 @@ class DocumentController extends Controller
     public function create(Request $request)
     {
         return view('document.create');
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Request $request, Document $document)
+    {
+        return view('document.edit', compact('document'));
     }
 
     /**

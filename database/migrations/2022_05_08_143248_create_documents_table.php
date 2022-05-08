@@ -21,7 +21,6 @@ class CreateDocumentsTable extends Migration
             $table->foreignId('file_id')->constrained();
             $table->string('name');
             $table->string('type');
-            $table->date('upload_date');
             $table->timestamps();
         });
 

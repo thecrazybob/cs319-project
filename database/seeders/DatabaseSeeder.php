@@ -29,7 +29,6 @@ class DatabaseSeeder extends Seeder
             TimeSlotSeeder::class,
 
             # Modules
-            FileSeeder::class,
             AnnouncementSeeder::class,
             AppointmentSeeder::class,
             BloodDonationRequestSeeder::class,

@@ -30,7 +30,7 @@ class DiagnosisFactory extends Factory
             'doctor_id' => Doctor::all()->random()->id,
             'patient_id' => Patient::all()->random()->id,
             'department_id' => Department::all()->random()->id,
-            'file_id' => File::all()->random()->id,
+            'file_id' => File::factory(),
             'diagnosis_date' => $this->faker->date(),
             'diagnosis_type' => $this->faker->word,
         ];
