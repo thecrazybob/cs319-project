@@ -23,7 +23,7 @@ class TimeSlotFactory extends Factory
     public function definition()
     {
         return [
-            'date' => $this->faker->date(),
+            'starting_time' => $this->faker->date(),
             'duration' => $this->faker->randomElement([15, 30]),
             'capacity' => $this->faker->numberBetween(0, 5),
         ];
