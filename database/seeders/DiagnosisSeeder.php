@@ -14,6 +14,6 @@ class DiagnosisSeeder extends Seeder
      */
     public function run()
     {
-        Diagnosis::factory()->count(5)->create();
+        Diagnosis::factory()->count(25)->create();
     }
 }
