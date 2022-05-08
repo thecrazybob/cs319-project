@@ -46,8 +46,9 @@ class Report extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Subject')->sortable(),
-            Number::make('Days')->min(1)->max(365)->step(1),
+            Text::make('Report Type')->sortable(),
             Date::make('Report Date'),
+            Number::make('Days')->min(1)->max(365)->step(1),
             BelongsTo::make('Patient'),
             BelongsTo::make('Doctor'),
             BelongsTo::make('File'),
