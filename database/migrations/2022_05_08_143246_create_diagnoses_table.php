@@ -19,7 +19,7 @@ class CreateDiagnosesTable extends Migration
             $table->id();
             $table->foreignId('doctor_id')->constrained();
             $table->foreignId('patient_id')->constrained();
-            $table->foreignId('department')->constrained('departments', 'department');
+            $table->foreignId('department_id')->constrained();
             $table->foreignId('file_id')->constrained();
             $table->date('diagnosis_date');
             $table->string('diagnosis_type');
