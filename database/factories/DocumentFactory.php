@@ -28,7 +28,7 @@ class DocumentFactory extends Factory
             'patient_id' => Patient::all()->random()->id,
             'file_id' => File::factory(),
             'name' => $this->faker->name,
-            'type' => $this->faker->word,
+            'type' => $this->faker->randomElement(['jpg', 'pdf', 'jpeg', 'png']),
         ];
     }
 }
