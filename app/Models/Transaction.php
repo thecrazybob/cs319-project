@@ -7,15 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
- * @property int $patient_id
- * @property int $file_id
- * @property string $name
- * @property string $type
- * @property \Carbon\Carbon $upload_date
+ * @property int $invoice_id
+ * @property int $payment_gateway_id
+ * @property double $amount
+ * @property string $description
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-class Document extends Model
+class Transaction extends Model
 {
     use HasFactory;
 
@@ -25,11 +24,10 @@ class Document extends Model
      * @var array
      */
     protected $fillable = [
-        'patient_id',
-        'file_id',
-        'name',
-        'type',
-        'upload_date',
+        'invoice_id',
+        'payment_gateway_id',
+        'amount',
+        'description',
     ];
 
     /**
@@ -39,24 +37,32 @@ class Document extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'patient_id' => 'integer',
-        'file_id' => 'integer',
-        'upload_date' => 'date',
+        'invoice_id' => 'integer',
+        'payment_gateway_id' => 'integer',
+        'amount' => 'double',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function patient()
+    public function invoice()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Invoice::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function file()
+    public function invoice()
     {
-        return $this->belongsTo(File::class);
+        return $this->belongsTo(Invoice::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function paymentGateway()
+    {
+        return $this->belongsTo(PaymentGateway::class);
     }
 }

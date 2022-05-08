@@ -7,15 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
- * @property int $patient_id
- * @property int $file_id
- * @property string $name
- * @property string $type
- * @property \Carbon\Carbon $upload_date
+ * @property int $doctor_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-class Document extends Model
+class DoctorSchedule extends Model
 {
     use HasFactory;
 
@@ -25,11 +21,7 @@ class Document extends Model
      * @var array
      */
     protected $fillable = [
-        'patient_id',
-        'file_id',
-        'name',
-        'type',
-        'upload_date',
+        'doctor_id',
     ];
 
     /**
@@ -39,24 +31,22 @@ class Document extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'patient_id' => 'integer',
-        'file_id' => 'integer',
-        'upload_date' => 'date',
+        'doctor_id' => 'integer',
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function patient()
+    public function workingDays()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsToMany(WorkingDay::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function file()
+    public function doctor()
     {
-        return $this->belongsTo(File::class);
+        return $this->belongsTo(Doctor::class);
     }
 }

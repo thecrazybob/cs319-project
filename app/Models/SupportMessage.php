@@ -7,15 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
- * @property int $patient_id
- * @property int $file_id
- * @property string $name
- * @property string $type
- * @property \Carbon\Carbon $upload_date
+ * @property int $support_id
+ * @property int $user_id
+ * @property string $message
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-class Document extends Model
+class SupportMessage extends Model
 {
     use HasFactory;
 
@@ -25,11 +23,9 @@ class Document extends Model
      * @var array
      */
     protected $fillable = [
-        'patient_id',
-        'file_id',
-        'name',
-        'type',
-        'upload_date',
+        'support_id',
+        'user_id',
+        'message',
     ];
 
     /**
@@ -39,24 +35,31 @@ class Document extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'patient_id' => 'integer',
-        'file_id' => 'integer',
-        'upload_date' => 'date',
+        'support_id' => 'integer',
+        'user_id' => 'integer',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function patient()
+    public function user()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function file()
+    public function support()
     {
-        return $this->belongsTo(File::class);
+        return $this->belongsTo(Support::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

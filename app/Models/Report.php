@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property int $patient_id
- * @property int $file_id
- * @property string $name
- * @property string $type
- * @property \Carbon\Carbon $upload_date
+ * @property int $doctor_id
+ * @property string $subject
+ * @property int $days
+ * @property \Carbon\Carbon $report_date
+ * @property string $report_type
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-class Document extends Model
+class Report extends Model
 {
     use HasFactory;
 
@@ -26,10 +27,11 @@ class Document extends Model
      */
     protected $fillable = [
         'patient_id',
-        'file_id',
-        'name',
-        'type',
-        'upload_date',
+        'doctor_id',
+        'subject',
+        'days',
+        'report_date',
+        'report_type',
     ];
 
     /**
@@ -40,8 +42,8 @@ class Document extends Model
     protected $casts = [
         'id' => 'integer',
         'patient_id' => 'integer',
-        'file_id' => 'integer',
-        'upload_date' => 'date',
+        'doctor_id' => 'integer',
+        'report_date' => 'date',
     ];
 
     /**
@@ -55,8 +57,8 @@ class Document extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function file()
+    public function doctor()
     {
-        return $this->belongsTo(File::class);
+        return $this->belongsTo(Doctor::class);
     }
 }

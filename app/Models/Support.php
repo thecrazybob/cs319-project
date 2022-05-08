@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
+ * @property int $department_id
  * @property int $patient_id
- * @property int $file_id
- * @property string $name
- * @property string $type
- * @property \Carbon\Carbon $upload_date
+ * @property string $subject
+ * @property string $status
+ * @property string $priority
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-class Document extends Model
+class Support extends Model
 {
     use HasFactory;
 
@@ -25,11 +25,11 @@ class Document extends Model
      * @var array
      */
     protected $fillable = [
+        'department_id',
         'patient_id',
-        'file_id',
-        'name',
-        'type',
-        'upload_date',
+        'subject',
+        'status',
+        'priority',
     ];
 
     /**
@@ -39,10 +39,17 @@ class Document extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'department_id' => 'integer',
         'patient_id' => 'integer',
-        'file_id' => 'integer',
-        'upload_date' => 'date',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -50,13 +57,5 @@ class Document extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function file()
-    {
-        return $this->belongsTo(File::class);
     }
 }

@@ -8,14 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property int $patient_id
- * @property int $file_id
- * @property string $name
- * @property string $type
- * @property \Carbon\Carbon $upload_date
+ * @property string $blood_type
+ * @property string $urgency
+ * @property bool $approved
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-class Document extends Model
+class BloodDonationRequest extends Model
 {
     use HasFactory;
 
@@ -26,10 +25,9 @@ class Document extends Model
      */
     protected $fillable = [
         'patient_id',
-        'file_id',
-        'name',
-        'type',
-        'upload_date',
+        'blood_type',
+        'urgency',
+        'approved',
     ];
 
     /**
@@ -40,8 +38,7 @@ class Document extends Model
     protected $casts = [
         'id' => 'integer',
         'patient_id' => 'integer',
-        'file_id' => 'integer',
-        'upload_date' => 'date',
+        'approved' => 'boolean',
     ];
 
     /**
@@ -50,13 +47,5 @@ class Document extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function file()
-    {
-        return $this->belongsTo(File::class);
     }
 }
