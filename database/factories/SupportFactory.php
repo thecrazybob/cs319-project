@@ -25,7 +25,7 @@ class SupportFactory extends Factory
     public function definition()
     {
         return [
-            'department_id' => Department::factory(),
+            'department_id' => Department::all()->random()->id,
             'patient_id' => Patient::factory(),
             'subject' => $this->faker->word,
             'status' => $this->faker->randomElement(["new","answered","awaiting","hold","closed"]),

@@ -28,7 +28,7 @@ class AppointmentFactory extends Factory
         return [
             'patient_id' => Patient::factory(),
             'doctor_id' => Doctor::factory(),
-            'department_id' => Department::factory(),
+            'department_id' => Department::all()->random()->id,
             'appointment_date' => $this->faker->date(),
             'description' => $this->faker->text,
             'confirmed' => $this->faker->boolean,

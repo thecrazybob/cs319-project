@@ -26,7 +26,7 @@ class DoctorFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'department_id' => Department::factory(),
+            'department_id' => Department::all()->random()->id,
             'active' => $this->faker->boolean,
         ];
     }

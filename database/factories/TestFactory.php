@@ -29,7 +29,7 @@ class TestFactory extends Factory
         return [
             'patient_id' => Patient::factory(),
             'doctor_id' => Doctor::factory(),
-            'department_id' => Department::factory(),
+            'department_id' => Department::all()->random()->id,
             'file_id' => File::factory(),
             'test_type' => $this->faker->randomElement(["pcr","regular"]),
             'test_date' => $this->faker->dateTime(),

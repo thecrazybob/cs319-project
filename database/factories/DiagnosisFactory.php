@@ -29,7 +29,7 @@ class DiagnosisFactory extends Factory
         return [
             'doctor_id' => Doctor::factory(),
             'patient_id' => Patient::factory(),
-            'department' => Department::factory(),
+            'department_id' => Department::all()->random()->id,
             'file_id' => File::factory(),
             'diagnosis_date' => $this->faker->date(),
             'diagnosis_type' => $this->faker->word,
