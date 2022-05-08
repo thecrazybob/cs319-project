@@ -78,3 +78,40 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('staff.patients');
     });
 });
+
+
+Route::resource('patient', App\Http\Controllers\PatientController::class)->only('index');
+
+Route::resource('file', App\Http\Controllers\FileController::class)->only('show');
+
+Route::resource('support', App\Http\Controllers\SupportController::class)->except('edit', 'destroy');
+
+Route::resource('support-message', App\Http\Controllers\SupportMessageController::class)->only('index', 'store');
+
+Route::resource('test', App\Http\Controllers\TestController::class)->only('index', 'show');
+
+Route::resource('diagnosis', App\Http\Controllers\DiagnosisController::class)->only('index', 'show');
+
+Route::resource('report', App\Http\Controllers\ReportController::class)->only('index', 'show');
+
+Route::resource('document', App\Http\Controllers\DocumentController::class)->except('edit');
+
+Route::resource('vaccine', App\Http\Controllers\VaccineController::class)->except('edit');
+
+Route::resource('appointment', App\Http\Controllers\AppointmentController::class)->except('edit');
+
+Route::resource('time-slot', App\Http\Controllers\TimeSlotController::class)->only('index', 'update');
+
+Route::resource('doctor-schedule', App\Http\Controllers\DoctorScheduleController::class)->only('index');
+
+Route::resource('visit', App\Http\Controllers\VisitController::class)->only('index', 'show');
+
+Route::resource('announcement', App\Http\Controllers\AnnouncementController::class)->only('index', 'show');
+
+Route::resource('payment-gateway', App\Http\Controllers\PaymentGatewayController::class)->only('index');
+
+Route::resource('invoice', App\Http\Controllers\InvoiceController::class)->only('index', 'show');
+
+Route::resource('transaction', App\Http\Controllers\TransactionController::class)->except('create', 'edit', 'show');
+
+Route::resource('blood-donation-request', App\Http\Controllers\BloodDonationRequestController::class)->except('edit', 'show');
