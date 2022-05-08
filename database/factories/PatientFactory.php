@@ -25,7 +25,7 @@ class PatientFactory extends Factory
     {
         return [
             'bilkent_id' => $this->faker->word,
-            'birth_date' => $this->faker->date(),
+            'birth_date' => $this->faker->dateTimeThisYear(),
             'gender' => $this->faker->randomElement(["female","male","other"]),
             'height' => $this->faker->numberBetween(151, 187),
             'weight' => $this->faker->numberBetween(49, 195),
