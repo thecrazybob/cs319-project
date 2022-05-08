@@ -1,5 +1,6 @@
 <?php
 use App\Http\Livewire\DocumentUpload;
+use App\Http\Livewire\DocumentUpdate;
 use App\Http\Livewire\DocumentList;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +58,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Document Upload
     Route::get('/patient/documents/upload', DocumentUpload::class)
         ->name('patient.documents.upload');
+
+    Route::get('/patient/documents/update/{id}', DocumentUpdate::class)
+    ->name('patient.documents.update');
 
     // 7. Patient's Vaccines
     Route::get('/patient/vaccines', function () {
