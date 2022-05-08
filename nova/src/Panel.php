@@ -5,8 +5,13 @@ namespace Laravel\Nova;
 use Illuminate\Http\Resources\MergeValue;
 use Illuminate\Support\Traits\Macroable;
 use JsonSerializable;
+use Laravel\Nova\Contracts\RelatableField;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\HasHelpText;
 
+/**
+ * @method static static make(string $name, \Closure|array|iterable $fields = [])
+ */
 class Panel extends MergeValue implements JsonSerializable
 {
     use Macroable, Metable, Makeable, HasHelpText;
@@ -57,7 +62,7 @@ class Panel extends MergeValue implements JsonSerializable
      * Create a new panel instance.
      *
      * @param  string  $name
-     * @param  \Closure|array  $fields
+     * @param  (\Closure():array|iterable)|array  $fields
      * @return void
      */
     public function __construct($name, $fields = [])
@@ -70,7 +75,7 @@ class Panel extends MergeValue implements JsonSerializable
     /**
      * Prepare the given fields.
      *
-     * @param  \Closure|array  $fields
+     * @param  (\Closure():array|iterable)|array|iterable  $fields
      * @return array
      */
     protected function prepareFields($fields)
@@ -119,6 +124,26 @@ class Panel extends MergeValue implements JsonSerializable
             'resource' => $resource->singularLabel(),
             'title' => $resource->title(),
         ]);
+    }
+
+    /**
+     * Get the default panel name for the given resource.
+     *
+     * @param  \Laravel\Nova\Resource  $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return string
+     */
+    public static function defaultNameForViaRelationship(Resource $resource, NovaRequest $request)
+    {
+        $field = $request->newViaResource()
+                        ->availableFields($request)
+                        ->filter(function ($field) use ($request) {
+                            return $field instanceof RelatableField
+                                        && $field->resourceName === $request->resource
+                                        && $field->relationshipName() === $request->viaRelationship;
+                        })->first();
+
+        return $field->name;
     }
 
     /**
@@ -172,7 +197,7 @@ class Panel extends MergeValue implements JsonSerializable
     /**
      * Set the width for the help text tooltip.
      *
-     * @param  string
+     * @param  string  $helpWidth
      * @return $this
      *
      * @throws \Exception
@@ -197,10 +222,9 @@ class Panel extends MergeValue implements JsonSerializable
     /**
      * Prepare the panel for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge([
             'component' => $this->component(),

@@ -31,7 +31,7 @@ class Slug extends Field
     /**
      * Whether to show the field's customize button.
      *
-     * @var string
+     * @var bool
      */
     public $showCustomizeButton = false;
 
@@ -39,8 +39,8 @@ class Slug extends Field
      * Create a new field.
      *
      * @param  string  $name
-     * @param  string|callable|null  $attribute
-     * @param  callable|null  $resolveCallback
+     * @param  string|\Closure|callable|object|null  $attribute
+     * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
@@ -77,10 +77,9 @@ class Slug extends Field
     /**
      * Prepare the element for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $request = app(NovaRequest::class);
 

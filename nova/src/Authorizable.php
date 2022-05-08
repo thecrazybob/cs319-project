@@ -3,9 +3,13 @@
 namespace Laravel\Nova;
 
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Actions\DestructiveAction;
+use Laravel\Nova\Contracts\ImpersonatesUsers;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 trait Authorizable
@@ -70,7 +74,7 @@ trait Authorizable
      */
     public function authorizeToView(Request $request)
     {
-        return $this->authorizeTo($request, 'view') && $this->authorizeToViewAny($request);
+        $this->authorizeTo($request, 'view');
     }
 
     /**
@@ -81,7 +85,7 @@ trait Authorizable
      */
     public function authorizedToView(Request $request)
     {
-        return $this->authorizedTo($request, 'view') && $this->authorizedToViewAny($request);
+        return $this->authorizedTo($request, 'view');
     }
 
     /**
@@ -122,7 +126,7 @@ trait Authorizable
      */
     public function authorizeToUpdate(Request $request)
     {
-        return $this->authorizeTo($request, 'update');
+        $this->authorizeTo($request, 'update');
     }
 
     /**
@@ -137,6 +141,51 @@ trait Authorizable
     }
 
     /**
+     * Determine if the current user can replicate the given resource or throw an exception.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function authorizeToReplicate(Request $request)
+    {
+        if (! static::authorizable()) {
+            return;
+        }
+
+        $gate = Gate::getPolicyFor(static::newModel());
+
+        if (! is_null($gate) && method_exists($gate, 'replicate')) {
+            $this->authorizeTo($request, 'replicate');
+
+            return;
+        }
+
+        $this->authorizeToCreate($request);
+        $this->authorizeToUpdate($request);
+    }
+
+    /**
+     * Determine if the current user can replicate the given resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public function authorizedToReplicate(Request $request)
+    {
+        if (! static::authorizable()) {
+            return true;
+        }
+
+        $gate = Gate::getPolicyFor(static::newModel());
+
+        return ! is_null($gate) && method_exists($gate, 'replicate')
+                        ? Gate::check('replicate', $this->model())
+                        : $this->authorizedToCreate($request) && $this->authorizedToUpdate($request);
+    }
+
+    /**
      * Determine if the current user can delete the given resource or throw an exception.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -146,7 +195,7 @@ trait Authorizable
      */
     public function authorizeToDelete(Request $request)
     {
-        return $this->authorizeTo($request, 'delete');
+        $this->authorizeTo($request, 'delete');
     }
 
     /**
@@ -265,6 +314,71 @@ trait Authorizable
         return ! is_null($gate) && method_exists($gate, $method)
                     ? Gate::check($method, [$this->model(), $model])
                     : true;
+    }
+
+    /**
+     * Determine if the user can run the given action.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Actions\Action  $action
+     * @return bool
+     */
+    public function authorizedToRunAction(NovaRequest $request, Action $action)
+    {
+        if ($action instanceof DestructiveAction) {
+            return $this->authorizedToRunDestructiveAction($request, $action);
+        }
+
+        if (! static::authorizable()) {
+            return true;
+        }
+
+        $gate = Gate::getPolicyFor($this->model());
+
+        $method = 'runAction';
+
+        return ! is_null($gate) && method_exists($gate, $method)
+                        ? Gate::check($method, [$this->model(), $action])
+                        : $this->authorizedToUpdate($request);
+    }
+
+    /**
+     * Determine if the user can run the given action.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Actions\DestructiveAction  $action
+     * @return bool
+     */
+    public function authorizedToRunDestructiveAction(NovaRequest $request, DestructiveAction $action)
+    {
+        if (! static::authorizable()) {
+            return true;
+        }
+
+        $gate = Gate::getPolicyFor($this->model());
+
+        $method = 'runDestructiveAction';
+
+        return ! is_null($gate) && method_exists($gate, $method)
+                        ? Gate::check($method, [$this->model(), $action])
+                        : $this->authorizedToDelete($request);
+    }
+
+    /**
+     * Determine if the current user can impersonate the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return bool
+     */
+    public function authorizedToImpersonate(NovaRequest $request)
+    {
+        $user = $request->user();
+
+        return app(ImpersonatesUsers::class)->impersonating($request) === false
+                    && ! $this->resource->is($user)
+                    && $this->resource instanceof Authenticatable
+                    && (method_exists($this->resource, 'canBeImpersonated') && $this->resource->canBeImpersonated() === true)
+                    && (method_exists($user, 'canImpersonate') && $user->canImpersonate() === true);
     }
 
     /**

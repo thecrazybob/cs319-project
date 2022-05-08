@@ -1,51 +1,85 @@
 <template>
-  <select v-bind="$attrs" :value="value" v-on="inputListeners">
-    <slot />
-    <template v-for="(options, group) in groupedOptions">
-      <optgroup :label="group" v-if="group">
-        <option v-for="option in options" v-bind="attrsFor(option)">
-          {{ labelFor(option) }}
-        </option>
-      </optgroup>
-      <template v-else>
-        <option v-for="option in options" v-bind="attrsFor(option)">
-          {{ labelFor(option) }}
-        </option>
+  <div class="flex relative" :class="$attrs.class">
+    <select
+      v-bind="defaultAttributes"
+      v-model="selected"
+      @change="handleChange"
+      class="w-full block form-control form-select"
+      :multiple="multiple"
+      ref="selectControl"
+      :class="{
+        'form-control-sm': size == 'sm',
+        'form-control-xs': size == 'xs',
+        'form-control-xxs': size == 'xxs',
+        'form-select-multiple': multiple,
+        'form-select-bordered': bordered,
+        ...selectClasses,
+      }"
+    >
+      <slot />
+      <template v-for="(options, group) in groupedOptions">
+        <optgroup :label="group" v-if="group" :key="group">
+          <option
+            v-bind="attrsFor(option)"
+            v-for="option in options"
+            :key="option.value"
+            :selected="isSelected(option)"
+          >
+            {{ labelFor(option) }}
+          </option>
+        </optgroup>
+        <template v-else>
+          <option
+            v-bind="attrsFor(option)"
+            v-for="option in options"
+            :key="option.value"
+            :selected="isSelected(option)"
+          >
+            {{ labelFor(option) }}
+          </option>
+        </template>
       </template>
-    </template>
-  </select>
+    </select>
+
+    <IconArrow v-if="!multiple" class="pointer-events-none form-select-arrow" />
+  </div>
 </template>
 
 <script>
+import groupBy from 'lodash/groupBy'
+import map from 'lodash/map'
+import omit from 'lodash/omit'
+
 export default {
+  emits: ['change'],
+
+  inheritAttrs: false,
+
   props: {
     options: {
+      type: Array,
       default: [],
     },
+    label: { default: 'label' },
     selected: {},
-    label: {
-      default: 'label',
+    size: {
+      type: String,
+      default: 'md',
+      validator: val => ['xxs', 'xs', 'sm', 'md'].includes(val),
     },
-    value: {},
-  },
-
-  computed: {
-    groupedOptions() {
-      return _.groupBy(this.options, option => option.group || '')
+    bordered: {
+      type: Boolean,
+      default: true,
     },
-
-    inputListeners() {
-      return _.assign({}, this.$listeners, {
-        change: event => {
-          this.$emit('input', event.target.value)
-          this.$emit('change', event)
-        },
-        input: event => {
-          this.$emit('input', event.target.value)
-        },
-      })
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+    selectClasses: {
+      type: [String, Object, Array],
     },
   },
+
   methods: {
     labelFor(option) {
       return this.label instanceof Function
@@ -54,14 +88,46 @@ export default {
     },
 
     attrsFor(option) {
-      return _.assign(
-        {},
-        option.attrs || {},
-        { value: option.value },
-        this.selected !== void 0
-          ? { selected: this.selected == option.value }
-          : {}
-      )
+      return {
+        ...(option.attrs || {}),
+        ...{ value: option.value },
+      }
+    },
+
+    isSelected(option) {
+      if (!this.multiple) {
+        return option.value == this.selected
+      }
+
+      return this.selected.indexOf(option.value) > -1
+    },
+
+    handleChange(event) {
+      let selected
+
+      if (this.multiple) {
+        selected = map(event.target.selectedOptions, option => {
+          return option.value
+        })
+      } else {
+        selected = event.target.value
+      }
+
+      this.$emit('change', selected)
+    },
+
+    resetSelection() {
+      this.$refs.selectControl.selectedIndex = 0
+    },
+  },
+
+  computed: {
+    defaultAttributes() {
+      return omit(this.$attrs, ['class'])
+    },
+
+    groupedOptions() {
+      return groupBy(this.options, option => option.group || '')
     },
   },
 }

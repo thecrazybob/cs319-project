@@ -3,11 +3,10 @@
 namespace Laravel\Nova\Testing\Browser\Pages;
 
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
 
 class Attach extends Page
 {
-    use HasSearchableRelations;
+    use InteractsWithRelations;
 
     public $resourceName;
     public $resourceId;
@@ -26,6 +25,8 @@ class Attach extends Page
         $this->relation = $relation;
         $this->resourceId = $resourceId;
         $this->resourceName = $resourceName;
+
+        $this->setNovaPage("/resources/{$this->resourceName}/{$this->resourceId}/attach/{$this->relation}");
     }
 
     /**
@@ -35,7 +36,10 @@ class Attach extends Page
      */
     public function url()
     {
-        return Nova::path().'/resources/'.$this->resourceName.'/'.$this->resourceId.'/attach/'.$this->relation.'?viaRelationship='.$this->relation.'&polymorphic=0';
+        return $this->novaPageUrl.'?'.http_build_query([
+            'viaRelationship' => $this->relation,
+            'polymorphic' => 0,
+        ]);
     }
 
     /**
@@ -47,7 +51,7 @@ class Attach extends Page
      */
     public function selectAttachable(Browser $browser, $id)
     {
-        $browser->select('@attachable-select', $id);
+        $this->selectRelation($browser, 'attachable-select', $id);
     }
 
     /**
@@ -56,9 +60,20 @@ class Attach extends Page
      * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
-    public function clickAttach(Browser $browser)
+    public function create(Browser $browser)
     {
         $browser->click('@attach-button')->pause(750);
+    }
+
+    /**
+     * Click the update and continue editing button.
+     *
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @return void
+     */
+    public function createAndAttachAnother(Browser $browser)
+    {
+        $browser->click('@attach-and-attach-another-button')->pause(750);
     }
 
     /**
@@ -69,17 +84,6 @@ class Attach extends Page
      */
     public function assert(Browser $browser)
     {
-        $browser->pause(500)
-                ->waitFor('#nova .content form', 25);
-    }
-
-    /**
-     * Get the element shortcuts for the page.
-     *
-     * @return array
-     */
-    public function elements()
-    {
-        return [];
+        $browser->assertOk()->waitFor('@nova-form');
     }
 }
