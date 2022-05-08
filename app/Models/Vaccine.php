@@ -50,4 +50,12 @@ class Vaccine extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function file()
+    {
+        return $this->belongsTo(File::class);
+    }
 }
