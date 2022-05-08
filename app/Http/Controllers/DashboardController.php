@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $announcements = Announcement::where('private', false)->get();
+        $announcements = Announcement::where('private', false)->take(3)->latest('announcement_date')->get();
 
         return view('dashboard', compact('announcements'));
     }
