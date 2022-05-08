@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\File;
+use App\Models\Doctor;
+use App\Models\Patient;
+use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int $id
@@ -28,7 +32,7 @@ class Diagnosis extends Model
     protected $fillable = [
         'doctor_id',
         'patient_id',
-        'department',
+        'department_id',
         'file_id',
         'diagnosis_date',
         'diagnosis_type',
@@ -43,7 +47,7 @@ class Diagnosis extends Model
         'id' => 'integer',
         'doctor_id' => 'integer',
         'patient_id' => 'integer',
-        'department' => 'integer',
+        'department_id' => 'integer',
         'file_id' => 'integer',
         'diagnosis_date' => 'date',
     ];

@@ -3,28 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Diagnosis;
-use Illuminate\Http\Request;
 
 class DiagnosisController extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $diagnosis = Diagnosis::where('patient_id', $patient_id)->get();
-
-        return view('diagnosis.index', compact('diagnosis'));
+        return view('diagnosis.index');
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Diagnosis $diagnosi
+     * @param \App\Models\Diagnosis $diagnosis
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Diagnosis $diagnosis)
+    public function show($diagnosis)
     {
-        return view('diagnosis.show', compact('diagnosis'));
+        $diagnosis = Diagnosis::find($diagnosis);
+        $file_path = $diagnosis->file->file_path;
+        return response()->download(storage_path('app/public/'.$file_path));
     }
 }

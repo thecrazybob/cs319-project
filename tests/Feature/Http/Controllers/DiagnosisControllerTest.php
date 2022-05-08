@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Models\Diagnosi;
+use App\Models\Diagnosis;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -33,9 +33,9 @@ class DiagnosisControllerTest extends TestCase
      */
     public function show_displays_view()
     {
-        $diagnosi = Diagnosis::factory()->create();
+        $diagnosis = Diagnosis::factory()->create();
 
-        $response = $this->get(route('diagnosi.show', $diagnosi));
+        $response = $this->get(route('diagnosis.show', $diagnosis));
 
         $response->assertOk();
         $response->assertViewIs('diagnosis.show');
