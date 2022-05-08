@@ -23,7 +23,7 @@ class PaymentGateway extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'gateway_name';
 
     /**
      * The columns that should be searched.
