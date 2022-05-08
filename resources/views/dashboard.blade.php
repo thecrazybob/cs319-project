@@ -23,14 +23,14 @@
                                             </div>
                                             <div class="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                                                 <p class="text-sm font-medium text-gray-600">Welcome back,</p>
-                                                <p class="text-xl font-bold text-gray-900 sm:text-2xl">Mohammed Sohail
+                                                <p class="text-xl font-bold text-gray-900 sm:text-2xl">{{ auth()->user()->name }}
                                                 </p>
                                                 <p class="text-sm font-medium text-gray-600">Student at Bilkent
                                                     University</p>
                                             </div>
                                         </div>
                                         <div class="mt-5 flex justify-center sm:mt-0">
-                                            <a href="#"
+                                            <a href="{{ route('profile.show') }}"
                                                 class="flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                                                 View profile </a>
                                         </div>
@@ -77,8 +77,7 @@
                                     </div>
                                     <div class="mt-8">
                                         <h3 class="text-lg font-medium">
-                                            <a href="#" class="focus:outline-none">
-                                                <!-- Extend touch target to entire panel -->
+                                            <a href="{{ route('appointment.create') }}" class="focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
                                                 Request appointment
                                             </a>
@@ -112,8 +111,7 @@
                                     </div>
                                     <div class="mt-8">
                                         <h3 class="text-lg font-medium">
-                                            <a href="#" class="focus:outline-none">
-                                                <!-- Extend touch target to entire panel -->
+                                            <a href="{{ route('support.create') }}" class="focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
                                                 Create a ticket
                                             </a>
@@ -148,8 +146,7 @@
                                     </div>
                                     <div class="mt-8">
                                         <h3 class="text-lg font-medium">
-                                            <a href="#" class="focus:outline-none">
-                                                <!-- Extend touch target to entire panel -->
+                                            <a href="{{ route('test.index') }}" class="focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
                                                 View my tests
                                             </a>
@@ -184,8 +181,7 @@
                                     </div>
                                     <div class="mt-8">
                                         <h3 class="text-lg font-medium">
-                                            <a href="#" class="focus:outline-none">
-                                                <!-- Extend touch target to entire panel -->
+                                            <a href="{{ route('diagnosis.index') }}" class="focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
                                                 View my diagnosis
                                             </a>
@@ -220,7 +216,6 @@
                                     <div class="mt-8">
                                         <h3 class="text-lg font-medium">
                                             <a href="{{ route('document.index') }}" class="focus:outline-none">
-                                                <!-- Extend touch target to entire panel -->
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
                                                 View my documents
                                             </a>
@@ -257,8 +252,7 @@
                                     </div>
                                     <div class="mt-8">
                                         <h3 class="text-lg font-medium">
-                                            <a href="#" class="focus:outline-none">
-                                                <!-- Extend touch target to entire panel -->
+                                            <a href="{{ route('vaccine.index') }}" class="focus:outline-none">
                                                 <span class="absolute inset-0" aria-hidden="true"></span>
                                                 Show registered vaccines
                                             </a>
@@ -311,7 +305,7 @@
                                         </ul>
                                     </div>
                                     <div class="mt-6">
-                                        <a href="#"
+                                        <a href="{{ route('announcement.index') }}"
                                             class="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                                             View all </a>
                                     </div>
