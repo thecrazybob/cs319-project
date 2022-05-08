@@ -14,6 +14,25 @@ class DepartmentSeeder extends Seeder
      */
     public function run()
     {
-        Department::factory()->count(5)->create();
+        $departments = [
+            ['name' => 'Medicine'],
+            ['name' => 'Surgery'],
+            ['name' => 'Gynaecology'],
+            ['name' => 'Obstetrics'],
+            ['name' => 'Paediatrics'],
+            ['name' => 'Eye'],
+            ['name' => 'ENT'],
+            ['name' => 'Dental'],
+            ['name' => 'Orthopaedics'],
+            ['name' => 'Neurology'],
+            ['name' => 'Cardiology'],
+            ['name' => 'Psychiatry'],
+            ['name' => 'Skin'],
+            ['name' => 'V.D.'],
+            ['name' => 'Plastic surgery'],
+            ['name' => 'Infectious disease'],
+        ];
+
+        collect($departments)->each(fn ($department) => Department::create($department));
     }
 }

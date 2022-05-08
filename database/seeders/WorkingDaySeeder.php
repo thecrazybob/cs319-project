@@ -14,6 +14,14 @@ class WorkingDaySeeder extends Seeder
      */
     public function run()
     {
-        WorkingDay::factory()->count(5)->create();
+        $days = [
+            ['name' => 'Monday'],
+            ['name' => 'Tuesday'],
+            ['name' => 'Wednesday'],
+            ['name' => 'Thursday'],
+            ['name' => 'Friday'],
+        ];
+
+        collect($days)->each(fn ($day) => WorkingDay::create($day));
     }
 }
