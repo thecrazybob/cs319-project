@@ -25,6 +25,7 @@ class File extends Model
     protected $fillable = [
         'patient_id',
         'name',
+        'type',
         'file_path',
     ];
 

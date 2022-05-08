@@ -26,7 +26,7 @@ class VaccineFactory extends Factory
         return [
             'patient_id' => Patient::all()->random()->id,
             'vaccine_type' => $this->faker->randomElement(["covid","other"]),
-            'vaccine_date' => $this->faker->date(),
+            'vaccine_date' => $this->faker->dateTimeThisYear(),
             'dose_no' => $this->faker->numberBetween(1, 5),
         ];
     }

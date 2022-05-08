@@ -29,7 +29,7 @@ class AppointmentFactory extends Factory
             'patient_id' => Patient::all()->random()->id,
             'doctor_id' => Doctor::all()->random()->id,
             'department_id' => Department::all()->random()->id,
-            'appointment_date' => $this->faker->date(),
+            'appointment_date' => $this->faker->dateTimeThisYear(),
             'description' => $this->faker->text,
             'confirmed' => $this->faker->boolean,
         ];

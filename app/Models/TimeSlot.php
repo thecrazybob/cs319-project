@@ -23,7 +23,7 @@ class TimeSlot extends Model
      * @var array
      */
     protected $fillable = [
-        'date',
+        'starting_time',
         'duration',
         'capacity',
     ];
@@ -35,6 +35,5 @@ class TimeSlot extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'date' => 'date',
     ];
 }

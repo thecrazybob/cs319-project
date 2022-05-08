@@ -31,7 +31,7 @@ class ReportFactory extends Factory
             'file_id' => File::factory(),
             'subject' => $this->faker->word,
             'days' => $this->faker->numberBetween(1, 180),
-            'report_date' => $this->faker->date(),
+            'report_date' => $this->faker->dateTimeThisYear(),
             'report_type' => $this->faker->word,
         ];
     }
