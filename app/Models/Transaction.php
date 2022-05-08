@@ -53,14 +53,6 @@ class Transaction extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function invoice()
-    {
-        return $this->belongsTo(Invoice::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function paymentGateway()
     {
         return $this->belongsTo(PaymentGateway::class);
