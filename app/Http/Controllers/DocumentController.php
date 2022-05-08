@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DocumentStoreRequest;
 use App\Http\Requests\DocumentUpdateRequest;
 use App\Models\Document;
-use App\Post;
 use Illuminate\Http\Request;
 
 class DocumentController extends Controller
@@ -56,9 +55,9 @@ class DocumentController extends Controller
      */
     public function store(DocumentStoreRequest $request)
     {
-        $post = Post::create($request->validated());
+        $document = Document::create($request->validated());
 
-        return redirect()->route('post.index');
+        return redirect()->route('document.index');
     }
 
     /**
@@ -70,7 +69,7 @@ class DocumentController extends Controller
     {
         $document->update($request->validated());
 
-        return redirect()->route('post.index');
+        return redirect()->route('document.index');
     }
 
     /**
