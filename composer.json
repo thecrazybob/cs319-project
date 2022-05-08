@@ -11,7 +11,6 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
         "laravel/jetstream": "^2.6",
-        "laravel/nova": "*",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.5",
@@ -66,11 +65,5 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": {
-        "nova": {
-            "type": "path",
-            "url": "./nova"
-        }
-    }
+    "prefer-stable": true
 }
