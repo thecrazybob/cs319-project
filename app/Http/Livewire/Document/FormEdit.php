@@ -50,7 +50,6 @@ class FormEdit extends Component implements HasForms
     {
         $array = array_merge([
             'patient_id' => auth()->user()->patient->id,
-            'type' => pathinfo($this->form->getState()['file_path'], PATHINFO_EXTENSION)
         ], $this->form->getState());
 
         File::find(Document::find($this->document_id)->file->id)->update($array);

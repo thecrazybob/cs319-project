@@ -28,7 +28,6 @@ class Document extends Model
         'patient_id',
         'file_id',
         'name',
-        'type',
         'upload_date',
     ];
 

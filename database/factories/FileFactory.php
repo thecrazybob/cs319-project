@@ -23,10 +23,13 @@ class FileFactory extends Factory
      */
     public function definition()
     {
+        $filePath = $this->faker->file('storage/app/sample-files', 'storage/app/public', false);
+
         return [
             'patient_id' => Patient::all()->random()->id,
             'name' => $this->faker->name,
-            'file_path' => $this->faker->word,
+            'type' => pathinfo($filePath, PATHINFO_EXTENSION),
+            'file_path' => $filePath,
         ];
     }
 }
