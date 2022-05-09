@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -67,6 +68,7 @@ class Invoice extends Resource
             Text::make('Description')->required(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
+            HasMany::make('Transactions'),
         ];
     }
 

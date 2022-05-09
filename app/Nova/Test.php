@@ -47,12 +47,12 @@ class Test extends Resource
             BelongsTo::make('Patient')->sortable(),
             BelongsTo::make('Doctor')->sortable(),
             BelongsTo::make('Department')->sortable(),
-            BelongsTo::make('File')->sortable()->searchable(),
+            BelongsTo::make('File')->sortable(),
             Select::make('Test Type')->sortable()->options([
                 'pcr' => 'PCR',
                 'regular' => 'Regular',
-            ]),
-            Date::make('Test Date')->sortable(),
+            ])->required(),
+            Date::make('Test Date')->sortable()->required(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
