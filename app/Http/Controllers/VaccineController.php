@@ -17,8 +17,8 @@ class VaccineController extends Controller
      */
     public function index(Request $request)
     {
-        $vaccines = Vaccine::where('patient_id', auth()->user()->patient_id);
-        $tests = Test::where('patient_id', auth()->user()->patient_id);
+        $vaccines = Vaccine::where('patient_id', auth()->user()->patient->id);
+        $tests = Test::where('patient_id', auth()->user()->patient->id);
 
         $requirement = $vaccines
                         ->where('vaccine_type', 'covid')

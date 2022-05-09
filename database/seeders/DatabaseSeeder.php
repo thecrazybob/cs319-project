@@ -22,9 +22,9 @@ class DatabaseSeeder extends Seeder
             WorkingDaySeeder::class,
 
             # Actors
-            UserSeeder::class,
-            // PatientSeeder::class,
-            // DoctorSeeder::class,
+            // UserSeeder::class,
+            PatientSeeder::class,
+            DoctorSeeder::class,
             DoctorScheduleSeeder::class,
             TimeSlotSeeder::class,
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\AppointmentStoreRequest;
 use App\Http\Requests\AppointmentUpdateRequest;
 use App\Models\Appointment;
@@ -18,7 +17,7 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
-        $appointments = Appointment::where('patient_id', auth()->user()->patient_id);
+        $appointments = Appointment::where('patient_id', auth()->user()->patient->id);
 
         return view('appointment.index', compact('appointments'));
     }
@@ -33,7 +32,7 @@ class AppointmentController extends Controller
         $appointment_date = $appointment->appointment_date;
         $description = $appointment->description;
         $doctor_name = User::where('doctor_id', $appointment->doctor_id)->first()->name;
-        return view('appointment.show', compact('appointment', 'appointment_date' ,'description', 'doctor_name'));
+        return view('appointment.show', compact('appointment', 'appointment_date', 'description', 'doctor_name'));
     }
 
     /**

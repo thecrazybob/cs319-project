@@ -4,12 +4,13 @@ namespace App\Http\Livewire\Appointment;
 
 use Livewire\Component;
 use App\Models\Appointment;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Usernotnull\Toast\Concerns\WireToast;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Concerns\InteractsWithForms;
 
 class FormCreate extends Component implements HasForms
@@ -25,18 +26,12 @@ class FormCreate extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            TextInput::make('doctor_id')
-                ->minValue(1)
-                ->maxValue(10)
-                ->required()
-                ->integer()
-            ->label('Select Doctor:'),
-            TextInput::make('department_id')
-                ->minValue(1)
-                ->maxValue(10)
-                ->required()
-                ->integer()
-            ->label('Select Department:'),
+            BelongsToSelect::make('department_id')
+                ->relationship('department', 'name')
+                ->label('Select Department:'),
+            BelongsToSelect::make('doctor_id')
+                ->relationship('doctor', 'name')
+                ->label('Select Doctor:'),
             DatePicker::make('appointment_date')
                 ->required()
                 ->minDate(now()->addDay(2))
@@ -60,6 +55,11 @@ class FormCreate extends Component implements HasForms
         toast()->success('Successfully requested appointment')->push();
 
         redirect(route('appointment.index'));
+    }
+
+    protected function getFormModel(): string
+    {
+        return Appointment::class;
     }
 
     public function render()
