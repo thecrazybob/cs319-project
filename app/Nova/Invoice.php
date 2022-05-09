@@ -3,7 +3,9 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -47,14 +49,21 @@ class Invoice extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Patient')->sortable(),
-            Number::make('Amount')->min(0)->max(100000)->step(0.01)->sortable()->required(),
+            Currency::make('Amount')->min(0)->max(100000)->step(0.01)->sortable()->required()->currency('TRY'),
+            Badge::make('Status')->map([
+                "unpaid" => "danger",
+                "paid" => "success",
+                "cancelled" => "warning",
+                "refunded" => "info",
+                "partial" => "warning",
+            ])->sortable(),
             Select::make('Status')->options([
                 'unpaid' => 'Unpaid',
                 'paid' => 'Paid',
                 'cancelled' => 'Cancelled',
                 'refunded' => 'Refunded',
                 'partial' => 'Partial',
-            ])->sortable()->required(),
+            ])->sortable()->required()->onlyOnForms(),
             Text::make('Description')->required(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
