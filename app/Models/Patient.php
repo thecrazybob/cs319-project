@@ -38,6 +38,7 @@ class Patient extends Model
         'weight',
         'allergies',
         'other_illness',
+        'operations',
         'current_medications',
         'smoking',
     ];

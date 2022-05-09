@@ -18,6 +18,10 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('onboarding', [App\Http\Controllers\OnboardingController::class, 'index'])->name('onboarding');
+});
+
+Route::middleware(['auth:sanctum', 'verified', 'onboarding.completed'])->group(function () {
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('patient', App\Http\Controllers\PatientController::class)->only('index');
