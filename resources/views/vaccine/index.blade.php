@@ -24,8 +24,9 @@
 
         <div class="px-4 sm:px-6 lg:px-8">
 
-            <!-- This example requires Tailwind CSS v2.0+ -->
+            @if(empty($vaccines))
             <div>
+                
                 <h3 class="text-lg leading-6 font-medium text-gray-900">COVID Stats</h3>
 
                 <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -46,15 +47,22 @@
                             <p class="ml-16 text-sm font-medium text-gray-500 truncate">Total Doses</p>
                         </dt>
                         <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-                            <p class="text-2xl font-semibold text-gray-900">4</p>
-                            <p class="ml-2 flex gap-x-1 items-baseline text-sm font-semibold text-green-600">
+                            <p class="text-2xl font-semibold text-gray-900">{{$dose_count}}</p>
+                            
+                            <p class="ml-2 flex gap-x-1 items-baseline text-sm font-semibold @if($requirement_bool) text-green-600 @else text-red-600 @endif">
+                            @if($requirement_bool)
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="h-5 w-5 self-center flex-shrink-0 text-green-500" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                                 </svg>
-                                <span>Fulfilling requirement</span>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 self-center flex-shrink-0 text-red-500 " fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            @endif
+                                <span>{{$requirement}}</span>
                             </p>
                         </dd>
                     </div>
@@ -71,7 +79,8 @@
                             <p class="ml-16 text-sm font-medium text-gray-500 truncate">Next Recommended Dose</p>
                         </dt>
                         <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-                            <p class="text-2xl font-semibold text-gray-900">30th March 2022</p>
+                            
+                            <p class="text-2xl font-semibold text-gray-900">{{$next_dose}}</p>
                         </dd>
                     </div>
 
@@ -87,16 +96,13 @@
                             <p class="ml-16 text-sm font-medium text-gray-500 truncate">Last PCR Test</p>
                         </dt>
                         <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-                            <p class="text-2xl font-semibold text-gray-900">11 January 2022</p>
-                            <p class="ml-2 flex items-baseline text-sm font-semibold text-red-600">
-
-                                Positive
-                            </p>
+                            <p class="text-2xl font-semibold text-gray-900">{{$last_test}}</p>
+                            
                         </dd>
                     </div>
                 </dl>
             </div>
-
+            @endif
 
             <div class="mt-8 flex flex-col">
                 <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
