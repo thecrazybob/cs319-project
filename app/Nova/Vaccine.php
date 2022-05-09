@@ -2,9 +2,11 @@
 
 namespace App\Nova;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\BelongsTo;
@@ -46,10 +48,14 @@ class Vaccine extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Patient')->sortable(),
+            Text::make('Vaccine Type')->sortable()->displayUsing(function ($vaccine) {
+                $converted = Str::of($vaccine)->studly();
+                return  $converted;
+            })->onlyOnIndex(),
             Select::make('Vaccine Type')->options([
                 'covid' => 'Covid',
                 'other' => 'Other'
-            ])->sortable(),
+            ])->sortable()->onlyOnForms(),
             Number::make('Vaccine Dose', 'dose_no')->min(0)->max(6)->step(1)->sortable(),
             Date::make('Vaccine Date')->sortable(),
             Date::make('Created At')->sortable()->onlyOnDetail(),

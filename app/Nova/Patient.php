@@ -2,13 +2,14 @@
 
 namespace App\Nova;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -45,17 +46,21 @@ class Patient extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Bilkent Id')->sortable(),
-            Date::make('Birth Date')->sortable(),
-            Select::make('Gender')->options(['female' => 'Female', 'male' => 'Male', 'other' => 'Other']),
-            Number::make('Height')->min(50)->max(300)->step(0.1)->sortable(),
-            Number::make('Weight')->min(1)->max(1000)->step(0.1)->sortable(),
-            Textarea::make('Allergies'),
-            Textarea::make('Other Illnesses'),
-            Textarea::make('Current Medications'),
+            Text::make('Bilkent Id')->sortable()->required(),
+            Date::make('Birth Date')->sortable()->required(),
+            Text::make('Gender')->sortable()->displayUsing(function ($gender) {
+                $converted = Str::of($gender)->studly();
+                return  $converted;
+            })->onlyOnIndex(),
+            Select::make('Gender')->options(['female' => 'Female', 'male' => 'Male', 'other' => 'Other'])->onlyOnForms()->required(),
+            Number::make('Height')->min(50)->max(300)->step(0.1)->sortable()->required(),
+            Number::make('Weight')->min(1)->max(1000)->step(0.1)->sortable()->required(),
+            Textarea::make('Allergies')->required(),
+            Textarea::make('Other Illnesses')->required(),
+            Textarea::make('Current Medications')->required(),
             Boolean::make('Smoking'),
             Date::make('Created At')->sortable()->onlyOnDetail(),
-            Date::make('Updated At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail()
 
         ];
     }

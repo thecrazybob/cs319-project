@@ -2,14 +2,15 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Badge;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\HasMany;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Support extends Resource
@@ -71,12 +72,16 @@ class Support extends Resource
                 'awaiting' => 'danger',
                 'hold' => 'warning',
             ])->sortable(),
+            Text::make('Priority')->sortable()->displayUsing(function ($priortiy) {
+                $converted = Str::of($priortiy)->studly();
+                return  $converted;
+            })->onlyOnIndex(),
             Select::make('Priority')->sortable()->options([
                 'low' => 'Low',
                 'medium' => 'Medium',
                 'high' => 'High',
                 'critical' => 'Critical',
-            ])->required(),
+            ])->required()->onlyOnForms(),
             Text::make('Subject')->sortable(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
