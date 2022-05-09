@@ -7,6 +7,7 @@ use App\Models\File;
 use Livewire\Component;
 use App\Models\Document;
 use Filament\Forms\Contracts\HasForms;
+use App\Http\Controllers\FileController;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Usernotnull\Toast\Concerns\WireToast;
@@ -52,7 +53,7 @@ class FormEdit extends Component implements HasForms
             'patient_id' => auth()->user()->patient->id,
         ], $this->form->getState());
 
-        File::find(Document::find($this->document_id)->file->id)->update($array);
+        FileController::update(Document::find($this->document_id)->file->id, $array);
 
         Document::find($this->document_id)->update($array);
 

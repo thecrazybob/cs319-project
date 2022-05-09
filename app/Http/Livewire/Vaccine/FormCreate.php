@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Vaccine;
 
+use App\Http\Controllers\FileController;
 use App\Models\File;
 use App\Models\Vaccine;
 use Livewire\Component;
@@ -42,11 +43,12 @@ class FormCreate extends Component implements HasForms
                 ->label('Vaccine Date:'),
             TextInput::make('dose_no')
                 ->numeric()
-                ->mask(fn (TextInput\Mask $mask) => $mask
+                ->mask(
+                    fn (TextInput\Mask $mask) => $mask
                 ->numeric()
                 ->maxValue(10)
                 ->integer(),
-            ),
+                ),
             FileUpload::make('file_path')
                 ->preserveFilenames()
                 ->maxSize(102400)
@@ -63,7 +65,7 @@ class FormCreate extends Component implements HasForms
             'patient_id' => auth()->user()->patient->id,
         ], $this->form->getState());
 
-        $file = File::create($array);
+        $file = FileController::store($array);
 
         Vaccine::create(array_merge($array, ['file_id' => $file->id]));
 
@@ -77,4 +79,3 @@ class FormCreate extends Component implements HasForms
         return view('livewire.vaccine.form-create');
     }
 }
-

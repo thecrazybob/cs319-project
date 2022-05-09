@@ -3,6 +3,7 @@
 
 namespace App\Http\Livewire\Vaccine;
 
+use App\Http\Controllers\FileController;
 use App\Models\File;
 use App\Models\Vaccine;
 use Livewire\Component;
@@ -54,10 +55,11 @@ class FormEdit extends Component implements HasForms
                 ->label('Vaccine Date:'),
             TextInput::make('dose_no')
                 ->numeric()
-                ->mask(fn (TextInput\Mask $mask) => $mask
+                ->mask(
+                    fn (TextInput\Mask $mask) => $mask
                 ->numeric()
                 ->integer(),
-            ),
+                ),
             FileUpload::make('file_path')
                 ->preserveFilenames()
                 ->maxSize(102400)
@@ -74,7 +76,7 @@ class FormEdit extends Component implements HasForms
             'patient_id' => auth()->user()->patient->id,
         ], $this->form->getState());
 
-        File::find(Vaccine::find($this->vaccine_id)->file->id)->update($array);
+        FileController::update(Vaccine::find($this->vaccine_id)->file->id, $array);
 
         Vaccine::find($this->vaccine_id)->update($array);
 
