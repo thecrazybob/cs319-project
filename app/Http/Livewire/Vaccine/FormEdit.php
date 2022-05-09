@@ -52,14 +52,14 @@ class FormEdit extends Component implements HasForms
                 ->label('Vaccine Type:'),
             DatePicker::make('vaccine_date')
                 ->required()
+                ->maxDate(now()->addDay(1))
                 ->label('Vaccine Date:'),
             TextInput::make('dose_no')
-                ->numeric()
-                ->mask(
-                    fn (TextInput\Mask $mask) => $mask
-                ->numeric()
-                ->integer(),
-                ),
+                ->minValue(1)
+                ->maxValue(10)
+                ->required()
+                ->integer()
+                ->helperText('Please enter a number between 1-10'),
             FileUpload::make('file_path')
                 ->preserveFilenames()
                 ->maxSize(102400)
@@ -77,9 +77,9 @@ class FormEdit extends Component implements HasForms
             'name' => $this->file['name'],
         ], $this->form->getState());
 
-        FileController::update(Vaccine::find($this->vaccine_id)->file->id, $array);
+        FileController::update($this->vaccine->file->id, $array);
 
-        Vaccine::find($this->vaccine_id)->update($array);
+        $this->vaccine->update($array);
 
         toast()->success('Successfully updated vaccine')->push();
 
