@@ -32,6 +32,7 @@ class PatientFactory extends Factory
             'allergies' => $this->faker->text,
             'other_illness' => $this->faker->text,
             'current_medications' => $this->faker->text,
+            'operations' => $this->faker->text,
             'smoking' => $this->faker->boolean,
         ];
     }
