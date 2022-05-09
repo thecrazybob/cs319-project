@@ -6,6 +6,7 @@ use App\Models\Support;
 use Livewire\Component;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Concerns\InteractsWithForms;
 
 class FormCreate extends Component implements HasForms
@@ -19,6 +20,8 @@ class FormCreate extends Component implements HasForms
         return [
             Textarea::make('subject')
                 ->required(),
+            BelongsToSelect::make('department_id')
+                ->relationship('department', 'name'),
         ];
     }
 
@@ -31,6 +34,11 @@ class FormCreate extends Component implements HasForms
         toast()->success('Successfully replied to the support ticket')->push();
 
         redirect(route('support.show', $this->support));
+    }
+
+    protected function getFormModel(): string
+    {
+        return Support::class;
     }
 
     public function render()
