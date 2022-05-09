@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->boolean('staff')->default(false);
             $table->foreignId('patient_id')->nullable();
             $table->foreignId('doctor_id')->nullable();
+            $table->boolean('onboarding_completed')->default(false);
             $table->timestamps();
         });
     }

@@ -31,6 +31,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'onboarding_completed',
+        'patient_id',
+        'doctor_id',
+        'staff',
     ];
 
     /**
