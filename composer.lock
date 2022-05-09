@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4edae88e25fcd57f46bf658e315007f9",
+    "content-hash": "99bdd35437bd356e4f09836b095c290f",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -1506,6 +1506,86 @@
             "time": "2022-02-20T15:07:15+00:00"
         },
         {
+            "name": "graham-campbell/markdown",
+            "version": "14.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GrahamCampbell/Laravel-Markdown.git",
+                "reference": "e31023678538fafeb53b6d351e69e6e8dd7ac31e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GrahamCampbell/Laravel-Markdown/zipball/e31023678538fafeb53b6d351e69e6e8dd7ac31e",
+                "reference": "e31023678538fafeb53b6d351e69e6e8dd7ac31e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^8.75 || ^9.0",
+                "illuminate/filesystem": "^8.75 || ^9.0",
+                "illuminate/support": "^8.75 || ^9.0",
+                "illuminate/view": "^8.75 || ^9.0",
+                "league/commonmark": "^2.2",
+                "php": "^7.4.15 || ^8.0.2"
+            },
+            "require-dev": {
+                "graham-campbell/analyzer": "^3.0",
+                "graham-campbell/testbench": "^5.7",
+                "mockery/mockery": "^1.5",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "GrahamCampbell\\Markdown\\MarkdownServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GrahamCampbell\\Markdown\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Graham Campbell",
+                    "email": "hello@gjcampbell.co.uk",
+                    "homepage": "https://github.com/GrahamCampbell"
+                }
+            ],
+            "description": "Markdown Is A CommonMark Wrapper For Laravel",
+            "keywords": [
+                "Graham Campbell",
+                "GrahamCampbell",
+                "Laravel Markdown",
+                "Laravel-Markdown",
+                "common mark",
+                "commonmark",
+                "framework",
+                "laravel",
+                "markdown"
+            ],
+            "support": {
+                "issues": "https://github.com/GrahamCampbell/Laravel-Markdown/issues",
+                "source": "https://github.com/GrahamCampbell/Laravel-Markdown/tree/14.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/GrahamCampbell",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/graham-campbell/markdown",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-01-24T16:21:25+00:00"
+        },
+        {
             "name": "graham-campbell/result-type",
             "version": "v1.0.4",
             "source": {
@@ -2404,11 +2484,11 @@
         },
         {
             "name": "laravel/nova",
-            "version": "4.1.0",
+            "version": "4.2.1",
             "dist": {
                 "type": "path",
                 "url": "./nova",
-                "reference": "b9b0e8e28266566d86245b95552d5f80928ca766"
+                "reference": "e8c93b61dfbf2ba271e1b9f997a76d96238f5929"
             },
             "require": {
                 "brick/money": "^0.5.0",
@@ -2427,6 +2507,7 @@
             },
             "require-dev": {
                 "laravel/nova-dusk-suite": "8.4.x-dev|9.4.x-dev",
+                "laravel/scout": "^9.4",
                 "mockery/mockery": "^1.4.4",
                 "nunomaduro/larastan": "^1.0.1|^2.0",
                 "orchestra/testbench-dusk": "^6.24|^7.0",
@@ -10345,7 +10426,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "graham-campbell/markdown": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
