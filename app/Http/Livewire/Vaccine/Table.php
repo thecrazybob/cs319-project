@@ -27,7 +27,10 @@ class Table extends Component implements HasTable
     {
         return [
             TextColumn::make('id'),
-            TextColumn::make('vaccine_type'),
+            TextColumn::make('vaccine_type')->enum([
+                'covid' => 'Covid',
+                'other' => 'Other',
+            ]),
             TextColumn::make('vaccine_date')->date(),
             TextColumn::make('dose_no'),
             TextColumn::make('created_at')->date(),

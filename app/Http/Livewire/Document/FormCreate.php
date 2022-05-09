@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Document;
 
+use App\Http\Controllers\FileController;
 use App\Models\File;
 use Livewire\Component;
 use App\Models\Document;
@@ -42,7 +43,7 @@ class FormCreate extends Component implements HasForms
             'patient_id' => auth()->user()->patient->id,
         ], $this->form->getState());
 
-        $file = File::create($array);
+        $file = FileController::store($array);
 
         Document::create(array_merge($array, ['file_id' => $file->id]));
 
