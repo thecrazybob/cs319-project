@@ -17,7 +17,6 @@ class SupportController extends Controller
     public function index(Request $request)
     {
         $supportTickets = Support::where('patient_id', auth()->user()->patient->id)->get();
-
         return view('support.index', compact('supportTickets'));
     }
 
