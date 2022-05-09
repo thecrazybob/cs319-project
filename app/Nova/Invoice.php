@@ -47,15 +47,15 @@ class Invoice extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Patient')->sortable(),
-            Number::make('Amount')->min(0)->max(100000)->step(0.01)->sortable(),
+            Number::make('Amount')->min(0)->max(100000)->step(0.01)->sortable()->required(),
             Select::make('Status')->options([
                 'unpaid' => 'Unpaid',
                 'paid' => 'Paid',
                 'cancelled' => 'Cancelled',
                 'refunded' => 'Refunded',
                 'partial' => 'Partial',
-            ])->sortable(),
-            Text::make('Description'),
+            ])->sortable()->required(),
+            Text::make('Description')->required(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];

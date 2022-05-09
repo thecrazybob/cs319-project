@@ -43,7 +43,7 @@ class Department extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('name')->sortable(),
+            Text::make('Name')->sortable()->rules('required'),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];

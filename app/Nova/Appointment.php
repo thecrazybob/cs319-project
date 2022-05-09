@@ -52,7 +52,7 @@ class Appointment extends Resource
             BelongsTo::make('Department')->sortable(),
             Date::make('Appointment Date')->sortable(),
             Boolean::make('Confirmed')->sortable(),
-            Text::make('Description')->sortable(),
+            Text::make('Description')->sortable()->rules('required'),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];

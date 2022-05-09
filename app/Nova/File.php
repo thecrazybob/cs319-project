@@ -46,8 +46,8 @@ class File extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Patient'),
-            Text::make('File Name','name'),
-            FileField::make('File','file_path')->acceptedTypes(['application/pdf', 'image/png', 'image/jpeg', 'image/jpg']),
+            Text::make('File Name','name')->required(),
+            FileField::make('File','file_path')->acceptedTypes(['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'])->required(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
