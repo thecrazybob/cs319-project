@@ -99,6 +99,7 @@ return [
     */
 
     'middleware' => [
+        \Vyuldashev\NovaPermission\ForgetCachedPermissions::class,
         'web',
         HandleInertiaRequests::class,
         DispatchServingNovaEvent::class,
