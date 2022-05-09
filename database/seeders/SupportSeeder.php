@@ -14,6 +14,6 @@ class SupportSeeder extends Seeder
      */
     public function run()
     {
-        Support::factory()->count(5)->create();
+        Support::factory()->count(20)->create();
     }
 }
