@@ -3,10 +3,8 @@
 namespace App\Http\Livewire\Vaccine;
 
 use App\Http\Controllers\FileController;
-use App\Models\File;
 use App\Models\Vaccine;
 use Livewire\Component;
-use App\Models\Document;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
@@ -43,9 +41,11 @@ class FormCreate extends Component implements HasForms
                 ->maxDate(now()->addDay(1))
                 ->label('Vaccine Date:'),
             TextInput::make('dose_no')
+                ->minValue(1)
                 ->maxValue(10)
                 ->required()
-                ->integer(),
+                ->integer()
+                ->helperText('Please enter a number between 1-10'),
             FileUpload::make('file_path')
                 ->preserveFilenames()
                 ->maxSize(102400)
