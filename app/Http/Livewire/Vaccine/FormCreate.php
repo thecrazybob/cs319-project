@@ -40,15 +40,12 @@ class FormCreate extends Component implements HasForms
             ->label('Vaccine Type:'),
             DatePicker::make('vaccine_date')
                 ->required()
+                ->maxDate(now()->addDay(1))
                 ->label('Vaccine Date:'),
             TextInput::make('dose_no')
-                ->numeric()
-                ->mask(
-                    fn (TextInput\Mask $mask) => $mask
-                ->numeric()
                 ->maxValue(10)
+                ->required()
                 ->integer(),
-                ),
             FileUpload::make('file_path')
                 ->preserveFilenames()
                 ->maxSize(102400)
