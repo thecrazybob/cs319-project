@@ -33,7 +33,8 @@ class VaccineController extends Controller
                         ->latest('vaccine_date')
                         ->first()?->vaccine_date->addMonths(5)->format('d M Y');
         $last_test = $tests
-                        ->where('test_type', 'pcr')->latest('test_date')->first()->test_date->format('d M Y');
+                        ->where('test_type', 'pcr')->latest('test_date')
+                        ->first()?->test_date->format('d M Y');
 
         return view('vaccine.index', compact('vaccines', 'requirement', 'requirement_bool', 'dose_count', 'next_dose', 'last_test'));
     }
