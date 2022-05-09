@@ -20,23 +20,21 @@ class OnboardingForm extends Component implements HasForms
 
     public Patient $patient;
 
-    public $bilkent_id = '';
-    public $birth_date = '';
-    public $gender = '';
-    public $height = '';
-    public $weight = '';
-    public $allergies = '';
-    public $conditions = [];
-    public $other_illness = '';
-    public $operations = '';
-    public $current_medications = '';
-    public $smoking = '';
+    public $bilkent_id;
+    public $birth_date;
+    public $gender;
+    public $height;
+    public $weight;
+    public $allergies;
+    public $conditions;
+    public $other_illness;
+    public $operations;
+    public $current_medications;
+    public $smoking;
 
     public function mount(): void
     {
-        $this->patient = Patient::where('id', auth()->user()->patient->id)->first();
-
-        $this->fill([
+        $this->form->fill([
             'bilkent_id' => $this->patient->bilkent_id,
             'birth_date' => $this->patient->birth_date,
             'gender' => $this->patient->gender,
@@ -104,14 +102,13 @@ class OnboardingForm extends Component implements HasForms
                         ->label('Have you ever had (Please check all that apply):')
                         ->columns(4)
                         ->relationship('patientConditions', 'name'),
-                        Textarea::make('current_medications')
+                    Textarea::make('current_medications')
                         ->rows(5)
                         ->cols(20)
                         ->maxLength(500)
                         ->label('Please list your current medications:'),
-                        TextInput::make('other_illness')
+                    TextInput::make('other_illness')
                         ->label('Please list other illnesses that is not on the list:'),
-
                     Radio::make('smoking')
                         ->label('Do you smoke?')
                         ->boolean()
@@ -127,7 +124,7 @@ class OnboardingForm extends Component implements HasForms
 
     public function submit()
     {
-        Patient::where('id', auth()->user()->patient->id)->update($this->form->getState());
+        $this->patient->update($this->form->getState());
         auth()->user()->update(['onboarding_completed' => true]);
         toast()->success('Thank you for the information. You may start using the website')->push();
         return redirect(route('dashboard'));

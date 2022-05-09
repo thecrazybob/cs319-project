@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <livewire:user.onboarding-form />
+            <livewire:user.onboarding-form :patient="auth()->user()->patient"/>
         </div>
     </div>
 </x-app-layout>
