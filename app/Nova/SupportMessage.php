@@ -2,24 +2,30 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Badge;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Hidden;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Support extends Resource
+class SupportMessage extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Support::class;
+    public static $model = \App\Models\SupportMessage::class;
+
+    public static $displayInNavigation = false;
+
+
+    public static function label()
+    {
+        return 'Ticket Messages';
+    }
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -37,11 +43,6 @@ class Support extends Resource
         'id',
     ];
 
-    public static function label()
-    {
-        return 'Support Tickets';
-    }
-
     /**
      * Get the fields displayed by the resource.
      *
@@ -51,35 +52,25 @@ class Support extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
-            BelongsTo::make('Department')->sortable(),
-            BelongsTo::make('Patient')->sortable(),
-            HasMany::make('Support Messages')->sortable(),
-            Select::make('Status')->sortable()->options([
-                'new' => 'New',
-                'answered' => 'Answered',
-                'closed' => 'Closed',
-                'awaiting' => 'Awaiting',
-                'hold' => 'Hold',
-            ])->onlyOnForms()->required(),
-            Badge::make('Status')->addTypes([
-                'new' => 'whitespace-nowrap px-2 py-1 rounded-full uppercase text-xs font-bold',
-            ])->map([
-                'new' => 'new',
-                'answered' => 'info',
-                'closed' => 'success',
-                'awaiting' => 'danger',
-                'hold' => 'warning',
-            ])->sortable(),
-            Select::make('Priority')->sortable()->options([
-                'low' => 'Low',
-                'medium' => 'Medium',
-                'high' => 'High',
-                'critical' => 'Critical',
-            ])->required(),
-            Text::make('Subject')->sortable(),
-            Date::make('Created At')->sortable()->onlyOnDetail(),
-            Date::make('Updated At')->sortable()->onlyOnDetail(),
+            ID::make()->sortable()->hide(),
+            Text::make('Message')
+                ->onlyOnIndex()
+                ->displayUsing(function ($text) {
+                    if (strlen($text) > 50) {
+                        return substr($text, 0, 50) . '...';
+                    }
+                    return $text;
+                })
+                ->sortable(),
+            Date::make('Created At')->sortable(),
+            Textarea::make('Message')->alwaysShow()->required(),
+            Hidden::make('User', 'user_id')->default(function ($request) {
+                return $request->user()->id;
+            }),
+            Hidden::make('Support', 'support_id')->default(function ($request) {
+                return $request->resourceId;
+            }),
+
         ];
     }
 
@@ -126,4 +117,5 @@ class Support extends Resource
     {
         return [];
     }
+
 }
