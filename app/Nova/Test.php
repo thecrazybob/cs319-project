@@ -44,9 +44,9 @@ class Test extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Patient')->sortable()->searchable(),
-            BelongsTo::make('Doctor')->sortable()->searchable(),
-            BelongsTo::make('Department')->sortable()->searchable(),
+            BelongsTo::make('Patient')->sortable(),
+            BelongsTo::make('Doctor')->sortable(),
+            BelongsTo::make('Department')->sortable(),
             BelongsTo::make('File')->sortable()->searchable(),
             Select::make('Test Type')->sortable()->options([
                 'pcr' => 'PCR',

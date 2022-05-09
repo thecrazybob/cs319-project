@@ -45,8 +45,8 @@ class Support extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Department')->sortable()->searchable(),
-            BelongsTo::make('Patient')->sortable()->searchable(),
+            BelongsTo::make('Department')->sortable(),
+            BelongsTo::make('Patient')->sortable(),
             Text::make('Subject')->sortable(),
             Select::make('Status')->sortable()->options([
                 'new' => 'New',

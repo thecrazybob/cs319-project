@@ -45,7 +45,7 @@ class BloodDonationRequest extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Patient')->sortable()->searchable(),
+            BelongsTo::make('Patient')->sortable(),
             Select::make('Blood Type')->options([
                 'AA' => 'AA',
                 'AB' => 'AB',

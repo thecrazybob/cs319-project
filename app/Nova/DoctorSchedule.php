@@ -43,7 +43,7 @@ class DoctorSchedule extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Doctor')->sortable()->searchable(),
+            BelongsTo::make('Doctor')->sortable(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];

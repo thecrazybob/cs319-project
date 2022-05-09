@@ -45,7 +45,7 @@ class Vaccine extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Patient')->sortable()->searchable(),
+            BelongsTo::make('Patient')->sortable(),
             Select::make('Vaccine Type')->options([
                 'covid' => 'Covid',
                 'other' => 'Other'

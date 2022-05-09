@@ -46,7 +46,7 @@ class Invoice extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Patient')->sortable()->searchable(),
+            BelongsTo::make('Patient')->sortable(),
             Number::make('Amount')->min(0)->max(100000)->step(0.01)->sortable(),
             Select::make('Status')->options([
                 'unpaid' => 'Unpaid',
