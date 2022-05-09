@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Date;
@@ -45,7 +46,7 @@ class BloodDonationRequest extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Patient')->sortable()->searchable(),
+            BelongsTo::make('Patient')->sortable(),
             Select::make('Blood Type')->options([
                 'AA' => 'AA',
                 'AB' => 'AB',
@@ -53,15 +54,21 @@ class BloodDonationRequest extends Resource
                 'BB' => 'BB',
                 'BO' => 'BO',
             ])->sortable(),
+            Badge::make('Urgency')->map([
+                'low' => 'info',
+                'medium' => 'warning',
+                'high' => 'danger',
+                'critical' => 'danger',
+            ])->sortable(),
             Select::make('Urgency')->options([
                 'low' => 'Low',
                 'medium' => 'Medium',
                 'high' => 'High',
                 'critcal' => 'Critical',
-            ])->sortable(),
+            ])->sortable()->onlyOnForms(),
             Boolean::make('Approved')->sortable(),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

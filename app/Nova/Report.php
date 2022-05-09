@@ -45,13 +45,15 @@ class Report extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Subject')->sortable(),
-            Text::make('Report Type')->sortable(),
-            Date::make('Report Date'),
+            Text::make('Subject')->sortable()->required(),
+            Text::make('Report Type')->sortable()->required(),
+            Date::make('Report Date')->required(),
             Number::make('Days')->min(1)->max(365)->step(1),
             BelongsTo::make('Patient'),
             BelongsTo::make('Doctor'),
             BelongsTo::make('File'),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
 
         ];
     }

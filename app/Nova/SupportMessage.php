@@ -2,30 +2,37 @@
 
 namespace App\Nova;
 
-use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Patient extends Resource
+class SupportMessage extends Resource
 {
-    public function title()
-    {
-        return \App\Models\User::where('patient_id', $this->id)->first()->name;
-    }
-
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Patient::class;
+    public static $model = \App\Models\SupportMessage::class;
+
+    public static $displayInNavigation = false;
+
+
+    public static function label()
+    {
+        return 'Ticket Messages';
+    }
+
+    /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -45,22 +52,24 @@ class Patient extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Bilkent Id')->sortable()->required(),
-            Date::make('Birth Date')->sortable()->required(),
-            Text::make('Gender')->sortable()->displayUsing(function ($gender) {
-                $converted = Str::of($gender)->studly();
-                return  $converted;
-            })->onlyOnIndex(),
-            Select::make('Gender')->options(['female' => 'Female', 'male' => 'Male', 'other' => 'Other'])->onlyOnForms()->required(),
-            Number::make('Height')->min(50)->max(300)->step(0.1)->sortable()->required(),
-            Number::make('Weight')->min(1)->max(1000)->step(0.1)->sortable()->required(),
-            Textarea::make('Allergies')->required(),
-            Textarea::make('Other Illnesses')->required(),
-            Textarea::make('Current Medications')->required(),
-            Boolean::make('Smoking'),
-            Date::make('Created At')->sortable()->onlyOnDetail(),
-            Date::make('Updated At')->sortable()->onlyOnDetail()
+            ID::make()->sortable()->hide(),
+            Text::make('Message')
+                ->onlyOnIndex()
+                ->displayUsing(function ($text) {
+                    if (strlen($text) > 50) {
+                        return substr($text, 0, 50) . '...';
+                    }
+                    return $text;
+                })
+                ->sortable(),
+            Date::make('Created At')->sortable(),
+            Textarea::make('Message')->alwaysShow()->required(),
+            Hidden::make('User', 'user_id')->default(function ($request) {
+                return $request->user()->id;
+            }),
+            Hidden::make('Support', 'support_id')->default(function ($request) {
+                return $request->resourceId;
+            }),
 
         ];
     }
@@ -108,4 +117,5 @@ class Patient extends Resource
     {
         return [];
     }
+
 }

@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -35,6 +36,8 @@ class Transaction extends Resource
         'id',
     ];
 
+    public static $displayInNavigation = false;
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -46,11 +49,11 @@ class Transaction extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Invoice')->sortable()->searchable(),
-            BelongsTo::make('PaymentGateway',)->sortable()->searchable(),
-            Number::make('Amount')->min(0)->step(0.01)->sortable(),
-            Text::make('Description')->sortable(),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            BelongsTo::make('PaymentGateway',)->sortable(),
+            Currency::make('Amount')->min(0)->step(0.01)->sortable()->currency('TRY')->required(),
+            Text::make('Description')->sortable()->required(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

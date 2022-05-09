@@ -2,12 +2,15 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Support extends Resource
@@ -35,6 +38,11 @@ class Support extends Resource
         'id',
     ];
 
+    public static function label()
+    {
+        return 'Support Tickets';
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -45,24 +53,38 @@ class Support extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Department')->sortable()->searchable(),
-            BelongsTo::make('Patient')->sortable()->searchable(),
-            Text::make('Subject')->sortable(),
+            BelongsTo::make('Department')->sortable(),
+            BelongsTo::make('Patient')->sortable(),
+            HasMany::make('Support Messages')->sortable(),
             Select::make('Status')->sortable()->options([
                 'new' => 'New',
                 'answered' => 'Answered',
                 'closed' => 'Closed',
                 'awaiting' => 'Awaiting',
                 'hold' => 'Hold',
-            ]),
+            ])->onlyOnForms()->required(),
+            Badge::make('Status')->addTypes([
+                'new' => 'whitespace-nowrap px-2 py-1 rounded-full uppercase text-xs font-bold',
+            ])->map([
+                'new' => 'new',
+                'answered' => 'info',
+                'closed' => 'success',
+                'awaiting' => 'danger',
+                'hold' => 'warning',
+            ])->sortable(),
+            Text::make('Priority')->sortable()->displayUsing(function ($priortiy) {
+                $converted = Str::of($priortiy)->studly();
+                return  $converted;
+            })->onlyOnIndex(),
             Select::make('Priority')->sortable()->options([
                 'low' => 'Low',
                 'medium' => 'Medium',
                 'high' => 'High',
                 'critical' => 'Critical',
-            ]),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            ])->required()->onlyOnForms(),
+            Text::make('Subject')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

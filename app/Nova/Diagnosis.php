@@ -44,14 +44,14 @@ class Diagnosis extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Doctor')->sortable()->searchable(),
-            BelongsTo::make('Patient')->sortable()->searchable(),
-            BelongsTo::make('Department')->sortable()->searchable(),
-            BelongsTo::make('File')->sortable()->searchable(),
-            Date::make('Diagnosis Date')->sortable(),
-            Text::make('Diagnosis Type')->sortable(),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            BelongsTo::make('Doctor')->sortable(),
+            BelongsTo::make('Patient')->sortable(),
+            BelongsTo::make('Department')->sortable(),
+            BelongsTo::make('File')->sortable()->showCreateRelationButton(),
+            Date::make('Diagnosis Date')->sortable()->required(),
+            Text::make('Diagnosis Type')->sortable()->required(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

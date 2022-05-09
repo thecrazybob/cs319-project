@@ -58,4 +58,9 @@ class Support extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
+    public function supportmessages()
+    {
+        return $this->hasMany(SupportMessage::class);
+    }
 }

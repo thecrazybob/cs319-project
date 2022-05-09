@@ -44,12 +44,12 @@ class Document extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Patient')->sortable()->searchable(),
+            BelongsTo::make('Patient')->sortable(),
             BelongsTo::make('File')->sortable()->searchable(),
             Text::make('Document Name', 'name')->sortable(),
-            Text::make('Document Description','type')->sortable(),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Text::make('Document Description', 'type')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

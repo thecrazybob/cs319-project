@@ -44,10 +44,10 @@ class PaymentGateway extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Gateway Name')->sortable(),
+            Text::make('Gateway Name')->sortable()->rules('required'),
             Boolean::make('Enabled')->sortable(),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
 
         ];
     }
