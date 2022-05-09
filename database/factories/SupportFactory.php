@@ -28,7 +28,7 @@ class SupportFactory extends Factory
             'department_id' => Department::all()->random()->id,
             'patient_id' => Patient::all()->random()->id,
             'subject' => $this->faker->word,
-            'status' => $this->faker->randomElement(["new","answered","awaiting","hold","closed"]),
+            'status' => $this->faker->randomElement(["new","answered","awaiting","hold","closed", "reopened"]),
             'priority' => $this->faker->randomElement(["low","medium","high","critical"]),
         ];
     }
