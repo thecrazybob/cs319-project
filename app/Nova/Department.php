@@ -44,8 +44,8 @@ class Department extends Resource
         return [
             ID::make()->sortable(),
             Text::make('name')->sortable(),
-            Date::make('created_at')->sortable(),
-            Date::make('updated_at')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

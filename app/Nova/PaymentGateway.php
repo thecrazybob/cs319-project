@@ -46,8 +46,8 @@ class PaymentGateway extends Resource
             ID::make()->sortable(),
             Text::make('Gateway Name')->sortable(),
             Boolean::make('Enabled')->sortable(),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
 
         ];
     }

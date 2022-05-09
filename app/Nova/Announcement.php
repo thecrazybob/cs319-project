@@ -45,12 +45,12 @@ class Announcement extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('title')->sortable(),
+            Text::make('Title')->sortable()->required(),
             Textarea::make('Description'),
             Boolean::make('Private')->sortable(),
-            Date::make('Announcement Date')->sortable(),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Announcement Date')->sortable()->required(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

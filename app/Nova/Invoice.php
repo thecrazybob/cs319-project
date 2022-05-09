@@ -56,8 +56,8 @@ class Invoice extends Resource
                 'partial' => 'Partial',
             ])->sortable(),
             Text::make('Description'),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

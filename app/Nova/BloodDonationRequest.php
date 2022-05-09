@@ -60,8 +60,8 @@ class BloodDonationRequest extends Resource
                 'critcal' => 'Critical',
             ])->sortable(),
             Boolean::make('Approved')->sortable(),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

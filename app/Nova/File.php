@@ -48,8 +48,8 @@ class File extends Resource
             BelongsTo::make('Patient'),
             Text::make('File Name','name'),
             FileField::make('File','file_path')->acceptedTypes(['application/pdf', 'image/png', 'image/jpeg', 'image/jpg']),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

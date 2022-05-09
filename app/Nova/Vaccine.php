@@ -52,8 +52,8 @@ class Vaccine extends Resource
             ])->sortable(),
             Number::make('Vaccine Dose', 'dose_no')->min(0)->max(6)->step(1)->sortable(),
             Date::make('Vaccine Date')->sortable(),
-            Date::make('Created At') ->sortable(),
-            Date::make('Updated At') ->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

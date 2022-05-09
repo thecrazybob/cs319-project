@@ -52,6 +52,8 @@ class Report extends Resource
             BelongsTo::make('Patient'),
             BelongsTo::make('Doctor'),
             BelongsTo::make('File'),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
 
         ];
     }

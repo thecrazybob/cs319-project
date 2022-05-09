@@ -34,7 +34,7 @@ class Appointment extends Resource
      * @var array
      */
     public static $search = [
-        'id', 
+        'id',
     ];
 
     /**
@@ -53,8 +53,8 @@ class Appointment extends Resource
             Date::make('Appointment Date')->sortable(),
             Boolean::make('Confirmed')->sortable(),
             Text::make('Description')->sortable(),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

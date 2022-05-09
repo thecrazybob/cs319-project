@@ -61,8 +61,8 @@ class Support extends Resource
                 'high' => 'High',
                 'critical' => 'Critical',
             ]),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

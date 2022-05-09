@@ -49,8 +49,8 @@ class Transaction extends Resource
             BelongsTo::make('PaymentGateway',)->sortable()->searchable(),
             Number::make('Amount')->min(0)->step(0.01)->sortable(),
             Text::make('Description')->sortable(),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
     }
 

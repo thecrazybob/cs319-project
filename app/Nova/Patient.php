@@ -16,7 +16,7 @@ class Patient extends Resource
 {
     public function title()
     {
-        return \App\Models\User::where('patient_id', $this->id)->first()->name;;
+        return \App\Models\User::where('patient_id', $this->id)->first()->name;
     }
 
     /**
@@ -54,8 +54,8 @@ class Patient extends Resource
             Textarea::make('Other Illnesses'),
             Textarea::make('Current Medications'),
             Boolean::make('Smoking'),
-            Date::make('Created At')->sortable(),
-            Date::make('Updated At')->sortable(),
+            Date::make('Created At')->sortable()->onlyOnDetail(),
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
 
         ];
     }
