@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire\Support;
 
-use App\Models\User;
 use App\Models\Support;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\ButtonAction;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\IconButtonAction;
@@ -28,8 +28,20 @@ class Table extends Component implements HasTable
             TextColumn::make('id'),
             TextColumn::make('department.name'),
             TextColumn::make('subject'),
-            TextColumn::make('status'),
-            TextColumn::make('priority'),
+            BadgeColumn::make('status')
+                ->colors([
+                    'primary',
+                    'danger' => 'hold',
+                    'warning' => 'awaiting',
+                    'success' => 'answered',
+                ])->formatStateUsing(fn ($state) => ucfirst($state)),
+            BadgeColumn::make('priority')
+                ->colors([
+                    'primary',
+                    'danger' => 'critical',
+                    'warning' => 'high',
+                    'success' => 'low',
+                ])->formatStateUsing(fn ($state) => ucfirst($state)),
             TextColumn::make('created_at')->date(),
             TextColumn::make('updated_at')->date(),
         ];
