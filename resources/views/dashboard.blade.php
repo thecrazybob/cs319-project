@@ -17,9 +17,9 @@
                                     <div class="sm:flex sm:items-center sm:justify-between">
                                         <div class="sm:flex sm:space-x-5">
                                             <div class="flex-shrink-0">
-                                                <img class="mx-auto h-20 w-20 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
                                             </div>
                                             <div class="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                                                 <p class="text-sm font-medium text-gray-600">Welcome back,</p>
@@ -39,17 +39,17 @@
                                 <div
                                     class="border-t border-gray-200 bg-gray-50 grid grid-cols-1 divide-y divide-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
                                     <div class="px-6 py-5 text-sm font-medium text-center">
-                                        <span class="text-gray-900">1</span>
+                                        <span class="text-gray-900">{{$appointment_count}}</span>
                                         <span class="text-gray-600">Upcoming Appointment</span>
                                     </div>
 
                                     <div class="px-6 py-5 text-sm font-medium text-center">
-                                        <span class="text-gray-900">4</span>
+                                        <span class="text-gray-900">{{$dose_count}}</span>
                                         <span class="text-gray-600">Vaccine Doses Registered</span>
                                     </div>
 
                                     <div class="px-6 py-5 text-sm font-medium text-center">
-                                        <span class="text-gray-900">3</span>
+                                        <span class="text-gray-900">{{$visit_count}}</span>
                                         <span class="text-gray-600">Visits to Health Center</span>
                                     </div>
                                 </div>
@@ -82,9 +82,7 @@
                                                 Request appointment
                                             </a>
                                         </h3>
-                                        <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus
-                                            officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et
-                                            molestiae.</p>
+                                        <p class="mt-2 text-sm text-gray-500">Click here to request an appointment with one of the doctors of the health center.</p>
                                     </div>
                                     <span
                                         class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
@@ -116,9 +114,7 @@
                                                 Create a ticket
                                             </a>
                                         </h3>
-                                        <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus
-                                            officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et
-                                            molestiae.</p>
+                                        <p class="mt-2 text-sm text-gray-500">Click here to create a support ticket, do not hesitate to open a ticket. The health center's staff will get back to you at the earliest.</p>
                                     </div>
                                     <span
                                         class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
@@ -151,9 +147,7 @@
                                                 View my tests
                                             </a>
                                         </h3>
-                                        <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus
-                                            officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et
-                                            molestiae.</p>
+                                        <p class="mt-2 text-sm text-gray-500">Click here to view all of the tests that you made at the health center. If you believe test is missing/wrong open a ticket and the health center's staff will get back to you at the earliest.</p>
                                     </div>
                                     <span
                                         class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
@@ -186,9 +180,7 @@
                                                 View my diagnosis
                                             </a>
                                         </h3>
-                                        <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus
-                                            officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et
-                                            molestiae.</p>
+                                        <p class="mt-2 text-sm text-gray-500">Click here to view all of your diagnoses that were made by any doctors that you visited at the health center.If you believe diagnosis is missing/wrong open a ticket and the health center's staff will get back to you at the earliest.</p>
                                     </div>
                                     <span
                                         class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
@@ -220,9 +212,7 @@
                                                 View my documents
                                             </a>
                                         </h3>
-                                        <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus
-                                            officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et
-                                            molestiae.</p>
+                                        <p class="mt-2 text-sm text-gray-500">Click here to view all of the documents that you or any doctor that you visited at the health center uploaded to our website. </p>
                                     </div>
                                     <span
                                         class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
@@ -257,9 +247,7 @@
                                                 Show registered vaccines
                                             </a>
                                         </h3>
-                                        <p class="mt-2 text-sm text-gray-500">Doloribus dolores nostrum quia qui natus
-                                            officia quod et dolorem. Sit repellendus qui ut at blanditiis et quo et
-                                            molestiae.</p>
+                                        <p class="mt-2 text-sm text-gray-500">Click here to view all of the vaccines that you or any doctor that you visited at the health center uploaded to our website. You can also find additional helpful information on this page.</p>
                                     </div>
                                     <span
                                         class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
@@ -313,25 +301,26 @@
                             </div>
                         </section>
 
-                        <!-- Recent Hires -->
+                        
                         <section aria-labelledby="recent-hires-title">
                             <div class="rounded-lg bg-white overflow-hidden shadow">
                                 <div class="p-6">
                                     <h2 class="text-base font-medium text-gray-900" id="recent-hires-title">Available
                                         Doctors</h2>
+                                   
                                     <div class="flow-root mt-6">
-                                        <ul role="list" class="-my-5 divide-y divide-gray-200">
-                                            <li class="py-4">
+                                        <ul role="list" class="-my-5 divide-y divide-gray-200"> 
+                                            @foreach ($users as $user)
+                                                <li class="py-4">
                                                 <div class="flex items-center space-x-4">
                                                     <div class="flex-shrink-0">
-                                                        <img class="h-8 w-8 rounded-full"
-                                                            src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                            alt="">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                    </svg>
                                                     </div>
                                                     <div class="flex-1 min-w-0">
-                                                        <p class="text-sm font-medium text-gray-900 truncate">Leonard
-                                                            Krasner</p>
-                                                        <p class="text-sm text-gray-500 truncate">@leonardkrasner</p>
+                                                        <p class="text-sm font-medium text-gray-900 truncate">{{ $user['name'] }}</p>
+                                                        <p class="text-sm text-gray-500 truncate">{{ $user['email'] }}</p>
                                                     </div>
                                                     <div>
                                                         <a href="#"
@@ -340,66 +329,7 @@
                                                     </div>
                                                 </div>
                                             </li>
-
-                                            <li class="py-4">
-                                                <div class="flex items-center space-x-4">
-                                                    <div class="flex-shrink-0">
-                                                        <img class="h-8 w-8 rounded-full"
-                                                            src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                            alt="">
-                                                    </div>
-                                                    <div class="flex-1 min-w-0">
-                                                        <p class="text-sm font-medium text-gray-900 truncate">Floyd
-                                                            Miles</p>
-                                                        <p class="text-sm text-gray-500 truncate">@floydmiles</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"
-                                                            class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50">
-                                                            Appointment </a>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li class="py-4">
-                                                <div class="flex items-center space-x-4">
-                                                    <div class="flex-shrink-0">
-                                                        <img class="h-8 w-8 rounded-full"
-                                                            src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                            alt="">
-                                                    </div>
-                                                    <div class="flex-1 min-w-0">
-                                                        <p class="text-sm font-medium text-gray-900 truncate">Emily
-                                                            Selman</p>
-                                                        <p class="text-sm text-gray-500 truncate">@emilyselman</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"
-                                                            class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50">
-                                                            Appointment </a>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li class="py-4">
-                                                <div class="flex items-center space-x-4">
-                                                    <div class="flex-shrink-0">
-                                                        <img class="h-8 w-8 rounded-full"
-                                                            src="https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                            alt="">
-                                                    </div>
-                                                    <div class="flex-1 min-w-0">
-                                                        <p class="text-sm font-medium text-gray-900 truncate">Kristin
-                                                            Watson</p>
-                                                        <p class="text-sm text-gray-500 truncate">@kristinwatson</p>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"
-                                                            class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50">
-                                                            Appointment </a>
-                                                    </div>
-                                                </div>
-                                            </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>

@@ -1,5 +1,22 @@
 <x-app-layout>
 
+    <x-slot name="header">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                        {{ __('Announcement Date:') }} {{$announcement_date->format('d M Y')}}
+                    </h2>
+                </div>
+                <div>
+                    <a href="{{ route('announcement.index') }}">                
+                        <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+                            {{ __('View all announcements') }}
+                        </x-jet-button>
+                    </a>
+                </div>
+            </div>
+        </x-slot>
+
     <div class="relative py-16 bg-white overflow-hidden">
         <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
             <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">

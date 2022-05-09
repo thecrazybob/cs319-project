@@ -3,14 +3,14 @@
         <div class="flex justify-between items-center">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('Documents') }}
+                    {{ __('Update Document') }}
                 </h2>
-                <p class="mt-2 text-sm text-gray-700">All of the documents provided to the health center.</p>
+                <p class="mt-2 text-sm text-gray-700">Click the Update button to update the information of your document.</p>
             </div>
             <div>
-                <a href="{{ route('document.create') }}">
+                <a href="{{ route('document.index') }}">
                     <x-jet-button wire:loading.attr="disabled" wire:target="photo">
-                        {{ __('Create a document') }}
+                        {{ __('View all documents') }}
                     </x-jet-button>
                 </a>
             </div>
