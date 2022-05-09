@@ -6,17 +6,19 @@ use JsonSerializable;
 
 class TrendResult implements JsonSerializable
 {
+    use TransformsResults;
+
     /**
      * The value of the result.
      *
-     * @var string|null
+     * @var int|float|numeric-string|null
      */
     public $value;
 
     /**
      * The trend data of the result.
      *
-     * @var array
+     * @var array<string, int|float|numeric-string|null>
      */
     public $trend = [];
 
@@ -51,7 +53,7 @@ class TrendResult implements JsonSerializable
     /**
      * Create a new trend result instance.
      *
-     * @param  string|null  $value
+     * @param int|float|numeric-string|null $value
      * @return void
      */
     public function __construct($value = null)
@@ -62,7 +64,7 @@ class TrendResult implements JsonSerializable
     /**
      * Set the primary result amount for the trend.
      *
-     * @param  string|null  $value
+     * @param int|float|numeric-string|null $value
      * @return $this
      */
     public function result($value = null)
@@ -79,11 +81,7 @@ class TrendResult implements JsonSerializable
      */
     public function showLatestValue()
     {
-        if (is_array($this->trend)) {
-            return $this->result(last($this->trend));
-        }
-
-        return $this;
+        return $this->result(last($this->trend));
     }
 
     /**
@@ -93,17 +91,13 @@ class TrendResult implements JsonSerializable
      */
     public function showSumValue()
     {
-        if (is_array($this->trend)) {
-            return $this->result(array_sum(array_values($this->trend)));
-        }
-
-        return $this;
+        return $this->result(array_sum(array_values($this->trend)));
     }
 
     /**
      * Set the trend of data for the metric.
      *
-     * @param  array  $trend
+     * @param array<string, int|float|numeric-string|null> $trend
      * @return $this
      */
     public function trend(array $trend)
@@ -116,7 +110,7 @@ class TrendResult implements JsonSerializable
     /**
      * Indicate that the metric represents a dollar value.
      *
-     * @param  string  $symbol
+     * @param string $symbol
      * @return $this
      */
     public function dollars($symbol = '$')
@@ -127,7 +121,7 @@ class TrendResult implements JsonSerializable
     /**
      * Indicate that the metric represents a euro value.
      *
-     * @param  string  $symbol
+     * @param string $symbol
      * @return $this
      */
     public function euros($symbol = '€')
@@ -138,7 +132,7 @@ class TrendResult implements JsonSerializable
     /**
      * Set the metric value prefix.
      *
-     * @param  string  $prefix
+     * @param string $prefix
      * @return $this
      */
     public function prefix($prefix)
@@ -151,7 +145,7 @@ class TrendResult implements JsonSerializable
     /**
      * Set the metric value suffix.
      *
-     * @param  string  $suffix
+     * @param string $suffix
      * @return $this
      */
     public function suffix($suffix)
@@ -176,7 +170,7 @@ class TrendResult implements JsonSerializable
     /**
      * Set the metric value formatting.
      *
-     * @param  string  $format
+     * @param string $format
      * @return $this
      */
     public function format($format)
@@ -189,13 +183,12 @@ class TrendResult implements JsonSerializable
     /**
      * Prepare the metric result for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
-            'value' => $this->value,
+            'value' => $this->resolveTransformedValue($this->value),
             'trend' => $this->trend,
             'prefix' => $this->prefix,
             'suffix' => $this->suffix,

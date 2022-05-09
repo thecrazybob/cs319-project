@@ -7,6 +7,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Password extends Field
 {
+    use SupportsDependentFields;
+
     /**
      * The field's component.
      *
@@ -17,15 +19,15 @@ class Password extends Field
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string $requestAttribute
+     * @param object $model
+     * @param string $attribute
      * @return mixed
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
     {
-        if (! empty($request[$requestAttribute])) {
+        if (!empty($request[$requestAttribute])) {
             $model->{$attribute} = Hash::make($request[$requestAttribute]);
         }
     }
@@ -33,10 +35,9 @@ class Password extends Field
     /**
      * Prepare the field for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge(
             parent::jsonSerialize(),

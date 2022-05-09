@@ -17,7 +17,7 @@ class SqlSrvTrendDateExpression extends TrendDateExpression
         if ($offset >= 0) {
             $interval = $offset;
         } else {
-            $interval = '-'.($offset * -1);
+            $interval = '-' . ($offset * -1);
         }
 
         $date = "DATEADD(hour, {$interval}, {$column})";

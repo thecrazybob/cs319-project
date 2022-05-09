@@ -7,7 +7,7 @@ trait Deletable
     /**
      * The callback used to delete the field.
      *
-     * @var callable
+     * @var callable|null
      */
     public $deleteCallback;
 
@@ -28,7 +28,7 @@ trait Deletable
     /**
      * Specify the callback that should be used to delete the field.
      *
-     * @param  callable  $deleteCallback
+     * @param callable $deleteCallback
      * @return $this
      */
     public function delete(callable $deleteCallback)
@@ -41,7 +41,7 @@ trait Deletable
     /**
      * Specify if the underlying file is able to be deleted.
      *
-     * @param  bool  $deletable
+     * @param bool $deletable
      * @return $this
      */
     public function deletable($deletable = true)
@@ -64,7 +64,7 @@ trait Deletable
     /**
      * Specify if the underlying file should be pruned when the resource is deleted.
      *
-     * @param  bool  $prunable
+     * @param bool $prunable
      * @return $this
      */
     public function prunable($prunable = true)

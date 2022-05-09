@@ -5,6 +5,9 @@ namespace Laravel\Nova;
 use Illuminate\Http\Request;
 use JsonSerializable;
 
+/**
+ * @method static static make(string|null $component = null)
+ */
 abstract class Element implements JsonSerializable
 {
     use Metable;
@@ -29,7 +32,7 @@ abstract class Element implements JsonSerializable
     /**
      * Create a new element.
      *
-     * @param  string|null  $component
+     * @param string|null $component
      * @return void
      */
     public function __construct($component = null)
@@ -40,7 +43,7 @@ abstract class Element implements JsonSerializable
     /**
      * Determine if the element should be displayed for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return bool
      */
     public function authorize(Request $request)
@@ -73,10 +76,9 @@ abstract class Element implements JsonSerializable
     /**
      * Prepare the element for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge([
             'component' => $this->component(),

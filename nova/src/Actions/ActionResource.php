@@ -13,14 +13,25 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource;
 
+/**
+ * @template TActionModel of \Laravel\Nova\Actions\ActionEvent
+ * @extends \Laravel\Nova\Resource<TActionModel>
+ */
 class ActionResource extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TActionModel>
      */
     public static $model = ActionEvent::class;
+
+    /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'name';
 
     /**
      * Indicates if the resource should be globally searchable.
@@ -39,7 +50,7 @@ class ActionResource extends Resource
     /**
      * Determine if the current user can create new resources.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return bool
      */
     public static function authorizedToCreate(Request $request)
@@ -50,7 +61,7 @@ class ActionResource extends Resource
     /**
      * Determine if the current user can edit resources.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return bool
      */
     public function authorizedToUpdate(Request $request)
@@ -61,7 +72,7 @@ class ActionResource extends Resource
     /**
      * Determine if the current user can delete resources.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return bool
      */
     public function authorizedToDelete(Request $request)
@@ -72,10 +83,10 @@ class ActionResource extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request)
     {
         return [
             ID::make('ID', 'id'),
@@ -110,8 +121,8 @@ class ActionResource extends Resource
     /**
      * Build an "index" query for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function indexQuery(NovaRequest $request, $query)
@@ -122,7 +133,7 @@ class ActionResource extends Resource
     /**
      * Determine if this resource is available for navigation.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return bool
      */
     public static function availableForNavigation(Request $request)

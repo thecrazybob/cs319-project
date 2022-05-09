@@ -14,11 +14,11 @@ class PostgresTrendDateExpression extends TrendDateExpression
         $offset = $this->offset();
 
         if ($offset > 0) {
-            $interval = '+ interval \''.$offset.' hour\'';
+            $interval = '+ interval \'' . $offset . ' hour\'';
         } elseif ($offset === 0) {
             $interval = '';
         } else {
-            $interval = '- interval \''.($offset * -1).' HOUR\'';
+            $interval = '- interval \'' . ($offset * -1) . ' HOUR\'';
         }
 
         switch ($this->unit) {

@@ -6,6 +6,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class KeyValue extends Field
 {
+    use SupportsDependentFields;
+
     /**
      * The field's component.
      *
@@ -23,28 +25,28 @@ class KeyValue extends Field
     /**
      * The label that should be used for the key heading.
      *
-     * @var string
+     * @var string|null
      */
     public $keyLabel;
 
     /**
      * The label that should be used for the value heading.
      *
-     * @var string
+     * @var string|null
      */
     public $valueLabel;
 
     /**
      * The label that should be used for the "add row" button.
      *
-     * @var string
+     * @var string|null
      */
     public $actionText;
 
     /**
      * The callback used to determine if the keys are readonly.
      *
-     * @var \Closure
+     * @var (callable(\Laravel\Nova\Http\Requests\NovaRequest):bool)|bool|null
      */
     public $readonlyKeysCallback;
 
@@ -65,10 +67,10 @@ class KeyValue extends Field
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string $requestAttribute
+     * @param object $model
+     * @param string $attribute
      * @return void
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -81,7 +83,7 @@ class KeyValue extends Field
     /**
      * The label that should be used for the key table heading.
      *
-     * @param  string  $label
+     * @param string $label
      * @return $this
      */
     public function keyLabel($label)
@@ -94,7 +96,7 @@ class KeyValue extends Field
     /**
      * The label that should be used for the value table heading.
      *
-     * @param  string  $label
+     * @param string $label
      * @return $this
      */
     public function valueLabel($label)
@@ -107,7 +109,7 @@ class KeyValue extends Field
     /**
      * The label that should be used for the add row button.
      *
-     * @param  string  $label
+     * @param string $label
      * @return $this
      */
     public function actionText($label)
@@ -120,7 +122,7 @@ class KeyValue extends Field
     /**
      * Set the callback used to determine if the keys are readonly.
      *
-     * @param  \Closure|bool  $callback
+     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest):bool)|bool  $callback
      * @return $this
      */
     public function disableEditingKeys($callback = true)
@@ -133,7 +135,7 @@ class KeyValue extends Field
     /**
      * Determine if the keys are readonly.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return bool
      */
     public function readonlyKeys(NovaRequest $request)
@@ -170,10 +172,9 @@ class KeyValue extends Field
     /**
      * Prepare the field element for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge(parent::jsonSerialize(), [
             'keyLabel' => $this->keyLabel ?? __('Key'),

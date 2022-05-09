@@ -10,10 +10,10 @@ class LensResourceCountController extends Controller
     /**
      * Get the resource count for a given query.
      *
-     * @param  \Laravel\Nova\Http\Requests\LensCountRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param \Laravel\Nova\Http\Requests\LensCountRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(LensCountRequest $request)
+    public function __invoke(LensCountRequest $request)
     {
         return response()->json(['count' => $request->toCount()]);
     }

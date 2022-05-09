@@ -11,8 +11,8 @@ class LensActionController extends Controller
     /**
      * List the actions for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param \Laravel\Nova\Http\Requests\LensRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(LensRequest $request)
     {
@@ -28,7 +28,7 @@ class LensActionController extends Controller
     /**
      * Perform an action on the specified resources.
      *
-     * @param  \Laravel\Nova\Http\Requests\LensActionRequest  $request
+     * @param \Laravel\Nova\Http\Requests\LensActionRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(LensActionRequest $request)

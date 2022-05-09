@@ -1,9 +1,9 @@
 <template>
-    <card class="flex flex-col items-center justify-center">
+    <Card class="flex flex-col items-center justify-center">
         <div class="px-3 py-3">
-            <h1 class="text-center text-3xl text-80 font-light">{{ title }}</h1>
+            <h1 class="text-center text-3xl text-gray-500 font-light">{{ title }}</h1>
         </div>
-    </card>
+    </Card>
 </template>
 
 <script>

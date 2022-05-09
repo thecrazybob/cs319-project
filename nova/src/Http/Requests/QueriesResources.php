@@ -28,16 +28,16 @@ trait QueriesResources
      */
     public function newQuery()
     {
-        if (! $this->viaRelationship()) {
+        if (!$this->viaRelationship()) {
             return $this->model()->newQuery();
         }
 
         abort_unless($this->newViaResource()->hasRelatableField($this, $this->viaRelationship), 409);
 
         return forward_static_call([$this->viaResource(), 'newModel'])
-                        ->newQueryWithoutScopes()->findOrFail(
-                            $this->viaResourceId
-                        )->{$this->viaRelationship}();
+            ->newQueryWithoutScopes()->findOrFail(
+                $this->viaResourceId
+            )->{$this->viaRelationship}();
     }
 
     /**
@@ -47,16 +47,16 @@ trait QueriesResources
      */
     public function newQueryWithoutScopes()
     {
-        if (! $this->viaRelationship()) {
+        if (!$this->viaRelationship()) {
             return $this->model()->newQueryWithoutScopes();
         }
 
         abort_unless($this->newViaResource()->hasRelatableField($this, $this->viaRelationship), 409);
 
         return forward_static_call([$this->viaResource(), 'newModel'])
-                    ->newQueryWithoutScopes()->findOrFail(
-                        $this->viaResourceId
-                    )->{$this->viaRelationship}()->withoutGlobalScopes();
+            ->newQueryWithoutScopes()->findOrFail(
+                $this->viaResourceId
+            )->{$this->viaRelationship}()->withoutGlobalScopes();
     }
 
     /**
@@ -66,9 +66,9 @@ trait QueriesResources
      */
     public function orderings()
     {
-        return ! empty($this->orderBy)
-                        ? [$this->orderBy => $this->orderByDirection]
-                        : [];
+        return !empty($this->orderBy)
+            ? [$this->orderBy => $this->orderByDirection]
+            : [];
     }
 
     /**

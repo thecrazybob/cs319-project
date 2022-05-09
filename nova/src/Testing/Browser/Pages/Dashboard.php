@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Testing\Browser\Pages;
 
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
 
 class Dashboard extends Page
 {
@@ -12,33 +11,25 @@ class Dashboard extends Page
     /**
      * Create a new page instance.
      *
-     * @param  string  $dashboardName
+     * @param string $dashboardName
      * @return void
      */
     public function __construct($dashboardName = 'main')
     {
         $this->dashboardName = $dashboardName;
-    }
 
-    /**
-     * Get the URL for the page.
-     *
-     * @return string
-     */
-    public function url()
-    {
-        return Nova::path().'/dashboards/'.$this->dashboardName;
+        $this->setNovaPage("/dashboards/{$this->dashboardName}");
     }
 
     /**
      * Assert that the browser is on the page.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
+     * @param \Laravel\Dusk\Browser $browser
      * @return void
      */
     public function assert(Browser $browser)
     {
-        $browser->pause(500);
+        $browser->assertOk()->waitFor('@nova-dashboard');
     }
 
     /**
@@ -48,6 +39,8 @@ class Dashboard extends Page
      */
     public function elements()
     {
-        return [];
+        return [
+            '@nova-dashboard' => "[dusk='dashboard-{$this->dashboardName}']",
+        ];
     }
 }

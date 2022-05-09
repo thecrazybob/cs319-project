@@ -27,8 +27,8 @@ class Relatable implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @return void
      */
     public function __construct(NovaRequest $request, $query)
@@ -40,23 +40,24 @@ class Relatable implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
         $model = $this->query->tap(function ($query) {
             tap($query->getQuery(), function ($builder) {
+                /** @var \Illuminate\Database\Query\Builder $builder */
                 $builder->orders = [];
 
                 $builder->select(
-                    ! empty($builder->joins) ? $builder->from.'.*' : '*'
+                    !empty($builder->joins) ? $builder->from . '.*' : '*'
                 );
             });
         })->whereKey($value)->first();
 
-        if (! $model) {
+        if (!$model) {
             return false;
         }
 
@@ -74,17 +75,17 @@ class Relatable implements Rule
     /**
      * Determine if the relationship is "full".
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $attribute
+     * @param mixed $value
      * @return bool
      */
     protected function relationshipIsFull($model, $attribute, $value)
     {
         $inverseRelation = $this->request->newResource()
-                    ->resolveInverseFieldsForAttribute($this->request, $attribute)->first(function ($field) {
-                        return $field instanceof HasOne || $field instanceof MorphOne;
-                    });
+            ->resolveInverseFieldsForAttribute($this->request, $attribute)->first(function ($field) {
+                return ($field instanceof MorphOne || $field instanceof HasOne) && !$field->ofManyRelationship();
+            });
 
         if ($inverseRelation && $this->request->resourceId) {
             $modelBeingUpdated = $this->request->findModelOrFail();
@@ -99,19 +100,19 @@ class Relatable implements Rule
         }
 
         return $inverseRelation &&
-               $model->{$inverseRelation->attribute}()->count() > 0;
+            $model->{$inverseRelation->attribute}()->count() > 0;
     }
 
     /**
      * Authorize that the user is allowed to relate this resource.
      *
-     * @param  string  $resource
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param class-string<\Laravel\Nova\Resource> $resourceClass
+     * @param \Illuminate\Database\Eloquent\Model $model
      * @return bool
      */
-    protected function authorize($resource, $model)
+    protected function authorize($resourceClass, $model)
     {
-        return (new $resource($model))->authorizedToAdd(
+        return (new $resourceClass($model))->authorizedToAdd(
             $this->request, $this->request->model()
         );
     }

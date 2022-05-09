@@ -43,13 +43,13 @@ trait InteractsWithRelatedResources
     public function findParentModel()
     {
         return once(function () {
-            if (! $this->viaRelationship()) {
-                return;
+            if (!$this->viaRelationship()) {
+                return null;
             }
 
             return Nova::modelInstanceForKey($this->viaResource)
-                                ->newQueryWithoutScopes()
-                                ->find($this->viaResourceId);
+                ->newQueryWithoutScopes()
+                ->find($this->viaResourceId);
         });
     }
 
@@ -94,7 +94,7 @@ trait InteractsWithRelatedResources
      */
     public function pivotName()
     {
-        if (! $this->viaRelationship()) {
+        if (!$this->viaRelationship()) {
             return Resource::DEFAULT_PIVOT_NAME;
         }
 
@@ -109,26 +109,14 @@ trait InteractsWithRelatedResources
         $parent = $parentResource->model();
 
         return ($parent && $parentResource->hasRelatableField($this, $this->viaRelationship))
-                    ? class_basename($parent->{$this->viaRelationship}()->getPivotClass())
-                    : Resource::DEFAULT_PIVOT_NAME;
-    }
-
-    /**
-     * Get a new instance of the "via" resource being requested.
-     *
-     * @return \Laravel\Nova\Resource
-     */
-    public function newViaResource()
-    {
-        $resource = $this->viaResource();
-
-        return new $resource($resource::newModel());
+            ? class_basename($parent->{$this->viaRelationship}()->getPivotClass())
+            : Resource::DEFAULT_PIVOT_NAME;
     }
 
     /**
      * Get the class name of the "related" resource being requested.
      *
-     * @return string
+     * @return class-string<\Laravel\Nova\Resource>
      */
     public function relatedResource()
     {
@@ -150,11 +138,23 @@ trait InteractsWithRelatedResources
     /**
      * Get the class name of the "via" resource being requested.
      *
-     * @return string
+     * @return class-string<\Laravel\Nova\Resource>
      */
     public function viaResource()
     {
         return Nova::resourceForKey($this->viaResource);
+    }
+
+    /**
+     * Get a new instance of the "via" resource being requested.
+     *
+     * @return \Laravel\Nova\Resource
+     */
+    public function newViaResource()
+    {
+        $resource = $this->viaResource();
+
+        return new $resource($resource::newModel());
     }
 
     /**

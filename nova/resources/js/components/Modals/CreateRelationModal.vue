@@ -1,67 +1,68 @@
 <template>
-  <modal
-    dusk="new-relation-modal"
-    tabindex="-1"
-    role="dialog"
-    @modal-close="handleClose"
-    :classWhitelist="[
-      'flatpickr-current-month',
-      'flatpickr-next-month',
-      'flatpickr-prev-month',
-      'flatpickr-weekday',
-      'flatpickr-weekdays',
-      'flatpickr-calendar',
-      'form-file-input',
-    ]"
-  >
-    <div
-      class="bg-40 rounded-lg shadow-lg overflow-hidden p-8"
-      style="width: 800px"
+    <Modal
+        dusk="new-relation-modal"
+        :show="show"
+        @close-via-escape="handlePreventModalAbandonmentOnClose"
+        maxWidth="screen-md"
     >
-      <Create
-        mode="modal"
-        @refresh="handleRefresh"
-        @cancelled-create="handleCancelledCreate"
-        :resource-name="resourceName"
-        resource-id=""
-        via-resource=""
-        via-resource-id=""
-        via-relationship=""
-      />
-    </div>
-  </modal>
+        <div
+            class="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden p-8"
+        >
+            <CreateResource
+                mode="modal"
+                @refresh="handleRefresh"
+                @create-cancelled="handleCreateCancelled"
+                :resource-name="resourceName"
+                resource-id=""
+                via-resource=""
+                via-resource-id=""
+                via-relationship=""
+            />
+        </div>
+    </Modal>
 </template>
 
 <script>
-import Create from '@/views/Create'
+import {PreventsModalAbandonment} from '@/mixins'
+import CreateResource from '@/views/Create'
 
 export default {
-  components: { Create },
+    emits: ['set-resource', 'create-cancelled'],
 
-  props: {
-    resourceName: {},
-    resourceId: {},
-    viaResource: {},
-    viaResourceId: {},
-    viaRelationship: {},
-  },
+    mixins: [PreventsModalAbandonment],
 
-  methods: {
-    handleRefresh(data) {
-      // alert('wew refreshing')
-      this.$emit('set-resource', data)
+    components: {
+        CreateResource,
     },
 
-    handleCancelledCreate() {
-      return this.$emit('cancelled-create')
+    props: {
+        show: {type: Boolean, default: false},
+        resourceName: {},
+        resourceId: {},
+        viaResource: {},
+        viaResourceId: {},
+        viaRelationship: {},
     },
 
-    /**
-     * Close the modal.
-     */
-    handleClose() {
-      this.$emit('cancelled-create')
+    methods: {
+        handleRefresh(data) {
+            this.$emit('set-resource', data)
+        },
+
+        handleCreateCancelled() {
+            return this.$emit('create-cancelled')
+        },
+
+        handlePreventModalAbandonmentOnClose() {
+            this.handlePreventModalAbandonment(
+                () => {
+                    this.$emit('create-cancelled')
+                },
+                () => {
+                    e.stopPropagation()
+                }
+            )
+        },
     },
-  },
 }
 </script>

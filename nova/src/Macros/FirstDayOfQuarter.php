@@ -9,7 +9,7 @@ class FirstDayOfQuarter
     /**
      * Execute the macro.
      *
-     * @param  string  $timezone
+     * @param string $timezone
      * @return \DateTimeInterface
      */
     public function firstDayOfQuarter()

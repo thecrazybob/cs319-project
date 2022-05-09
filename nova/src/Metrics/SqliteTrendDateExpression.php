@@ -14,11 +14,11 @@ class SqliteTrendDateExpression extends TrendDateExpression
         $offset = $this->offset();
 
         if ($offset > 0) {
-            $interval = '\'+'.$offset.' hour\'';
+            $interval = '\'+' . $offset . ' hour\'';
         } elseif ($offset === 0) {
             $interval = '\'+0 hour\'';
         } else {
-            $interval = '\'-'.($offset * -1).' hour\'';
+            $interval = '\'-' . ($offset * -1) . ' hour\'';
         }
 
         switch ($this->unit) {

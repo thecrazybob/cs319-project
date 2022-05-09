@@ -14,7 +14,7 @@ trait AcceptsTypes
     /**
      * Set the fields accepted file types.
      *
-     * @param  string  $acceptedTypes
+     * @param string $acceptedTypes
      * @return $this
      */
     public function acceptedTypes($acceptedTypes)

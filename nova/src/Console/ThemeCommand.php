@@ -33,21 +33,21 @@ class ThemeCommand extends Command
      */
     public function handle()
     {
-        if (! $this->hasValidNameArgument()) {
+        if (!$this->hasValidNameArgument()) {
             return;
         }
 
-        (new Filesystem)->copyDirectory(__DIR__.'/theme-stubs', $this->themePath());
+        (new Filesystem)->copyDirectory(__DIR__ . '/theme-stubs', $this->themePath());
 
         // ThemeServiceProvider.php replacements...
-        $this->replace('{{ namespace }}', $this->themeNamespace(), $this->themePath().'/src/ThemeServiceProvider.stub');
-        $this->replace('{{ component }}', $this->themeName(), $this->themePath().'/src/ThemeServiceProvider.stub');
-        $this->replace('{{ name }}', $this->themeName(), $this->themePath().'/src/ThemeServiceProvider.stub');
-        $this->replace('{{ vendor }}', $this->argument('name'), $this->themePath().'/src/ThemeServiceProvider.stub');
+        $this->replace('{{ namespace }}', $this->themeNamespace(), $this->themePath() . '/src/ThemeServiceProvider.stub');
+        $this->replace('{{ component }}', $this->themeName(), $this->themePath() . '/src/ThemeServiceProvider.stub');
+        $this->replace('{{ name }}', $this->themeName(), $this->themePath() . '/src/ThemeServiceProvider.stub');
+        $this->replace('{{ vendor }}', $this->argument('name'), $this->themePath() . '/src/ThemeServiceProvider.stub');
 
         // Theme composer.json replacements...
-        $this->replace('{{ name }}', $this->argument('name'), $this->themePath().'/composer.json');
-        $this->replace('{{ escapedNamespace }}', $this->escapedThemeNamespace(), $this->themePath().'/composer.json');
+        $this->replace('{{ name }}', $this->argument('name'), $this->themePath() . '/composer.json');
+        $this->replace('{{ escapedNamespace }}', $this->escapedThemeNamespace(), $this->themePath() . '/composer.json');
 
         // Rename the stubs with the proper file extensions...
         $this->renameStubs();
@@ -69,7 +69,7 @@ class ThemeCommand extends Command
     protected function stubsToRename()
     {
         return [
-            $this->themePath().'/src/ThemeServiceProvider.stub',
+            $this->themePath() . '/src/ThemeServiceProvider.stub',
         ];
     }
 
@@ -84,7 +84,7 @@ class ThemeCommand extends Command
 
         $composer['repositories'][] = [
             'type' => 'path',
-            'url' => './'.$this->relativeThemePath(),
+            'url' => './' . $this->relativeThemePath(),
         ];
 
         file_put_contents(
@@ -123,8 +123,8 @@ class ThemeCommand extends Command
     /**
      * Run the given command as a process.
      *
-     * @param  string  $command
-     * @param  string  $path
+     * @param string $command
+     * @param string $path
      * @return void
      */
     protected function executeCommand($command, $path)
@@ -143,9 +143,9 @@ class ThemeCommand extends Command
     /**
      * Replace the given string in the given file.
      *
-     * @param  string  $search
-     * @param  string  $replace
-     * @param  string  $path
+     * @param string $search
+     * @param string $replace
+     * @param string $path
      * @return void
      */
     protected function replace($search, $replace, $path)
@@ -160,7 +160,7 @@ class ThemeCommand extends Command
      */
     protected function themePath()
     {
-        return base_path('nova-components/'.$this->themeClass());
+        return base_path('nova-components/' . $this->themeClass());
     }
 
     /**
@@ -170,7 +170,7 @@ class ThemeCommand extends Command
      */
     protected function relativeThemePath()
     {
-        return 'nova-components/'.$this->themeClass();
+        return 'nova-components/' . $this->themeClass();
     }
 
     /**
@@ -180,7 +180,7 @@ class ThemeCommand extends Command
      */
     protected function themeNamespace()
     {
-        return Str::studly($this->themeVendor()).'\\'.$this->themeClass();
+        return Str::studly($this->themeVendor()) . '\\' . $this->themeClass();
     }
 
     /**

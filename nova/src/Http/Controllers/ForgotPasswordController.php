@@ -8,10 +8,12 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Password;
+use Inertia\Inertia;
 
 class ForgotPasswordController extends Controller
 {
     use ValidatesRequests;
+
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
@@ -32,13 +34,13 @@ class ForgotPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('nova.guest:'.config('nova.guard'));
+        $this->middleware('nova.guest:' . config('nova.guard'));
 
         ResetPassword::toMailUsing(function ($notifiable, $token) {
             return (new MailMessage)
                 ->subject(__('Reset Password Notification'))
                 ->line(__('You are receiving this email because we received a password reset request for your account.'))
-                ->action(__('Reset Password'), route('nova.password.reset', $token))
+                ->action(__('Reset Password'), route('nova.pages.password.reset', ['token' => $token]))
                 ->line(__('If you did not request a password reset, no further action is required.'));
         });
     }
@@ -46,11 +48,11 @@ class ForgotPasswordController extends Controller
     /**
      * Display the form to request a password reset link.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function showLinkRequestForm()
     {
-        return view('nova::auth.passwords.email');
+        return Inertia::render('Nova.ForgotPassword');
     }
 
     /**

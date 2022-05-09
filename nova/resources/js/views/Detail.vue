@@ -1,548 +1,321 @@
 <template>
-  <loading-view :loading="initialLoading">
-    <custom-detail-header
-      class="mb-3"
-      :resource="resource"
-      :resource-id="resourceId"
-      :resource-name="resourceName"
-    />
-
-    <div v-if="shouldShowCards">
-      <cards
-        v-if="smallCards.length > 0"
-        :cards="smallCards"
-        class="mb-3"
-        :resource="resource"
-        :resource-id="resourceId"
-        :resource-name="resourceName"
-        :only-on-detail="true"
-      />
-
-      <cards
-        v-if="largeCards.length > 0"
-        :cards="largeCards"
-        size="large"
-        :resource="resource"
-        :resource-id="resourceId"
-        :resource-name="resourceName"
-        :only-on-detail="true"
-      />
-    </div>
-
-    <!-- Resource Detail -->
-    <div
-      v-for="panel in availablePanels"
-      :dusk="resourceName + '-detail-component'"
-      class="mb-8"
-      :key="panel.id"
-    >
-      <component
-        :is="panel.component"
-        :resource-name="resourceName"
-        :resource-id="resourceId"
-        :resource="resource"
-        :panel="panel"
-      >
-        <div v-if="panel.showToolbar" class="flex items-center mb-3">
-          <heading :level="1" class="flex-auto truncate">{{
-            panel.name
-          }}</heading>
-
-          <div class="ml-3 flex items-center">
-            <custom-detail-toolbar
-              :resource="resource"
-              :resource-name="resourceName"
-              :resource-id="resourceId"
+    <LoadingView :loading="initialLoading">
+        <template v-if="shouldOverrideMeta && resourceInformation && title">
+            <Head
+                :title="
+          __(':resource Details: :title', {
+            resource: resourceInformation.singularLabel,
+            title: title,
+          })
+        "
             />
+        </template>
 
-            <!-- Actions -->
-            <action-selector
-              v-if="resource"
-              :resource-name="resourceName"
-              :actions="actions"
-              :pivot-actions="{ actions: [] }"
-              :selected-resources="selectedResources"
-              :query-string="{
-                currentSearch,
-                encodedFilters,
-                currentTrashed,
-                viaResource,
-                viaResourceId,
-                viaRelationship,
-              }"
-              @actionExecuted="actionExecuted"
-              class="ml-3"
+        <div v-if="shouldShowCards && hasDetailOnlyCards">
+            <Cards
+                v-if="cards.length > 0"
+                :cards="cards"
+                :only-on-detail="true"
+                :resource="resource"
+                :resource-id="resourceId"
+                :resource-name="resourceName"
             />
-
-            <button
-              v-if="resource.authorizedToDelete && !resource.softDeleted"
-              data-testid="open-delete-modal"
-              dusk="open-delete-modal-button"
-              @click="openDeleteModal"
-              class="btn btn-default btn-icon btn-white mr-3"
-              :title="__('Delete')"
-            >
-              <icon type="delete" class="text-80" />
-            </button>
-
-            <button
-              v-if="resource.authorizedToRestore && resource.softDeleted"
-              data-testid="open-restore-modal"
-              dusk="open-restore-modal-button"
-              @click="openRestoreModal"
-              class="btn btn-default btn-icon btn-white mr-3"
-              :title="__('Restore')"
-            >
-              <icon type="restore" class="text-80" />
-            </button>
-
-            <button
-              v-if="resource.authorizedToForceDelete"
-              data-testid="open-force-delete-modal"
-              dusk="open-force-delete-modal-button"
-              @click="openForceDeleteModal"
-              class="btn btn-default btn-icon btn-white mr-3"
-              :title="__('Force Delete')"
-            >
-              <icon type="force-delete" class="text-80" />
-            </button>
-
-            <portal
-              to="modals"
-              v-if="deleteModalOpen || restoreModalOpen || forceDeleteModalOpen"
-            >
-              <delete-resource-modal
-                v-if="deleteModalOpen"
-                @confirm="confirmDelete"
-                @close="closeDeleteModal"
-                mode="delete"
-              />
-
-              <restore-resource-modal
-                v-if="restoreModalOpen"
-                @confirm="confirmRestore"
-                @close="closeRestoreModal"
-              />
-
-              <delete-resource-modal
-                v-if="forceDeleteModalOpen"
-                @confirm="confirmForceDelete"
-                @close="closeForceDeleteModal"
-                mode="force delete"
-              />
-            </portal>
-
-            <router-link
-              v-if="resource.authorizedToUpdate"
-              data-testid="edit-resource"
-              dusk="edit-resource-button"
-              :to="{ name: 'edit', params: { id: resource.id } }"
-              class="btn btn-default btn-icon bg-primary"
-              :title="__('Edit')"
-            >
-              <icon
-                type="edit"
-                class="text-white"
-                style="margin-top: -2px; margin-left: 3px"
-              />
-            </router-link>
-          </div>
         </div>
-      </component>
-    </div>
-  </loading-view>
+
+        <!-- Resource Detail -->
+        <div
+            :class="{
+        'mt-6': shouldShowCards && hasDetailOnlyCards && cards.length > 0,
+      }"
+            :dusk="resourceName + '-detail-component'"
+        >
+            <component
+                :is="resolveComponentName(panel)"
+                v-for="panel in panels"
+                :key="panel.id"
+                :panel="panel"
+                :resource="resource"
+                :resource-id="resourceId"
+                :resource-name="resourceName"
+                class="mb-8"
+            >
+                <div v-if="panel.showToolbar" class="md:flex items-center mb-3">
+                    <div class="flex flex-auto truncate items-center">
+                        <Heading :level="1" v-text="panel.name"/>
+                        <Badge
+                            v-if="resource.softDeleted"
+                            :label="__('Soft Deleted')"
+                            class="bg-red-100 text-red-500 rounded px-2 py-0.5 ml-3"
+                        />
+                    </div>
+
+                    <div class="ml-auto flex items-center">
+                        <!-- Actions Menu -->
+                        <DetailActionDropdown
+                            v-if="resource"
+                            :resource="resource"
+                            :actions="actions"
+                            :via-resource="viaResource"
+                            :via-resource-id="viaResourceId"
+                            :via-relationship="viaRelationship"
+                            :resource-name="resourceName"
+                            class="mt-1 md:mt-0 md:ml-2 md:mr-2"
+                            @actionExecuted="actionExecuted"
+                            @resource-deleted="getResource"
+                            @resource-restored="getResource"
+                        />
+
+                        <Link
+                            v-if="resource.authorizedToUpdate"
+                            v-tooltip="{
+                placement: 'bottom',
+                distance: 10,
+                skidding: 0,
+                content: __('Edit'),
+              }"
+                            :href="$url(`/resources/${resourceName}/${resourceId}/edit`)"
+                            class="rounded hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none focus:ring"
+                            data-testid="edit-resource"
+                            dusk="edit-resource-button"
+                            tabindex="1"
+                        >
+                            <BasicButton component="span">
+                                <Icon type="pencil-alt"/>
+                            </BasicButton>
+                        </Link>
+                    </div>
+                </div>
+            </component>
+        </div>
+    </LoadingView>
 </template>
 
 <script>
+import isNil from 'lodash/isNil'
 import {
-  InteractsWithResourceInformation,
-  Errors,
-  Deletable,
-  Minimum,
-  mapProps,
-  HasCards,
-} from 'laravel-nova'
+    Errors,
+    HasCards,
+    InteractsWithResourceInformation,
+    mapProps,
+} from '@/mixins'
+import {minimum} from '@/util'
+import {mapActions} from 'vuex'
 
 export default {
-  metaInfo() {
-    if (this.resourceInformation && this.title) {
-      return {
-        title: this.__(':resource Details: :title', {
-          resource: this.resourceInformation.singularLabel,
-          title: this.title,
-        }),
-      }
-    }
-  },
+    props: {
+        shouldOverrideMeta: {
+            type: Boolean,
+            default: false,
+        },
 
-  props: mapProps(['resourceName', 'resourceId']),
+        shouldEnableShortcut: {
+            type: Boolean,
+            default: false,
+        },
 
-  mixins: [Deletable, HasCards, InteractsWithResourceInformation],
+        ...mapProps([
+            'resourceName',
+            'resourceId',
+            'viaResource',
+            'viaResourceId',
+            'viaRelationship',
+            'relationshipType',
+        ]),
+    },
 
-  data: () => ({
-    initialLoading: true,
-    loading: true,
+    mixins: [HasCards, InteractsWithResourceInformation],
 
-    title: null,
-    resource: null,
-    panels: [],
-    actions: [],
-    actionValidationErrors: new Errors(),
-    deleteModalOpen: false,
-    restoreModalOpen: false,
-    forceDeleteModalOpen: false,
-  }),
+    data: () => ({
+        initialLoading: true,
+        loading: true,
 
-  watch: {
-    resourceId: function (newResourceId, oldResourceId) {
-      if (newResourceId != oldResourceId) {
+        title: null,
+        resource: null,
+        panels: [],
+        actions: [],
+        actionValidationErrors: new Errors(),
+    }),
+
+    /**
+     * Bind the keydown even listener when the component is created
+     */
+    created() {
+        if (Nova.missingResource(this.resourceName)) return Nova.visit('/404')
+
+        if (this.shouldEnableShortcut === true) {
+            Nova.addShortcut('e', this.handleKeydown)
+        }
+    },
+
+    /**
+     * Unbind the keydown even listener when the before component is destroyed
+     */
+    beforeUnmount() {
+        if (this.shouldEnableShortcut === true) {
+            Nova.disableShortcut('e')
+        }
+    },
+
+    /**
+     * Mount the component.
+     */
+    mounted() {
         this.initializeComponent()
-        this.fetchCards()
-      }
-    },
-  },
-
-  /**
-   * Bind the keydown even listener when the component is created
-   */
-  created() {
-    if (Nova.missingResource(this.resourceName))
-      return this.$router.push({ name: '404' })
-
-    Nova.addShortcut('e', this.handleKeydown)
-  },
-
-  /**
-   * Unbind the keydown even listener when the before component is destroyed
-   */
-  beforeDestroy() {
-    Nova.disableShortcut('e')
-  },
-
-  /**
-   * Mount the component.
-   */
-  mounted() {
-    this.initializeComponent()
-  },
-
-  methods: {
-    /**
-     * Handle the keydown event
-     */
-    handleKeydown(e) {
-      if (
-        this.resource.authorizedToUpdate &&
-        e.target.tagName != 'INPUT' &&
-        e.target.tagName != 'TEXTAREA' &&
-        e.target.contentEditable != 'true'
-      ) {
-        this.$router.push({
-          name: 'edit',
-          params: { id: this.resource.id },
-        })
-      }
     },
 
-    /**
-     * Initialize the compnent's data.
-     */
-    async initializeComponent() {
-      await this.getResource()
-      await this.getActions()
+    methods: {
+        ...mapActions(['startImpersonating']),
 
-      this.initialLoading = false
-    },
+        /**
+         * Initialize the component's data.
+         */
+        handleResourceLoaded() {
+            this.loading = false
 
-    /**
-     * Get the resource information.
-     */
-    getResource() {
-      this.resource = null
+            Nova.$emit('resource-loaded', {
+                resourceName: this.resourceName,
+                resourceId: this.resourceId.toString(),
+                mode: 'detail',
+            })
+        },
 
-      return Minimum(
-        Nova.request().get(
-          '/nova-api/' + this.resourceName + '/' + this.resourceId
-        )
-      )
-        .then(({ data: { title, panels, resource } }) => {
-          this.title = title
-          this.panels = panels
-          this.resource = resource
-          this.loading = false
-        })
-        .catch(error => {
-          if (error.response.status >= 500) {
-            Nova.$emit('error', error.response.data.message)
-            return
-          }
-
-          if (error.response.status === 404 && this.initialLoading) {
-            this.$router.push({ name: '404' })
-            return
-          }
-
-          if (error.response.status === 403) {
-            this.$router.push({ name: '403' })
-            return
-          }
-
-          Nova.error(this.__('This resource no longer exists'))
-
-          this.$router.push({
-            name: 'index',
-            params: { resourceName: this.resourceName },
-          })
-        })
-    },
-
-    /**
-     * Get the available actions for the resource.
-     */
-    getActions() {
-      this.actions = []
-
-      return Nova.request()
-        .get('/nova-api/' + this.resourceName + '/actions', {
-          params: {
-            resourceId: this.resourceId,
-            editing: true,
-            editMode: 'create',
-            display: 'detail',
-          },
-        })
-        .then(response => {
-          this.actions = response.data.actions
-        })
-    },
-
-    /**
-     * Handle an action executed event.
-     */
-    async actionExecuted() {
-      await this.getResource()
-      await this.getActions()
-    },
-
-    /**
-     * Create a new panel for the given field.
-     */
-    createPanelForField(field) {
-      return _.tap(
-        _.find(this.panels, panel => panel.name == field.panel),
-        panel => {
-          panel.fields = [field]
-        }
-      )
-    },
-
-    /**
-     * Create a new panel for the given relationship field.
-     */
-    createPanelForRelationship(field) {
-      return {
-        component: 'relationship-panel',
-        prefixComponent: true,
-        name: field.name,
-        fields: [field],
-      }
-    },
-
-    /**
-     * Show the confirmation modal for deleting or detaching a resource
-     */
-    async confirmDelete() {
-      this.deleteResources([this.resource], response => {
-        Nova.success(
-          this.__('The :resource was deleted!', {
-            resource: this.resourceInformation.singularLabel.toLowerCase(),
-          })
-        )
-
-        if (response && response.data && response.data.redirect) {
-          this.$router.push({ path: response.data.redirect }, () => {
-            window.scrollTo(0, 0)
-          })
-          return
-        }
-
-        if (!this.resource.softDeletes) {
-          this.$router.push(
-            {
-              name: 'index',
-              params: { resourceName: this.resourceName },
-            },
-            () => {
-              window.scrollTo(0, 0)
+        /**
+         * Handle the keydown event
+         */
+        handleKeydown(e) {
+            if (
+                this.resource.authorizedToUpdate &&
+                e.target.tagName != 'INPUT' &&
+                e.target.tagName != 'TEXTAREA' &&
+                e.target.contentEditable != 'true'
+            ) {
+                Nova.visit(`/resources/${this.resourceName}/${this.resourceId}/edit`)
             }
-          )
-          return
-        }
+        },
 
-        this.closeDeleteModal()
-        this.getResource()
-      })
+        /**
+         * Initialize the component's data.
+         */
+        async initializeComponent() {
+            await this.getResource()
+            await this.getActions()
+
+            this.initialLoading = false
+        },
+
+        /**
+         * Get the resource information.
+         */
+        getResource() {
+            this.loading = true
+            this.panels = null
+            this.resource = null
+
+            return minimum(
+                Nova.request().get(
+                    '/nova-api/' + this.resourceName + '/' + this.resourceId,
+                    {
+                        params: {
+                            viaResource: this.viaResource,
+                            viaResourceId: this.viaResourceId,
+                            viaRelationship: this.viaRelationship,
+                            relationshipType: this.relationshipType,
+                        },
+                    }
+                )
+            )
+                .then(({data: {title, panels, resource}}) => {
+                    this.title = title
+                    this.panels = panels
+                    this.resource = resource
+
+                    this.handleResourceLoaded()
+                })
+                .catch(error => {
+                    if (error.response.status >= 500) {
+                        Nova.$emit('error', error.response.data.message)
+                        return
+                    }
+
+                    if (error.response.status === 404 && this.initialLoading) {
+                        Nova.visit('/404')
+                        return
+                    }
+
+                    if (error.response.status === 403) {
+                        Nova.visit('/403')
+                        return
+                    }
+
+                    if (error.response.status === 401) return Nova.redirectToLogin()
+
+                    Nova.error(this.__('This resource no longer exists'))
+
+                    Nova.visit(`/resources/${this.resourceName}`)
+                })
+        },
+
+        /**
+         * Get the available actions for the resource.
+         */
+        getActions() {
+            this.actions = []
+
+            return Nova.request()
+                .get('/nova-api/' + this.resourceName + '/actions', {
+                    params: {
+                        resourceId: this.resourceId,
+                        editing: true,
+                        editMode: 'create',
+                        display: 'detail',
+                    },
+                })
+                .then(response => {
+                    this.actions = response.data.actions
+                })
+        },
+
+        /**
+         * Handle an action executed event.
+         */
+        async actionExecuted() {
+            await this.getResource()
+            await this.getActions()
+        },
+
+        /**
+         * Resolve the component name.
+         */
+        resolveComponentName(panel) {
+            return isNil(panel.prefixComponent) || panel.prefixComponent
+                ? 'detail-' + panel.component
+                : panel.component
+        },
     },
 
-    /**
-     * Open the delete modal
-     */
-    openDeleteModal() {
-      this.deleteModalOpen = true
+    computed: {
+        /**
+         * Determine whether this is a detail view for an Action Event
+         */
+        isActionDetail() {
+            return this.resourceName == 'action-events'
+        },
+
+        /**
+         * Get the endpoint for this resource's metrics.
+         */
+        cardsEndpoint() {
+            return `/nova-api/${this.resourceName}/cards`
+        },
+
+        /**
+         * Get the extra card params to pass to the endpoint.
+         */
+        extraCardParams() {
+            return {
+                resourceId: this.resourceId,
+            }
+        },
     },
-
-    /**
-     * Close the delete modal
-     */
-    closeDeleteModal() {
-      this.deleteModalOpen = false
-    },
-
-    /**
-     * Show the confirmation modal for restoring a resource
-     */
-    async confirmRestore() {
-      this.restoreResources([this.resource], () => {
-        Nova.success(
-          this.__('The :resource was restored!', {
-            resource: this.resourceInformation.singularLabel.toLowerCase(),
-          })
-        )
-
-        this.closeRestoreModal()
-        this.getResource()
-      })
-    },
-
-    /**
-     * Open the restore modal
-     */
-    openRestoreModal() {
-      this.restoreModalOpen = true
-    },
-
-    /**
-     * Close the restore modal
-     */
-    closeRestoreModal() {
-      this.restoreModalOpen = false
-    },
-
-    /**
-     * Show the confirmation modal for force deleting
-     */
-    async confirmForceDelete() {
-      this.forceDeleteResources([this.resource], response => {
-        Nova.success(
-          this.__('The :resource was deleted!', {
-            resource: this.resourceInformation.singularLabel.toLowerCase(),
-          })
-        )
-
-        if (response && response.data && response.data.redirect) {
-          this.$router.push({ path: response.data.redirect })
-          return
-        }
-
-        this.$router.push({
-          name: 'index',
-          params: { resourceName: this.resourceName },
-        })
-      })
-    },
-
-    /**
-     * Open the force delete modal
-     */
-    openForceDeleteModal() {
-      this.forceDeleteModalOpen = true
-    },
-
-    /**
-     * Close the force delete modal
-     */
-    closeForceDeleteModal() {
-      this.forceDeleteModalOpen = false
-    },
-  },
-
-  computed: {
-    /**
-     * Get the available field panels.
-     */
-    availablePanels() {
-      if (this.resource) {
-        var panels = {}
-
-        var fields = _.toArray(JSON.parse(JSON.stringify(this.resource.fields)))
-
-        fields.forEach(field => {
-          if (field.listable) {
-            return (panels[field.name] = this.createPanelForRelationship(field))
-          } else if (panels[field.panel]) {
-            return panels[field.panel].fields.push(field)
-          }
-
-          panels[field.panel] = this.createPanelForField(field)
-        })
-
-        return _.toArray(panels)
-      }
-    },
-
-    /**
-     * These are here to satisfy the parameter requirements for deleting the resource
-     */
-    currentSearch() {
-      return ''
-    },
-
-    encodedFilters() {
-      return []
-    },
-
-    currentTrashed() {
-      return ''
-    },
-
-    viaResource() {
-      return ''
-    },
-
-    viaResourceId() {
-      return ''
-    },
-
-    viaRelationship() {
-      return ''
-    },
-
-    selectedResources() {
-      return [this.resourceId]
-    },
-
-    /**
-     * Determine whether this is a detail view for an Action Event
-     */
-    isActionDetail() {
-      return this.resourceName == 'action-events'
-    },
-
-    /**
-     * Get the endpoint for this resource's metrics.
-     */
-    cardsEndpoint() {
-      return `/nova-api/${this.resourceName}/cards`
-    },
-
-    /**
-     * Get the extra card params to pass to the endpoint.
-     */
-    extraCardParams() {
-      return {
-        resourceId: this.resourceId,
-      }
-    },
-  },
 }
 </script>

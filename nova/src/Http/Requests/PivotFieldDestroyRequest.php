@@ -14,7 +14,7 @@ class PivotFieldDestroyRequest extends NovaRequest
      */
     public function authorizeForAttachment()
     {
-        if (! $this->newResourceWith($this->findModelOrFail())->authorizedToAttach(
+        if (!$this->newResourceWith($this->findModelOrFail())->authorizedToAttach(
             $this, $this->findRelatedModel()
         )) {
             abort(403);
@@ -34,7 +34,7 @@ class PivotFieldDestroyRequest extends NovaRequest
             abort_unless($resource->hasRelatableField($this, $this->viaRelationship), 404);
 
             return $this->findRelatedModel()->{
-                $resource->model()->{$this->viaRelationship}()->getPivotAccessor()
+            $resource->model()->{$this->viaRelationship}()->getPivotAccessor()
             };
         });
     }
@@ -46,11 +46,9 @@ class PivotFieldDestroyRequest extends NovaRequest
      */
     public function findRelatedResource()
     {
-        $related = $this->findRelatedModel();
-
-        $resource = Nova::resourceForModel($related);
-
-        return new $resource($related);
+        return Nova::newResourceFromModel(
+            $this->findRelatedModel()
+        );
     }
 
     /**
@@ -66,9 +64,9 @@ class PivotFieldDestroyRequest extends NovaRequest
             abort_unless($resource->hasRelatableField($this, $this->viaRelationship), 404);
 
             return $resource->model()->{$this->viaRelationship}()
-                        ->withoutGlobalScopes()
-                        ->lockForUpdate()
-                        ->findOrFail($this->relatedResourceId);
+                ->withoutGlobalScopes()
+                ->lockForUpdate()
+                ->findOrFail($this->relatedResourceId);
         });
     }
 

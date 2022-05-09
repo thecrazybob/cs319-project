@@ -1,149 +1,138 @@
 <template>
-  <modal
-    data-testid="confirm-action-modal"
-    tabindex="-1"
-    role="dialog"
-    :closes-via-backdrop="canLeave"
-    @modal-close="handleClose"
-  >
-    <form
-      autocomplete="off"
-      @keydown="handleKeydown"
-      @submit.prevent.stop="handleConfirm"
-      class="bg-white rounded-lg shadow-lg overflow-hidden"
-      :class="{
-        'w-action-fields': action.fields.length > 0,
-        'w-action': action.fields.length == 0,
-      }"
+    <Modal
+        :show="show"
+        @showing="handleShowingModal"
+        @close-via-escape="handlePreventModalAbandonmentOnClose"
+        data-testid="confirm-action-modal"
+        tabindex="-1"
+        role="dialog"
     >
-      <div>
-        <heading :level="2" class="border-b border-40 py-8 px-8">{{
-          action.name
-        }}</heading>
+        <form
+            ref="theForm"
+            autocomplete="off"
+            @change="onUpdateFormStatus"
+            @submit.prevent.stop="$emit('confirm')"
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+        >
+            <div>
+                <ModalHeader v-text="action.name"/>
 
-        <p v-if="action.fields.length == 0" class="text-80 px-8 my-8">
-          {{ action.confirmText }}
-        </p>
+                <p v-if="action.fields.length == 0" class="px-8 my-8">
+                    {{ action.confirmText }}
+                </p>
 
-        <div v-else>
-          <!-- Validation Errors -->
-          <validation-errors :errors="errors" />
+                <div v-else>
+                    <!-- Validation Errors -->
+                    <validation-errors :errors="errors"/>
 
-          <!-- Action Fields -->
-          <div
-            class="action"
-            v-for="field in action.fields"
-            :key="field.attribute"
-          >
-            <component
-              :is="'form-' + field.component"
-              :errors="errors"
-              :resource-name="resourceName"
-              :field="field"
-              :show-help-text="field.helpText != null"
-            />
-          </div>
-        </div>
-      </div>
+                    <!-- Action Fields -->
+                    <div
+                        class="action"
+                        v-for="field in action.fields"
+                        :key="field.attribute"
+                    >
+                        <component
+                            :is="'form-' + field.component"
+                            :errors="errors"
+                            :resource-name="resourceName"
+                            :field="field"
+                            :show-help-text="field.helpText != null"
+                            @field-changed="onUpdateFormStatus"
+                        />
+                    </div>
+                </div>
+            </div>
 
-      <div class="bg-30 px-6 py-3 flex">
-        <div class="flex items-center ml-auto">
-          <button
-            dusk="cancel-action-button"
-            type="button"
-            @click.prevent="handleClose"
-            class="btn btn-link dim cursor-pointer text-80 ml-auto mr-6"
-          >
-            {{ action.cancelButtonText }}
-          </button>
+            <ModalFooter>
+                <div class="flex items-center ml-auto">
+                    <CancelButton
+                        component="button"
+                        type="button"
+                        dusk="cancel-action-button"
+                        class="ml-auto mr-3"
+                        @click="$emit('close')"
+                    />
 
-          <loading-button
-            ref="runButton"
-            dusk="confirm-action-button"
-            :processing="working"
-            :disabled="working"
-            type="submit"
-            class="btn btn-default"
-            :class="action.class"
-          >
-            {{ action.confirmButtonText }}
-          </loading-button>
-        </div>
-      </div>
-    </form>
-  </modal>
+                    <LoadingButton
+                        type="submit"
+                        ref="runButton"
+                        dusk="confirm-action-button"
+                        :disabled="working"
+                        :loading="working"
+                        :component="action.destructive ? 'DangerButton' : 'DefaultButton'"
+                    >
+                        {{ action.confirmButtonText }}
+                    </LoadingButton>
+                </div>
+            </ModalFooter>
+        </form>
+    </Modal>
 </template>
 
 <script>
+import {PreventsModalAbandonment} from '@/mixins'
+
 export default {
-  props: {
-    working: Boolean,
-    resourceName: { type: String, required: true },
-    action: { type: Object, required: true },
-    selectedResources: { type: [Array, String], required: true },
-    errors: { type: Object, required: true },
-  },
+    emits: ['confirm', 'close'],
 
-  created() {
-    const listenToDatePickerOpened = event => {
-      this.canLeave = false
-    }
+    mixins: [PreventsModalAbandonment],
 
-    const listenToDatePickerClosed = event => {
-      this.canLeave = true
-    }
-
-    Nova.$on('datepicker-opened', listenToDatePickerOpened)
-    Nova.$on('datepicker-closed', listenToDatePickerClosed)
-
-    this.$once('hook:beforeDestroy', () => {
-      Nova.$off('datepicker-opened', listenToDatePickerOpened)
-      Nova.$off('datepicker-closed', listenToDatePickerClosed)
-    })
-  },
-
-  /**
-   * Mount the component.
-   */
-  mounted() {
-    // If the modal has inputs, let's highlight the first one, otherwise
-    // let's highlight the submit button
-    if (document.querySelectorAll('.modal input').length) {
-      document.querySelectorAll('.modal input')[0].focus()
-    } else {
-      this.$refs.runButton.focus()
-    }
-  },
-
-  data: () => ({
-    canLeave: true,
-  }),
-
-  methods: {
-    /**
-     * Stop propogation of input events unless it's for an escape or enter keypress
-     */
-    handleKeydown(e) {
-      if (['Escape', 'Enter'].indexOf(e.key) !== -1) {
-        return
-      }
-
-      e.stopPropagation()
+    props: {
+        show: {type: Boolean, default: false},
+        working: Boolean,
+        resourceName: {type: String, required: true},
+        action: {type: Object, required: true},
+        selectedResources: {type: [Array, String], required: true},
+        errors: {type: Object, required: true},
     },
 
-    /**
-     * Execute the selected action.
-     */
-    handleConfirm() {
-      this.$emit('confirm')
+    created() {
+        document.addEventListener('keydown', this.handleKeydown)
     },
 
-    /**
-     * Close the modal.
-     */
-    handleClose() {
-      this.$emit('close')
+    beforeUnmount() {
+        document.removeEventListener('keydown', this.handleKeydown)
     },
-  },
+
+    methods: {
+        /**
+         * Prevent accidental abandonment only if form was changed.
+         */
+        onUpdateFormStatus() {
+            this.updateModalStatus()
+        },
+
+        /**
+         * Handle focus when modal being shown.
+         */
+        handleShowingModal(e) {
+            // If the modal has inputs, let's highlight the first one, otherwise
+            // let's highlight the submit button
+            this.$nextTick(() => {
+                if (this.$refs.theForm) {
+                    let formFields = this.$refs.theForm.querySelectorAll(
+                        'input, textarea, select'
+                    )
+
+                    formFields.length > 0
+                        ? formFields[0].focus()
+                        : this.$refs.runButton.focus()
+                } else {
+                    this.$refs.runButton.focus()
+                }
+            })
+        },
+
+        handlePreventModalAbandonmentOnClose() {
+            this.handlePreventModalAbandonment(
+                () => {
+                    this.$emit('close')
+                },
+                () => {
+                    e.stopPropagation()
+                }
+            )
+        },
+    },
 }
 </script>

@@ -2,12 +2,14 @@
 
 namespace Laravel\Nova\Metrics;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Carbon;
 use Laravel\Nova\Nova;
 
 abstract class Value extends RangedMetric
 {
+    use RoundingPrecision;
+
     /**
      * The element's component.
      *
@@ -16,19 +18,32 @@ abstract class Value extends RangedMetric
     public $component = 'value-metric';
 
     /**
-     * The value's precision when rounding.
+     * The element's icon.
      *
-     * @var int
+     * @var string
      */
-    public $precision = 0;
+    public $icon = 'chart-bar';
+
+    /**
+     * Set the icon for the metric.
+     *
+     * @param string $icon
+     * @return $this
+     */
+    public function icon($icon)
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
 
     /**
      * Return a value result showing the growth of an count aggregate over time.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  \Illuminate\Database\Query\Expression|string|null  $column
-     * @param  string|null  $dateColumn
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder|class-string<\Illuminate\Database\Eloquent\Model> $model
+     * @param \Illuminate\Database\Query\Expression|string|null $column
+     * @param string|null $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function count($request, $model, $column = null, $dateColumn = null)
@@ -39,10 +54,10 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of an average aggregate over time.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  \Illuminate\Database\Query\Expression|string  $column
-     * @param  string|null  $dateColumn
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder|class-string<\Illuminate\Database\Eloquent\Model> $model
+     * @param \Illuminate\Database\Query\Expression|string $column
+     * @param string|null $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function average($request, $model, $column, $dateColumn = null)
@@ -53,10 +68,10 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of a sum aggregate over time.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  \Illuminate\Database\Query\Expression|string  $column
-     * @param  string|null  $dateColumn
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder|class-string<\Illuminate\Database\Eloquent\Model> $model
+     * @param \Illuminate\Database\Query\Expression|string $column
+     * @param string|null $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function sum($request, $model, $column, $dateColumn = null)
@@ -67,10 +82,10 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of a maximum aggregate over time.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  \Illuminate\Database\Query\Expression|string  $column
-     * @param  string|null  $dateColumn
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder|class-string<\Illuminate\Database\Eloquent\Model> $model
+     * @param \Illuminate\Database\Query\Expression|string $column
+     * @param string|null $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function max($request, $model, $column, $dateColumn = null)
@@ -81,10 +96,10 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of a minimum aggregate over time.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  \Illuminate\Database\Query\Expression|string  $column
-     * @param  string|null  $dateColumn
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder|class-string<\Illuminate\Database\Eloquent\Model> $model
+     * @param \Illuminate\Database\Query\Expression|string $column
+     * @param string|null $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function min($request, $model, $column, $dateColumn = null)
@@ -95,64 +110,75 @@ abstract class Value extends RangedMetric
     /**
      * Return a value result showing the growth of a model over a given time frame.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder|string  $model
-     * @param  string  $function
-     * @param  \Illuminate\Database\Query\Expression|string|null  $column
-     * @param  string|null  $dateColumn
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder|class-string<\Illuminate\Database\Eloquent\Model> $model
+     * @param string $function
+     * @param \Illuminate\Database\Query\Expression|string|null $column
+     * @param string|null $dateColumn
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     protected function aggregate($request, $model, $function, $column = null, $dateColumn = null)
     {
         $query = $model instanceof Builder ? $model : (new $model)->newQuery();
 
+        $query->tap(function ($query) use ($request) {
+            return $this->applyFilterQuery($request, $query);
+        });
+
         $column = $column ?? $query->getModel()->getQualifiedKeyName();
 
         if ($request->range === 'ALL') {
             return $this->result(
-                round(with(clone $query)->{$function}($column), $this->precision)
+                round(
+                    with(clone $query)->{$function}($column),
+                    $this->roundingPrecision,
+                    $this->roundingMode
+                )
             );
         }
 
-        $timezone = Nova::resolveUserTimezone($request) ?? $request->timezone;
+        $dateColumn = $dateColumn ?? $query->getModel()->getQualifiedCreatedAtColumn();
+        $timezone = Nova::resolveUserTimezone($request) ?? $this->getDefaultTimezone($request);
 
-        $previousValue = round(with(clone $query)->whereBetween(
-            $dateColumn ?? $query->getModel()->getQualifiedCreatedAtColumn(),
-            array_map(function ($datetime) {
-                return $this->asQueryDatetime($datetime);
-            }, $this->previousRange($request->range, $timezone))
-        )->{$function}($column) ?? 0, $this->precision);
+        $previousValue = round(
+            with(clone $query)->whereBetween(
+                $dateColumn, $this->formatQueryDateBetween($this->previousRange($request->range, $timezone))
+            )->{$function}($column) ?? 0,
+            $this->roundingPrecision,
+            $this->roundingMode
+        );
 
         return $this->result(
-            round(with(clone $query)->whereBetween(
-                $dateColumn ?? $query->getModel()->getQualifiedCreatedAtColumn(),
-                array_map(function ($datetime) {
-                    return $this->asQueryDatetime($datetime);
-                }, $this->currentRange($request->range, $timezone))
-            )->{$function}($column) ?? 0, $this->precision)
+            round(
+                with(clone $query)->whereBetween(
+                    $dateColumn, $this->formatQueryDateBetween($this->currentRange($request->range, $timezone))
+                )->{$function}($column) ?? 0,
+                $this->roundingPrecision,
+                $this->roundingMode
+            )
         )->previous($previousValue);
     }
 
     /**
      * Calculate the previous range and calculate any short-cuts.
      *
-     * @param  string|int  $range
-     * @param  string  $timezone
-     * @return array
+     * @param string|int $range
+     * @param string $timezone
+     * @return array<int, \Carbon\CarbonImmutable>
      */
     protected function previousRange($range, $timezone)
     {
         if ($range == 'TODAY') {
             return [
-                now($timezone)->modify('yesterday')->setTime(0, 0),
-                today($timezone)->subSecond(1),
+                CarbonImmutable::now($timezone)->modify('yesterday')->setTime(0, 0),
+                CarbonImmutable::today($timezone)->subSecond(),
             ];
         }
 
         if ($range == 'MTD') {
             return [
-                now($timezone)->modify('first day of previous month')->setTime(0, 0),
-                now($timezone)->firstOfMonth()->subSecond(1),
+                CarbonImmutable::now($timezone)->modify('first day of previous month')->setTime(0, 0),
+                CarbonImmutable::now($timezone)->firstOfMonth()->subSecond(),
             ];
         }
 
@@ -162,51 +188,51 @@ abstract class Value extends RangedMetric
 
         if ($range == 'YTD') {
             return [
-                now($timezone)->subYears(1)->firstOfYear()->setTime(0, 0),
-                now($timezone)->firstOfYear()->subSecond(1),
+                CarbonImmutable::now($timezone)->subYears(1)->firstOfYear()->setTime(0, 0),
+                CarbonImmutable::now($timezone)->firstOfYear()->subSecond(),
             ];
         }
 
         return [
-            now($timezone)->subDays($range * 2),
-            now($timezone)->subDays($range)->subSecond(1),
+            CarbonImmutable::now($timezone)->subDays($range * 2),
+            CarbonImmutable::now($timezone)->subDays($range)->subSecond(),
         ];
     }
 
     /**
      * Calculate the previous quarter range.
      *
-     * @param  string  $timezone
-     * @return array
+     * @param string $timezone
+     * @return array<int, \Carbon\CarbonImmutable>
      */
     protected function previousQuarterRange($timezone)
     {
         return [
-            Carbon::firstDayOfPreviousQuarter($timezone),
-            Carbon::firstDayOfQuarter($timezone)->subSecond(1),
+            CarbonImmutable::firstDayOfPreviousQuarter($timezone),
+            CarbonImmutable::firstDayOfQuarter($timezone)->subSecond(),
         ];
     }
 
     /**
      * Calculate the current range and calculate any short-cuts.
      *
-     * @param  string|int  $range
-     * @param  string  $timezone
-     * @return array
+     * @param string|int $range
+     * @param string $timezone
+     * @return array<int, \Carbon\CarbonImmutable>
      */
     protected function currentRange($range, $timezone)
     {
         if ($range == 'TODAY') {
             return [
-                today($timezone),
-                now($timezone),
+                CarbonImmutable::today($timezone),
+                CarbonImmutable::now($timezone),
             ];
         }
 
         if ($range == 'MTD') {
             return [
-                now($timezone)->firstOfMonth(),
-                now($timezone),
+                CarbonImmutable::now($timezone)->firstOfMonth(),
+                CarbonImmutable::now($timezone),
             ];
         }
 
@@ -216,52 +242,62 @@ abstract class Value extends RangedMetric
 
         if ($range == 'YTD') {
             return [
-                now($timezone)->firstOfYear(),
-                now($timezone),
+                CarbonImmutable::now($timezone)->firstOfYear(),
+                CarbonImmutable::now($timezone),
             ];
         }
 
         return [
-            now($timezone)->subDays($range),
-            now($timezone),
+            CarbonImmutable::now($timezone)->subDays($range),
+            CarbonImmutable::now($timezone),
         ];
     }
 
     /**
      * Calculate the previous quarter range.
      *
-     * @param  string  $timezone
-     * @return array
+     * @param string $timezone
+     * @return array<int, \Carbon\CarbonImmutable>
      */
     protected function currentQuarterRange($timezone)
     {
         return [
-            Carbon::firstDayOfQuarter($timezone),
-            now($timezone),
+            CarbonImmutable::firstDayOfQuarter($timezone),
+            CarbonImmutable::now($timezone),
         ];
-    }
-
-    /**
-     * Set the precision level used when rounding the value.
-     *
-     * @param  int  $precision
-     * @return $this
-     */
-    public function precision($precision = 0)
-    {
-        $this->precision = $precision;
-
-        return $this;
     }
 
     /**
      * Create a new value metric result.
      *
-     * @param  mixed  $value
+     * @param int|float|numeric-string|null $value
      * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function result($value)
     {
         return new ValueResult($value);
+    }
+
+    /**
+     * Get default timezone.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
+    private function getDefaultTimezone($request)
+    {
+        return $request->timezone ?? config('app.timezone');
+    }
+
+    /**
+     * Prepare the metric for JSON serialization.
+     *
+     * @return array<string, mixed>
+     */
+    public function jsonSerialize(): array
+    {
+        return array_merge(parent::jsonSerialize(), [
+            'icon' => $this->icon,
+        ]);
     }
 }

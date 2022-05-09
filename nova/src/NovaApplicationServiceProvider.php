@@ -17,13 +17,13 @@ class NovaApplicationServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->gate();
         $this->routes();
 
         Nova::serving(function (ServingNova $event) {
             $this->authorization();
             $this->registerExceptionHandler();
             $this->resources();
-            Nova::cards($this->cards());
             Nova::dashboards($this->dashboards());
             Nova::tools($this->tools());
         });
@@ -37,8 +37,8 @@ class NovaApplicationServiceProvider extends ServiceProvider
     protected function routes()
     {
         Nova::routes()
-                ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes();
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes();
     }
 
     /**
@@ -48,11 +48,9 @@ class NovaApplicationServiceProvider extends ServiceProvider
      */
     protected function authorization()
     {
-        $this->gate();
-
         Nova::auth(function ($request) {
             return app()->environment('local') ||
-                   Gate::check('viewNova', [$request->user()]);
+                Gate::check('viewNova', [$request->user()]);
         });
     }
 
@@ -70,16 +68,6 @@ class NovaApplicationServiceProvider extends ServiceProvider
                 //
             ]);
         });
-    }
-
-    /**
-     * Get the cards that should be displayed on the Nova dashboard.
-     *
-     * @return array
-     */
-    protected function cards()
-    {
-        return [];
     }
 
     /**

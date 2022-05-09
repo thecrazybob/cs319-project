@@ -10,9 +10,13 @@ use Laravel\Nova\Contracts\PivotableField;
 use Laravel\Nova\Contracts\QueryBuilder;
 use Laravel\Nova\Contracts\RelatableField;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 use Laravel\Nova\Rules\RelatableAttachment;
 use Laravel\Nova\TrashedStatus;
 
+/**
+ * @method static static make(mixed $name, string|null $attribute = null, string|null $resource = null)
+ */
 class MorphToMany extends Field implements DeletableContract, ListableField, PivotableField, RelatableField
 {
     use Deletable,
@@ -31,7 +35,7 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * The class name of the related resource.
      *
-     * @var string
+     * @var class-string<\Laravel\Nova\Resource>
      */
     public $resourceClass;
 
@@ -52,23 +56,16 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * The callback that should be used to resolve the pivot fields.
      *
-     * @var callable
+     * @var callable(\Laravel\Nova\Http\Requests\NovaRequest, \Illuminate\Database\Eloquent\Model):array<int, \Laravel\Nova\Fields\Field>
      */
     public $fieldsCallback;
 
     /**
      * The callback that should be used to resolve the pivot actions.
      *
-     * @var callable
+     * @var callable(\Laravel\Nova\Http\Requests\NovaRequest):array<int, \Laravel\Nova\Actions\Action>
      */
     public $actionsCallback;
-
-    /**
-     * The column that should be displayed for the field.
-     *
-     * @var \Closure
-     */
-    public $display;
 
     /**
      * The displayable name that should be used to refer to the pivot class.
@@ -80,16 +77,16 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * The displayable singular label of the relation.
      *
-     * @var string
+     * @var string|null
      */
     public $singularLabel;
 
     /**
      * Create a new field.
      *
-     * @param  string  $name
-     * @param  string|null  $attribute
-     * @param  string|null  $resource
+     * @param string $name
+     * @param string|null $attribute
+     * @param class-string<\Laravel\Nova\Resource>|null $resource
      * @return void
      */
     public function __construct($name, $attribute = null, $resource = null)
@@ -115,23 +112,43 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     }
 
     /**
+     * Get the relationship name.
+     *
+     * @return string
+     */
+    public function relationshipName()
+    {
+        return $this->manyToManyRelationship;
+    }
+
+    /**
+     * Get the relationship type.
+     *
+     * @return string
+     */
+    public function relationshipType()
+    {
+        return 'morphToMany';
+    }
+
+    /**
      * Determine if the field should be displayed for the given request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return bool
      */
     public function authorize(Request $request)
     {
         return call_user_func(
-            [$this->resourceClass, 'authorizedToViewAny'], $request
-        ) && parent::authorize($request);
+                [$this->resourceClass, 'authorizedToViewAny'], $request
+            ) && parent::authorize($request);
     }
 
     /**
      * Resolve the field's value.
      *
-     * @param  mixed  $resource
-     * @param  string|null  $attribute
+     * @param mixed $resource
+     * @param string|null $attribute
      * @return void
      */
     public function resolve($resource, $attribute = null)
@@ -142,12 +159,12 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * Get the validation rules for this field.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array
      */
     public function getRules(NovaRequest $request)
     {
-        $withTrashed = $request->{$this->attribute.'_trashed'} === 'true';
+        $withTrashed = $request->{$this->attribute . '_trashed'} === 'true';
 
         return array_merge_recursive(parent::getRules($request), [
             $this->attribute => array_filter([
@@ -159,8 +176,8 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * Get the creation rules for this field.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @return array<string, array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\Rule|callable>>
      */
     public function getCreationRules(NovaRequest $request)
     {
@@ -172,8 +189,8 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * Build an attachable query for the field.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  bool  $withTrashed
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param bool $withTrashed
      * @return \Laravel\Nova\Contracts\QueryBuilder
      */
     public function buildAttachableQuery(NovaRequest $request, $withTrashed = false)
@@ -183,11 +200,11 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
         $query = app()->make(QueryBuilder::class, [$resourceClass]);
 
         $request->first === 'true'
-                        ? $query->whereKey($model->newQueryWithoutScopes(), $request->current)
-                        : $query->search(
-                                $request, $model->newQuery(), $request->search,
-                                [], [], TrashedStatus::fromBoolean($withTrashed)
-                          );
+            ? $query->whereKey($model->newQueryWithoutScopes(), $request->current)
+            : $query->search(
+            $request, $model->newQuery(), $request->search,
+            [], [], TrashedStatus::fromBoolean($withTrashed)
+        );
 
         return $query->tap(function ($query) use ($request, $model) {
             forward_static_call($this->attachableQueryCallable($request, $model), $request, $query, $this);
@@ -197,27 +214,27 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * Get the attachable query method name.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model $model
      * @return array
      */
     protected function attachableQueryCallable(NovaRequest $request, $model)
     {
         return ($method = $this->attachableQueryMethod($request, $model))
-                    ? [$request->resource(), $method]
-                    : [$this->resourceClass, 'relatableQuery'];
+            ? [$request->resource(), $method]
+            : [$this->resourceClass, 'relatableQuery'];
     }
 
     /**
      * Get the attachable query method name.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return string
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @return string|null
      */
     protected function attachableQueryMethod(NovaRequest $request, $model)
     {
-        $method = 'relatable'.Str::plural(class_basename($model));
+        $method = 'relatable' . Str::plural(class_basename($model));
 
         if (method_exists($request->resource(), $method)) {
             return $method;
@@ -227,8 +244,8 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * Format the given attachable resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  mixed  $resource
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param mixed $resource
      * @return array
      */
     public function formatAttachableResource(NovaRequest $request, $resource)
@@ -244,7 +261,7 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * Specify the callback to be executed to retrieve the pivot fields.
      *
-     * @param  callable  $callback
+     * @param callable(\Laravel\Nova\Http\Requests\NovaRequest, \Illuminate\Database\Eloquent\Model):array<int, \Laravel\Nova\Fields\Field> $callback
      * @return $this
      */
     public function fields($callback)
@@ -257,7 +274,7 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * Specify the callback to be executed to retrieve the pivot actions.
      *
-     * @param  callable  $callback
+     * @param callable(\Laravel\Nova\Http\Requests\NovaRequest):array<int, \Laravel\Nova\Actions\Action> $callback
      * @return $this
      */
     public function actions($callback)
@@ -270,7 +287,7 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * Set the displayable name that should be used to refer to the pivot class.
      *
-     * @param  string  $pivotName
+     * @param string $pivotName
      * @return $this
      */
     public function referToPivotAs($pivotName)
@@ -283,6 +300,7 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     /**
      * Set the displayable singular label of the resource.
      *
+     * @param string $singularLabel
      * @return $this
      */
     public function singularLabel($singularLabel)
@@ -293,18 +311,32 @@ class MorphToMany extends Field implements DeletableContract, ListableField, Piv
     }
 
     /**
+     * Make current field behaves as panel.
+     *
+     * @return \Laravel\Nova\Panel
+     */
+    public function asPanel()
+    {
+        return Panel::make($this->name)
+            ->withMeta([
+                'fields' => [$this],
+                'prefixComponent' => true,
+            ])->withComponent('relationship-panel');
+    }
+
+    /**
      * Prepare the field for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge([
             'debounce' => $this->debounce,
-            'listable' => true,
+            'relatable' => true,
             'morphToManyRelationship' => $this->manyToManyRelationship,
-            'perPage'=> $this->resourceClass::$perPageViaRelationship,
+            'relationshipType' => $this->relationshipType(),
+            'perPage' => $this->resourceClass::$perPageViaRelationship,
             'resourceName' => $this->resourceName,
             'searchable' => $this->searchable,
             'withSubtitles' => $this->withSubtitles,

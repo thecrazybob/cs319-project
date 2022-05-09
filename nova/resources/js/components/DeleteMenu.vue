@@ -1,115 +1,131 @@
 <template>
-  <div>
-    <dropdown class="ml-3 bg-30 hover:bg-40 rounded">
-      <dropdown-trigger class="px-3">
-        <icon type="delete" class="text-80" />
-      </dropdown-trigger>
+  <div class="h-9">
+    <Dropdown class="hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+      <span class="sr-only">{{ __('Trash Dropdown') }}</span>
+      <DropdownTrigger class="px-2">
+        <Icon class="text-gray-500 dark:text-gray-400" type="trash" />
+      </DropdownTrigger>
 
-      <dropdown-menu slot="menu" direction="rtl" width="250">
-        <div class="px-3">
+      <template #menu>
+        <DropdownMenu
+          class="divide-y divide-gray-100 dark:divide-gray-800 divide-solid"
+          width="250"
+        >
           <!-- Delete Menu -->
-          <button
+          <DropdownMenuItem
+            v-if="
+              !trashedOnlyMode &&
+              Boolean(
+                authorizedToDeleteSelectedResources || allMatchingSelected
+              )
+            "
+            as="button"
+            class="border-none"
             dusk="delete-selected-button"
-            class="text-left w-full leading-normal dim my-2"
-            @click="confirmDeleteSelectedResources"
-            v-if="authorizedToDeleteSelectedResources || allMatchingSelected"
+            @click.prevent="confirmDeleteSelectedResources"
           >
             {{ __(viaManyToMany ? 'Detach Selected' : 'Delete Selected') }}
-            ({{ selectedResourcesCount }})
-          </button>
+            <CircleBadge>{{ selectedResourcesCount }}</CircleBadge>
+          </DropdownMenuItem>
 
           <!-- Restore Resources -->
-          <button
-            dusk="restore-selected-button"
-            class="text-left w-full leading-normal dim text-90 my-2"
-            @click="confirmRestore"
+          <DropdownMenuItem
             v-if="
               softDeletes &&
               !viaManyToMany &&
               (softDeletedResourcesSelected || allMatchingSelected) &&
               (authorizedToRestoreSelectedResources || allMatchingSelected)
             "
+            as="button"
+            dusk="restore-selected-button"
+            @click.prevent="confirmRestore"
           >
-            {{ __('Restore Selected') }} ({{ selectedResourcesCount }})
-          </button>
+            {{ __('Restore Selected') }}
+            <CircleBadge>{{ selectedResourcesCount }}</CircleBadge>
+          </DropdownMenuItem>
 
           <!-- Force Delete Resources -->
-          <button
-            dusk="force-delete-selected-button"
-            class="text-left w-full leading-normal dim text-90 my-2"
-            @click="confirmForceDeleteSelectedResources"
+          <DropdownMenuItem
             v-if="
               softDeletes &&
               !viaManyToMany &&
               (authorizedToForceDeleteSelectedResources || allMatchingSelected)
             "
+            as="button"
+            dusk="force-delete-selected-button"
+            @click.prevent="confirmForceDeleteSelectedResources"
           >
-            {{ __('Force Delete Selected') }} ({{ selectedResourcesCount }})
-          </button>
-        </div>
-      </dropdown-menu>
-    </dropdown>
+            {{ __('Force Delete Selected') }}
+            <CircleBadge>{{ selectedResourcesCount }}</CircleBadge>
+          </DropdownMenuItem>
+        </DropdownMenu>
+      </template>
+    </Dropdown>
 
-    <portal
-      to="modals"
-      v-if="
-        deleteSelectedModalOpen ||
-        forceDeleteSelectedModalOpen ||
-        restoreModalOpen
-      "
+    <DeleteResourceModal
+      :mode="viaManyToMany ? 'detach' : 'delete'"
+      :show="selectedResources.length > 0 && deleteSelectedModalOpen"
+      @close="closeDeleteSelectedModal"
+      @confirm="deleteSelectedResources"
+    />
+
+    <DeleteResourceModal
+      :show="selectedResources.length > 0 && forceDeleteSelectedModalOpen"
+      mode="delete"
+      @close="closeForceDeleteSelectedModal"
+      @confirm="forceDeleteSelectedResources"
     >
-      <delete-resource-modal
-        v-if="deleteSelectedModalOpen"
-        @confirm="deleteSelectedResources"
-        @close="closeDeleteSelectedModal"
-        :mode="viaManyToMany ? 'detach' : 'delete'"
-      />
+      <ModalHeader v-text="__('Force Delete Resource')" />
+      <ModalContent>
+        <p
+          class="leading-normal"
+          v-text="
+            __('Are you sure you want to force delete the selected resources?')
+          "
+        />
+      </ModalContent>
+    </DeleteResourceModal>
 
-      <delete-resource-modal
-        v-if="forceDeleteSelectedModalOpen"
-        @confirm="forceDeleteSelectedResources"
-        @close="closeForceDeleteSelectedModal"
-        mode="delete"
-      >
-        <div slot-scope="{ uppercaseMode, mode }" class="p-8">
-          <heading :level="2" class="mb-6">{{
-            __('Force Delete Resource')
-          }}</heading>
-          <p class="text-80 leading-normal">
-            {{
-              __(
-                'Are you sure you want to force delete the selected resources?'
-              )
-            }}
-          </p>
-        </div>
-      </delete-resource-modal>
-
-      <restore-resource-modal
-        v-if="restoreModalOpen"
-        @confirm="restoreSelectedResources"
-        @close="closeRestoreModal"
-      />
-    </portal>
+    <RestoreResourceModal
+      :show="selectedResources.length > 0 && restoreModalOpen"
+      @close="closeRestoreModal"
+      @confirm="restoreSelectedResources"
+    />
   </div>
 </template>
 
 <script>
+import find from 'lodash/find'
+import { RouteParameters } from '@/mixins'
+
 export default {
+  emits: [
+    'close',
+    'deleteAllMatching',
+    'deleteSelected',
+    'forceDeleteAllMatching',
+    'forceDeleteSelected',
+    'restoreAllMatching',
+    'restoreSelected',
+  ],
+
+  mixins: [RouteParameters],
+
   props: [
-    'softDeletes',
-    'resources',
-    'selectedResources',
-    'viaManyToMany',
     'allMatchingResourceCount',
     'allMatchingSelected',
-
-    'authorizedToDeleteSelectedResources',
-    'authorizedToForceDeleteSelectedResources',
     'authorizedToDeleteAnyResources',
+    'authorizedToDeleteSelectedResources',
     'authorizedToForceDeleteAnyResources',
-    'authorizedToRestoreSelectedResources',
+    'authorizedToForceDeleteSelectedResources',
     'authorizedToRestoreAnyResources',
+    'authorizedToRestoreSelectedResources',
+    'resources',
+    'selectedResources',
+    'show',
+    'softDeletes',
+    'trashedParameter',
+    'viaManyToMany',
   ],
 
   data: () => ({
@@ -124,20 +140,16 @@ export default {
   mounted() {
     document.addEventListener('keydown', this.handleEscape)
 
-    Nova.$on('close-dropdowns', () => {
-      this.deleteSelectedModalOpen = false
-      this.forceDeleteSelectedModalOpen = false
-      this.restoreModalOpen = false
-    })
+    Nova.$on('close-dropdowns', this.handleClosingDropdown)
   },
 
   /**
-   * Prepare the component to tbe destroyed.
+   * Prepare the component to be unmounted.
    */
-  beforeDestroy() {
+  beforeUnmount() {
     document.removeEventListener('keydown', this.handleEscape)
 
-    Nova.$off('close-dropdowns')
+    Nova.$off('close-dropdowns', this.handleClosingDropdown)
   },
 
   methods: {
@@ -209,9 +221,22 @@ export default {
     close() {
       this.$emit('close')
     },
+
+    /**
+     * Handle closing the dropdown.
+     */
+    handleClosingDropdown() {
+      this.deleteSelectedModalOpen = false
+      this.forceDeleteSelectedModalOpen = false
+      this.restoreModalOpen = false
+    },
   },
 
   computed: {
+    trashedOnlyMode() {
+      return this.route.params[this.trashedParameter] == 'only'
+    },
+
     selectedResourcesCount() {
       return this.allMatchingSelected
         ? this.allMatchingResourceCount
@@ -223,7 +248,7 @@ export default {
      */
     softDeletedResourcesSelected() {
       return Boolean(
-        _.find(this.selectedResources, resource => resource.softDeleted)
+        find(this.selectedResources, resource => resource.softDeleted)
       )
     },
   },

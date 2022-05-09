@@ -5,6 +5,9 @@ namespace Laravel\Nova\Fields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Util;
 
+/**
+ * @method static static make(mixed $name = null, string|null $attribute = null, callable|null $resolveCallback = null)
+ */
 class ID extends Field
 {
     /**
@@ -24,9 +27,9 @@ class ID extends Field
     /**
      * Create a new field.
      *
-     * @param  string|null  $name
-     * @param  string|null  $attribute
-     * @param  mixed|null  $resolveCallback
+     * @param string|null $name
+     * @param string|null $attribute
+     * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
     public function __construct($name = null, $attribute = null, $resolveCallback = null)
@@ -37,27 +40,22 @@ class ID extends Field
     /**
      * Create a new, resolved ID field for the given resource.
      *
-     * @param  \Laravel\Nova\Resource  $resource
+     * @param \Laravel\Nova\Resource $resource
      * @return static
      */
     public static function forResource($resource)
     {
         $model = $resource->model();
 
-        $methods = collect(['fieldsForIndex', 'fieldsForDetail'])
-            ->filter(function ($method) use ($resource) {
-                return method_exists($resource, $method);
-            })->all();
-
         $field = transform(
-            $resource->buildAvailableFields(app(NovaRequest::class), $methods)
-                    ->whereInstanceOf(self::class)
-                    ->first(),
+            $resource->availableFieldsOnIndexOrDetail(app(NovaRequest::class))
+                ->whereInstanceOf(self::class)
+                ->first(),
             function ($field) use ($model) {
                 return tap($field)->resolve($model);
             },
             function () use ($model) {
-                return ! is_null($model) && $model->exists ? static::forModel($model) : null;
+                return !is_null($model) && $model->exists ? static::forModel($model) : null;
             }
         );
 
@@ -67,7 +65,7 @@ class ID extends Field
     /**
      * Create a new, resolved ID field for the given model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Illuminate\Database\Eloquent\Model $model
      * @return static
      */
     public static function forModel($model)
@@ -86,14 +84,14 @@ class ID extends Field
     /**
      * Resolve the given attribute from the given resource.
      *
-     * @param  mixed  $resource
-     * @param  string  $attribute
+     * @param mixed $resource
+     * @param string $attribute
      * @return mixed
      */
     protected function resolveAttribute($resource, $attribute)
     {
-        if (! is_null($resource)) {
-            $pivotValue = optional($resource->pivot)->getKey();
+        if (!is_null($resource)) {
+            $pivotValue = isset($resource->pivot) ? optional($resource->pivot)->getKey() : null;
 
             if (is_int($pivotValue) || is_string($pivotValue)) {
                 $this->pivotValue = $pivotValue;
@@ -113,7 +111,7 @@ class ID extends Field
     public function asBigInt()
     {
         $this->resolveCallback = function ($id) {
-            return (string) $id;
+            return (string)$id;
         };
 
         return $this;
@@ -137,10 +135,9 @@ class ID extends Field
     /**
      * Prepare the field for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge(parent::jsonSerialize(), array_filter([
             'pivotValue' => $this->pivotValue ?? null,

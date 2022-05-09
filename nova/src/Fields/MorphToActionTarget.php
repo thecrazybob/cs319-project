@@ -3,7 +3,7 @@
 namespace Laravel\Nova\Fields;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Http\Request;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class MorphToActionTarget extends MorphTo
 {
@@ -17,10 +17,10 @@ class MorphToActionTarget extends MorphTo
     /**
      * Determine if the field is not redundant.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return bool
      */
-    public function isNotRedundant(Request $request)
+    public function isNotRedundant(NovaRequest $request)
     {
         return true;
     }
@@ -28,8 +28,8 @@ class MorphToActionTarget extends MorphTo
     /**
      * Resolve the field's value.
      *
-     * @param  mixed  $resource
-     * @param  string|null  $attribute
+     * @param mixed $resource
+     * @param string|null $attribute
      * @return void
      */
     public function resolve($resource, $attribute = null)
@@ -41,7 +41,7 @@ class MorphToActionTarget extends MorphTo
             $morphToId = $resource->getAttribute("{$this->attribute}_id");
 
             $this->morphToType = Relation::getMorphedModel($morphToType) ?? $morphToType;
-            $this->morphToId = $this->value = (string) $morphToId;
+            $this->morphToId = $this->value = (string)$morphToId;
             $this->viewable = false;
         }
     }

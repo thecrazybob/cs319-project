@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Fields;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 trait ResolvesReverseRelation
@@ -11,19 +10,19 @@ trait ResolvesReverseRelation
     /**
      * The reverse relation for the related resource.
      *
-     * @var string
+     * @var string|null
      */
     public $reverseRelation;
 
     /**
      * Determine if the field is the reverse relation of a showed index view.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return bool
      */
-    public function isReverseRelation(Request $request)
+    public function isReverseRelation(NovaRequest $request)
     {
-        if (! $request->viaResource || ($this->resourceName && $this->resourceName !== $request->viaResource)) {
+        if (!$request->viaResource || ($this->resourceName && $this->resourceName !== $request->viaResource)) {
             return false;
         }
 
@@ -35,7 +34,7 @@ trait ResolvesReverseRelation
     /**
      * Get reverse relation field name.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return string
      */
     public function getReverseRelation(NovaRequest $request)
@@ -51,13 +50,17 @@ trait ResolvesReverseRelation
 
             $this->reverseRelation = $viaResource->availableFields($request)
                     ->first(function ($field) use ($viaModel, $resource) {
-                        if (! isset($field->resourceName) || $field->resourceName !== $resource::uriKey()) {
+                        if (!isset($field->resourceName) || $field->resourceName !== $resource::uriKey()) {
                             return false;
                         }
 
-                        if (! $field instanceof HasMany
-                            && ! $field instanceof MorphMany
-                            && ! $field instanceof HasOne) {
+                        if (!$field instanceof MorphMany
+                            && !$field instanceof HasMany
+                            && !$field instanceof HasOne) {
+                            return false;
+                        }
+
+                        if ($field instanceof HasOne && $field->ofManyRelationship()) {
                             return false;
                         }
 
@@ -75,7 +78,7 @@ trait ResolvesReverseRelation
     /**
      * Get foreign key name for relation.
      *
-     * @param  \Illuminate\Database\Eloquent\Relations\Relation  $relation
+     * @param \Illuminate\Database\Eloquent\Relations\Relation $relation
      * @return string
      */
     protected function getRelationForeignKeyName(Relation $relation)

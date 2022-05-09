@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\Trix;
 
+/**
+ * @property string $attachment
+ * @property string $disk
+ */
 class PendingAttachment extends Model
 {
     /**
@@ -25,9 +29,9 @@ class PendingAttachment extends Model
     /**
      * Persist the given draft's pending attachments.
      *
-     * @param  string  $draftId
-     * @param  \Laravel\Nova\Fields\Trix  $field
-     * @param  mixed  $model
+     * @param string $draftId
+     * @param \Laravel\Nova\Fields\Trix $field
+     * @param mixed $model
      * @return void
      */
     public static function persistDraft($draftId, Trix $field, $model)
@@ -38,8 +42,8 @@ class PendingAttachment extends Model
     /**
      * Persist the pending attachment.
      *
-     * @param  \Laravel\Nova\Fields\Trix  $field
-     * @param  mixed  $model
+     * @param \Laravel\Nova\Fields\Trix $field
+     * @param mixed $model
      * @return void
      */
     public function persist(Trix $field, $model)

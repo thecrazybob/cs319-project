@@ -11,9 +11,9 @@ trait HasSearchableRelations
     /**
      * Search for the given value for a searchable relationship attribute.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $attribute
-     * @param  string  $search
+     * @param \Laravel\Dusk\Browser $browser
+     * @param string $attribute
+     * @param string $search
      * @return void
      */
     public function searchRelation(Browser $browser, $attribute, $search)
@@ -24,8 +24,8 @@ trait HasSearchableRelations
     /**
      * Select the currently highlighted searchable relation.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $attribute
+     * @param \Laravel\Dusk\Browser $browser
+     * @param string $attribute
      * @return void
      */
     public function selectFirstRelation(Browser $browser, $attribute)
@@ -36,8 +36,8 @@ trait HasSearchableRelations
     /**
      * Select the currently highlighted searchable relation.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $attribute
+     * @param \Laravel\Dusk\Browser $browser
+     * @param string $attribute
      * @return void
      */
     public function selectCurrentRelation(Browser $browser, $attribute)
@@ -48,8 +48,8 @@ trait HasSearchableRelations
     /**
      * Select the currently highlighted searchable relation.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $attribute
+     * @param \Laravel\Dusk\Browser $browser
+     * @param string $attribute
      * @return void
      */
     public function cancelSelectingRelation(Browser $browser, $attribute)
@@ -60,9 +60,9 @@ trait HasSearchableRelations
     /**
      * Search and select the currently highlighted searchable relation.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $attribute
-     * @param  string  $search
+     * @param \Laravel\Dusk\Browser $browser
+     * @param string $attribute
+     * @param string $search
      * @return void
      */
     public function searchAndSelectFirstRelation(Browser $browser, $attribute, $search)
@@ -73,8 +73,8 @@ trait HasSearchableRelations
     /**
      * Indicate that trashed relations should be included in the search results.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $resourceName
+     * @param \Laravel\Dusk\Browser $browser
+     * @param string $resourceName
      * @return void
      */
     public function withTrashedRelation(Browser $browser, $resourceName)
@@ -90,12 +90,12 @@ trait HasSearchableRelations
     /**
      * Indicate that trashed relations should not be included in the search results.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $resourceName
+     * @param \Laravel\Dusk\Browser $browser
+     * @param string $resourceName
      * @return void
      */
     public function withoutTrashedRelation(Browser $browser, $resourceName)
     {
-        $browser->uncheck('[dusk="'.$resourceName.'-with-trashed-checkbox"] input[type="checkbox"]')->pause(250);
+        $browser->uncheck('[dusk="' . $resourceName . '-with-trashed-checkbox"] input[type="checkbox"]')->pause(250);
     }
 }

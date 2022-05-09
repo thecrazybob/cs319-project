@@ -1,63 +1,68 @@
 <template>
-  <modal @modal-close="handleClose">
-    <div
-      class="bg-white rounded-lg shadow-lg overflow-hidden"
-      style="width: 460px"
+    <Modal
+        :show="show"
+        data-testid="confirm-upload-removal-modal"
+        role="alertdialog"
     >
-      <div class="p-8">
-        <heading :level="2" class="mb-6">{{ __('Delete File') }}</heading>
-        <p class="text-80">
-          {{ __('Are you sure you want to delete this file?') }}
-        </p>
-      </div>
+        <div
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+            style="width: 460px"
+        >
+            <ModalHeader v-text="__('Delete File')"/>
+            <ModalContent>
+                <p class="leading-tight">
+                    {{ __('Are you sure you want to delete this file?') }}
+                </p>
+            </ModalContent>
+            <ModalFooter>
+                <div class="ml-auto">
+                    <LinkButton
+                        dusk="cancel-upload-delete-button"
+                        type="button"
+                        @click.prevent="$emit('close')"
+                        class="mr-3"
+                    >
+                        {{ __('Cancel') }}
+                    </LinkButton>
 
-      <div class="bg-30 px-6 py-3 flex">
-        <div class="ml-auto">
-          <button
-            dusk="cancel-upload-delete-button"
-            type="button"
-            @click.prevent="handleClose"
-            class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
-          >
-            {{ __('Cancel') }}
-          </button>
-
-          <progress-button
-            @click.prevent.native="handleConfirm"
-            ref="confirmButton"
-            dusk="confirm-upload-delete-button"
-            :disabled="clicked"
-            :processing="clicked"
-            class="btn-danger"
-          >
-            {{ __('Delete') }}
-          </progress-button>
+                    <LoadingButton
+                        @click.prevent="handleConfirm"
+                        ref="confirmButton"
+                        dusk="confirm-upload-delete-button"
+                        :disabled="clicked"
+                        :processing="clicked"
+                        component="DangerButton"
+                    >
+                        {{ __('Delete') }}
+                    </LoadingButton>
+                </div>
+            </ModalFooter>
         </div>
-      </div>
-    </div>
-  </modal>
+    </Modal>
 </template>
 
 <script>
 export default {
-  /**
-   * Mount the component.
-   */
-  mounted() {
-    this.$refs.confirmButton.focus()
-  },
+    emits: ['confirm', 'close'],
 
-  data: () => ({ clicked: false }),
-
-  methods: {
-    handleClose() {
-      this.$emit('close')
+    props: {
+        show: {type: Boolean, default: false},
     },
 
-    handleConfirm() {
-      this.clicked = true
-      this.$emit('confirm')
+    /**
+     * Mount the component.
+     */
+    mounted() {
+        // this.$refs.confirmButton.focus()
     },
-  },
+
+    data: () => ({clicked: false}),
+
+    methods: {
+        handleConfirm() {
+            this.clicked = true
+            this.$emit('confirm')
+        },
+    },
 }
 </script>

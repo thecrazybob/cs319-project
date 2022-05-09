@@ -1,77 +1,71 @@
 <template>
-  <div>
-    <h3 class="text-sm uppercase tracking-wide text-80 bg-30 p-3">
-      {{ filter.name }}
-    </h3>
+    <FilterContainer>
+        <span>{{ filter.name }}</span>
 
-    <div class="p-2">
-      <date-time-picker
-        class="w-full form-control form-input form-input-bordered"
-        dusk="date-filter"
-        name="date-filter"
-        autocomplete="off"
-        :value="value"
-        alt-format="Y-m-d"
-        date-format="Y-m-d"
-        :placeholder="placeholder"
-        :enable-time="false"
-        :enable-seconds="false"
-        :first-day-of-week="firstDayOfWeek"
-        @input.prevent=""
-        @change="handleChange"
-      />
-    </div>
-  </div>
+        <template #filter>
+            <input
+                class="w-full flex form-control form-control-sm form-input form-input-bordered"
+                type="date"
+                :dusk="`${filter.name}-date-filter`"
+                name="date-filter"
+                autocomplete="off"
+                :value="value"
+                :placeholder="placeholder"
+                @change="handleChange"
+            />
+        </template>
+    </FilterContainer>
 </template>
 
 <script>
 export default {
-  props: {
-    resourceName: {
-      type: String,
-      required: true,
-    },
-    filterKey: {
-      type: String,
-      required: true,
-    },
-    lens: String,
-  },
+    emits: ['change'],
 
-  methods: {
-    handleChange(value) {
-      this.$store.commit(`${this.resourceName}/updateFilterState`, {
-        filterClass: this.filterKey,
-        value,
-      })
-      this.$emit('change')
-    },
-  },
-
-  computed: {
-    placeholder() {
-      return this.filter.placeholder || this.__('Choose date')
+    props: {
+        resourceName: {
+            type: String,
+            required: true,
+        },
+        filterKey: {
+            type: String,
+            required: true,
+        },
+        lens: String,
     },
 
-    value() {
-      return this.filter.currentValue
+    methods: {
+        handleChange(event) {
+            let value = event?.target?.value || event
+
+            this.$store.commit(`${this.resourceName}/updateFilterState`, {
+                filterClass: this.filterKey,
+                value,
+            })
+
+            this.$emit('change')
+        },
     },
 
-    filter() {
-      return this.$store.getters[`${this.resourceName}/getFilter`](
-        this.filterKey
-      )
-    },
+    computed: {
+        placeholder() {
+            return this.filter.placeholder || this.__('Choose date')
+        },
 
-    options() {
-      return this.$store.getters[`${this.resourceName}/getOptionsForFilter`](
-        this.filterKey
-      )
-    },
+        value() {
+            return this.filter.currentValue
+        },
 
-    firstDayOfWeek() {
-      return this.filter.firstDayOfWeek || 0
+        filter() {
+            return this.$store.getters[`${this.resourceName}/getFilter`](
+                this.filterKey
+            )
+        },
+
+        options() {
+            return this.$store.getters[`${this.resourceName}/getOptionsForFilter`](
+                this.filterKey
+            )
+        },
     },
-  },
 }
 </script>

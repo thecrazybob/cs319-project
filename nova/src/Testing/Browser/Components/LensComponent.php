@@ -9,8 +9,8 @@ class LensComponent extends IndexComponent
     /**
      * Create a new component instance.
      *
-     * @param  string  $resourceName
-     * @param  string  $lens
+     * @param string $resourceName
+     * @param string $lens
      * @return void
      */
     public function __construct($resourceName, $lens)
@@ -26,6 +26,6 @@ class LensComponent extends IndexComponent
      */
     public function selector()
     {
-        return '@'.$this->lens.'-lens-component';
+        return '@' . $this->lens . '-lens-component';
     }
 }

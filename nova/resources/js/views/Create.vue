@@ -1,56 +1,83 @@
 <template>
-  <create-form
-    @resource-created="handleResourceCreated"
-    @cancelled-create="handleCancelledCreate"
-    :mode="mode"
-    :resource-name="resourceName"
-    :via-resource="viaResource"
-    :via-resource-id="viaResourceId"
-    :via-relationship="viaRelationship"
-    :update-form-status="updateFormStatus"
-    :should-override-meta="mode == 'form' ? true : false"
-  />
+    <CreateForm
+        @resource-created="handleResourceCreated"
+        @create-cancelled="handleCreateCancelled"
+        :mode="mode"
+        :resource-name="resourceName"
+        :via-resource="viaResource"
+        :via-resource-id="viaResourceId"
+        :via-relationship="viaRelationship"
+        @update-form-status="onUpdateFormStatus"
+        :should-override-meta="mode == 'form' ? true : false"
+        :form-unique-id="formUniqueId"
+    />
 </template>
 
 <script>
-import { mapProps, PreventsFormAbandonment } from 'laravel-nova'
+import {
+    mapProps,
+    PreventsFormAbandonment,
+    PreventsModalAbandonment,
+} from '@/mixins'
+import {uid} from 'uid/single'
 
 export default {
-  mixins: [PreventsFormAbandonment],
+    emits: ['refresh', 'create-cancelled'],
 
-  props: {
-    mode: {
-      type: String,
-      default: 'form',
-      validator: val => ['modal', 'form'].includes(val),
+    mixins: [PreventsFormAbandonment, PreventsModalAbandonment],
+
+    props: {
+        mode: {
+            type: String,
+            default: 'form',
+            validator: val => ['modal', 'form'].includes(val),
+        },
+
+        ...mapProps([
+            'resourceName',
+            'viaResource',
+            'viaResourceId',
+            'viaRelationship',
+        ]),
     },
 
-    ...mapProps([
-      'resourceName',
-      'viaResource',
-      'viaResourceId',
-      'viaRelationship',
-    ]),
-  },
+    data: () => ({
+        formUniqueId: uid(),
+    }),
 
-  methods: {
-    handleResourceCreated({ redirect, id }) {
-      this.canLeave = true
+    methods: {
+        handleResourceCreated({redirect, id}) {
+            this.mode === 'form' ? this.allowLeavingForm() : this.allowLeavingModal()
 
-      if (this.mode == 'form') {
-        return this.$router.push({ path: redirect })
-      }
+            Nova.$emit('resource-created', {
+                resourceName: this.resourceName,
+                resourceId: id,
+            })
 
-      return this.$emit('refresh', { redirect, id })
+            if (this.mode == 'form') {
+                return Nova.visit(redirect)
+            }
+
+            return this.$emit('refresh', {redirect, id})
+        },
+
+        handleCreateCancelled() {
+            if (this.mode == 'form') {
+                this.handleProceedingToPreviousPage()
+                this.allowLeavingForm()
+                return window.history.back()
+            }
+
+            this.allowLeavingModal()
+            return this.$emit('create-cancelled')
+        },
+
+        /**
+         * Prevent accidental abandonment only if form was changed.
+         */
+        onUpdateFormStatus() {
+            this.mode == 'form' ? this.updateFormStatus() : this.updateModalStatus()
+        },
     },
-
-    handleCancelledCreate() {
-      if (this.mode == 'form') {
-        return this.$router.back()
-      }
-
-      return this.$emit('cancelled-create')
-    },
-  },
 }
 </script>

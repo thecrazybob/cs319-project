@@ -37,7 +37,7 @@
 export default {
     metaInfo() {
         return {
-          title: '{{ class }}',
+            title: '{{ class }}',
         }
     },
     mounted() {

@@ -1,26 +1,26 @@
 <template>
-  <loading-card
+  <LoadingCard
     ref="card"
     :loading="loading"
-    class="card relative border border-lg border-50 overflow-hidden px-0 py-0"
+    class="relative border border-lg border-gray-300 dark:border-gray-600 overflow-hidden px-0 py-0"
     :class="cardClasses"
     :style="cardStyles"
   >
     <div class="missing p-8" v-if="missing">
       <p class="text-center leading-normal">
-        <a :href="src" class="text-primary dim" target="_blank">{{
-          __('This image')
-        }}</a>
+        <a :href="src" target="_blank">{{ __('This image') }}</a>
         {{ __('could not be found.') }}
       </p>
     </div>
-  </loading-card>
+  </LoadingCard>
 </template>
 
 <script>
-import { Minimum } from 'laravel-nova'
+import { minimum } from '@/util'
 
 export default {
+  emits: ['missing'],
+
   props: {
     src: String,
 
@@ -56,7 +56,7 @@ export default {
   },
 
   mounted() {
-    Minimum(
+    minimum(
       new Promise((resolve, reject) => {
         let image = new Image()
 

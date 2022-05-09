@@ -24,8 +24,8 @@ class NotAttached implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model $model
      * @return void
      */
     public function __construct(NovaRequest $request, $model)
@@ -37,13 +37,13 @@ class NotAttached implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        return ! in_array(
+        return !in_array(
             $this->request->input($this->request->relatedResource),
             $this->model->{$this->request->viaRelationship}()
                 ->withoutGlobalScopes()->get()->modelKeys()

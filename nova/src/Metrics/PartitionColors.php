@@ -7,7 +7,7 @@ class PartitionColors
     /**
      * The color array to use for the chart.
      *
-     * @var array
+     * @var array<string|int, string>
      */
     public $colors;
 
@@ -21,7 +21,7 @@ class PartitionColors
     /**
      * Create a new instance.
      *
-     * @param  array  $colors
+     * @param array<string|int, string> $colors
      * @return void
      */
     public function __construct($colors = [])
@@ -32,8 +32,8 @@ class PartitionColors
     /**
      * Get the color found at the given label key.
      *
-     * @param  string|int  $label
-     * @return void
+     * @param string|int $label
+     * @return string|null
      */
     public function get($label)
     {
@@ -48,9 +48,7 @@ class PartitionColors
     protected function next()
     {
         return blank($this->colors) ? null :
-            tap($this->colors[
-                $this->pointer % count($this->colors)
-            ] ?? null, function () {
+            tap($this->colors[$this->pointer % count($this->colors)] ?? null, function () {
                 $this->pointer++;
             });
     }

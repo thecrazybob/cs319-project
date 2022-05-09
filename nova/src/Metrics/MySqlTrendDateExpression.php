@@ -14,11 +14,11 @@ class MySqlTrendDateExpression extends TrendDateExpression
         $offset = $this->offset();
 
         if ($offset > 0) {
-            $interval = '+ INTERVAL '.$offset.' HOUR';
+            $interval = '+ INTERVAL ' . $offset . ' HOUR';
         } elseif ($offset === 0) {
             $interval = '';
         } else {
-            $interval = '- INTERVAL '.($offset * -1).' HOUR';
+            $interval = '- INTERVAL ' . ($offset * -1) . ' HOUR';
         }
 
         switch ($this->unit) {

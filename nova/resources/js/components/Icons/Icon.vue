@@ -1,42 +1,47 @@
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="fill-current"
-    :width="width"
-    :height="height"
-    :viewBox="viewBox"
-    :aria-labelledby="type"
-    role="presentation"
-  >
-    <component :is="iconName" />
-  </svg>
+    <component
+        class="inline-block"
+        :is="iconName"
+        role="presentation"
+        :width="width"
+        :height="height"
+        :viewBox="viewBox"
+    />
 </template>
 
 <script>
 export default {
-  props: {
-    type: {
-      type: String,
-      default: 'delete',
+    props: {
+        type: {
+            type: String,
+            default: 'delete',
+        },
+        solid: {
+            type: Boolean,
+            default: false,
+        },
     },
-    viewBox: {
-      type: String,
-      default: '0 0 20 20',
-    },
-    width: {
-      type: [Number, String],
-      default: 20,
-    },
-    height: {
-      type: [Number, String],
-      default: 20,
-    },
-  },
 
-  computed: {
-    iconName() {
-      return `icon-${this.type}`
+    computed: {
+        style() {
+            return this.solid ? 'solid' : 'outline'
+        },
+
+        iconName() {
+            return `heroicons-${this.style}-${this.type}`
+        },
+
+        viewBox() {
+            return this.solid ? '0 0 20 20' : '0 0 24 24'
+        },
+
+        width() {
+            return this.solid ? 20 : 24
+        },
+
+        height() {
+            return this.solid ? 20 : 24
+        },
     },
-  },
 }
 </script>

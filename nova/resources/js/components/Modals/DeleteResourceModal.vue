@@ -1,94 +1,102 @@
 <template>
-  <modal @modal-close="handleClose">
-    <form
-      @submit.prevent="handleConfirm"
-      slot-scope="props"
-      class="bg-white rounded-lg shadow-lg overflow-hidden"
-      style="width: 460px"
+    <Modal
+        data-testid="delete-resource-modal"
+        :show="show"
+        role="alertdialog"
+        maxWidth="sm"
     >
-      <slot :uppercaseMode="uppercaseMode" :mode="mode">
-        <div class="p-8">
-          <heading :level="2" class="mb-6">{{
-            __(uppercaseMode + ' Resource')
-          }}</heading>
-          <p class="text-80 leading-normal">
-            {{
-              __(
-                'Are you sure you want to ' + mode + ' the selected resources?'
-              )
-            }}
-          </p>
-        </div>
-      </slot>
+        <form
+            @submit.prevent="$emit('confirm')"
+            class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+        >
+            <slot>
+                <ModalHeader v-text="__(`${uppercaseMode} Resource`)"/>
+                <ModalContent>
+                    <p class="leading-normal">
+                        {{
+                            __(
+                                'Are you sure you want to ' + mode + ' the selected resources?'
+                            )
+                        }}
+                    </p>
+                </ModalContent>
+            </slot>
 
-      <div class="bg-30 px-6 py-3 flex">
-        <div class="ml-auto">
-          <button
-            type="button"
-            data-testid="cancel-button"
-            dusk="cancel-delete-button"
-            @click.prevent="handleClose"
-            class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
-          >
-            {{ __('Cancel') }}
-          </button>
+            <ModalFooter>
+                <div class="ml-auto">
+                    <LinkButton
+                        type="button"
+                        data-testid="cancel-button"
+                        dusk="cancel-delete-button"
+                        @click.prevent="$emit('close')"
+                        class="mr-3"
+                    >
+                        {{ __('Cancel') }}
+                    </LinkButton>
 
-          <loading-button
-            id="confirm-delete-button"
-            ref="confirmButton"
-            data-testid="confirm-button"
-            :processing="working"
-            :disabled="working"
-            type="submit"
-            class="btn btn-default btn-danger"
-          >
-            {{ __(uppercaseMode) }}
-          </loading-button>
-        </div>
-      </div>
-    </form>
-  </modal>
+                    <LoadingButton
+                        ref="confirmButton"
+                        dusk="confirm-delete-button"
+                        :processing="working"
+                        :disabled="working"
+                        component="DangerButton"
+                        type="submit"
+                    >
+                        {{ __(uppercaseMode) }}
+                    </LoadingButton>
+                </div>
+            </ModalFooter>
+        </form>
+    </Modal>
 </template>
 
 <script>
+import startCase from 'lodash/startCase'
+
 export default {
-  props: {
-    mode: {
-      type: String,
-      default: 'delete',
-      validator: function (value) {
-        return ['force delete', 'delete', 'detach'].indexOf(value) !== -1
-      },
-    },
-  },
+    emits: ['confirm', 'close'],
 
-  data: () => ({
-    working: false,
-  }),
+    props: {
+        show: {type: Boolean, default: false},
 
-  methods: {
-    handleClose() {
-      this.$emit('close')
-      this.working = false
+        mode: {
+            type: String,
+            default: 'delete',
+            validator: function (value) {
+                return ['force delete', 'delete', 'detach'].indexOf(value) !== -1
+            },
+        },
     },
 
-    handleConfirm() {
-      this.$emit('confirm')
-      this.working = true
-    },
-  },
+    data: () => ({
+        working: false,
+    }),
 
-  /**
-   * Mount the component.
-   */
-  mounted() {
-    this.$refs.confirmButton.focus()
-  },
+    methods: {
+        handleClose() {
+            this.$emit('close')
+            this.working = false
+        },
 
-  computed: {
-    uppercaseMode() {
-      return _.startCase(this.mode)
+        handleConfirm() {
+            this.$emit('confirm')
+            this.working = true
+        },
     },
-  },
+
+    /**
+     * Mount the component.
+     */
+    mounted() {
+        this.$nextTick(() => {
+            // this.$refs.confirmButton.button.focus()
+        })
+    },
+
+    computed: {
+        uppercaseMode() {
+            return startCase(this.mode)
+        },
+    },
 }
 </script>

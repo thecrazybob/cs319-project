@@ -17,8 +17,8 @@ class ResolvedFields extends Fluent
     /**
      * Create a new resolved fields instance.
      *
-     * @param  \Illuminate\Support\Collection  $attributes
-     * @param  \Illuminate\Support\Collection  $callbacks
+     * @param \Illuminate\Support\Collection $attributes
+     * @param \Illuminate\Support\Collection $callbacks
      * @return void
      */
     public function __construct(Collection $attributes, Collection $callbacks)

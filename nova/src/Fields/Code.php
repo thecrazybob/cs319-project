@@ -6,6 +6,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Code extends Field
 {
+    use SupportsDependentFields;
+
     /**
      * The field's component.
      *
@@ -44,8 +46,8 @@ class Code extends Field
     /**
      * Resolve the given attribute from the given resource.
      *
-     * @param  mixed  $resource
-     * @param  string  $attribute
+     * @param mixed $resource
+     * @param string $attribute
      * @return mixed
      */
     protected function resolveAttribute($resource, $attribute)
@@ -62,25 +64,25 @@ class Code extends Field
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string $requestAttribute
+     * @param object $model
+     * @param string $attribute
      * @return void
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
     {
         if ($request->exists($requestAttribute)) {
             $model->{$attribute} = $this->json
-                        ? json_decode($request[$requestAttribute], true)
-                        : $request[$requestAttribute];
+                ? json_decode($request[$requestAttribute], true)
+                : $request[$requestAttribute];
         }
     }
 
     /**
      * Indicate that the code field is used to manipulate JSON.
      *
-     * @param  int|null  $options
+     * @param int|null $options
      * @return $this
      */
     public function json($options = null)
@@ -95,7 +97,7 @@ class Code extends Field
     /**
      * Define the language syntax highlighting mode for the field.
      *
-     * @param  string  $language
+     * @param string $language
      * @return $this
      */
     public function language($language)
@@ -130,7 +132,7 @@ class Code extends Field
     /**
      * Set the visual height of the Code editor.
      *
-     * @param  string|int  $height
+     * @param string|int $height
      * @return $this
      */
     public function height($height)
@@ -143,7 +145,7 @@ class Code extends Field
     /**
      * Set configuration options for the code editor instance.
      *
-     * @param  array  $options
+     * @param array $options
      * @return $this
      */
     public function options($options)
@@ -158,10 +160,9 @@ class Code extends Field
     /**
      * Prepare the field for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge(parent::jsonSerialize(), [
             'height' => $this->height,

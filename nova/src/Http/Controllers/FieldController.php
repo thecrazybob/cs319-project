@@ -11,20 +11,20 @@ class FieldController extends Controller
     /**
      * Retrieve the given field for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(NovaRequest $request)
+    public function __invoke(NovaRequest $request)
     {
         return response()->json(
             $request->newResource()
-                    ->availableFields($request)
-                    ->when($request->relatable, function ($fields) {
-                        return $fields->whereInstanceOf(RelatableField::class);
-                    })
-                    ->findFieldByAttribute($request->field, function () {
-                        abort(404);
-                    })
+                ->availableFields($request)
+                ->when($request->relatable, function ($fields) {
+                    return $fields->whereInstanceOf(RelatableField::class);
+                })
+                ->findFieldByAttribute($request->field, function () {
+                    abort(404);
+                })
         );
     }
 }

@@ -5,12 +5,22 @@ namespace Laravel\Nova\Fields;
 use Closure;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Contracts\Deletable as DeletableContract;
+use Laravel\Nova\Contracts\Downloadable as DownloadableContract;
 use Laravel\Nova\Contracts\Storable as StorableContract;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class File extends Field implements StorableContract, DeletableContract, Downloadable
+/**
+ * @method static static make(mixed $name, string|callable|null $attribute = null, string|null $disk = null, callable|null $storageCallback = null)
+ */
+class File extends Field implements StorableContract, DeletableContract, DownloadableContract
 {
-    use Storable, Deletable, AcceptsTypes, HasDownload, HasThumbnail, HasPreview;
+    use Storable,
+        Deletable,
+        AcceptsTypes,
+        HasDownload,
+        HasThumbnail,
+        HasPreview,
+        SupportsDependentFields;
 
     /**
      * The field's component.
@@ -22,42 +32,14 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * The callback that should be executed to store the file.
      *
-     * @var callable
+     * @var callable(\Laravel\Nova\Http\Requests\NovaRequest, string, object, string):mixed
      */
     public $storageCallback;
 
     /**
-     * The callback used to retrieve the thumbnail URL.
-     *
-     * @var callable
-     */
-    public $thumbnailUrlCallback;
-
-    /**
-     * The callback used to retrieve the preview URL.
-     *
-     * @var callable
-     */
-    public $previewUrlCallback;
-
-    /**
-     * The callback used to generate the download HTTP response.
-     *
-     * @var callable
-     */
-    public $downloadResponseCallback;
-
-    /**
-     * Determin if the file is able to be downloaded.
-     *
-     * @var bool
-     */
-    public $downloadsAreEnabled = true;
-
-    /**
      * The callback that should be used to determine the file's storage name.
      *
-     * @var callable|null
+     * @var (callable(\Illuminate\Http\Request):string)|null
      */
     public $storeAsCallback;
 
@@ -92,13 +74,13 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Create a new field.
      *
-     * @param  string  $name
-     * @param  string  $attribute
-     * @param  string|null  $disk
-     * @param  callable|null  $storageCallback
+     * @param string $name
+     * @param string|callable|null $attribute
+     * @param string|null $disk
+     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest, string, object, string):mixed)|null  $storageCallback
      * @return void
      */
-    public function __construct($name, $attribute = null, $disk = 'public', $storageCallback = null)
+    public function __construct($name, $attribute = null, $disk = null, $storageCallback = null)
     {
         parent::__construct($name, $attribute);
 
@@ -107,9 +89,9 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
         $this->prepareStorageCallback($storageCallback);
 
         $this->thumbnail(function () {
-            //
+            return null;
         })->preview(function () {
-            //
+            return null;
         })->download(function ($request, $model) {
             $name = $this->originalNameColumn ? $model->{$this->originalNameColumn} : null;
 
@@ -126,28 +108,28 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Prepare the storage callback.
      *
-     * @param  callable|null  $storageCallback
+     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest, string, object, string):mixed)|null  $storageCallback
      * @return void
      */
     protected function prepareStorageCallback($storageCallback)
     {
         $this->storageCallback = $storageCallback ?? function ($request, $model, $attribute, $requestAttribute) {
-            return $this->mergeExtraStorageColumns($request, [
-                $this->attribute => $this->storeFile($request, $requestAttribute),
-            ]);
-        };
+                return $this->mergeExtraStorageColumns($request, [
+                    $this->attribute => $this->storeFile($request, $requestAttribute),
+                ]);
+            };
     }
 
     /**
      * Store the file on disk.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $requestAttribute
+     * @param \Illuminate\Http\Request $request
+     * @param string $requestAttribute
      * @return string
      */
     protected function storeFile($request, $requestAttribute)
     {
-        if (! $this->storeAsCallback) {
+        if (!$this->storeAsCallback) {
             return $request->file($requestAttribute)->store($this->getStorageDir(), $this->getStorageDisk());
         }
 
@@ -159,8 +141,8 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Merge the specified extra file information columns into the storable attributes.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  array  $attributes
+     * @param \Illuminate\Http\Request $request
+     * @param array $attributes
      * @return array
      */
     protected function mergeExtraStorageColumns($request, array $attributes)
@@ -199,9 +181,19 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     }
 
     /**
+     * Get the disk that the field is stored on.
+     *
+     * @return string|null
+     */
+    public function getStorageDisk()
+    {
+        return $this->disk ?: config('nova.storage_disk', 'public');
+    }
+
+    /**
      * Specify the callback that should be used to store the file.
      *
-     * @param  callable  $storageCallback
+     * @param callable(\Laravel\Nova\Http\Requests\NovaRequest, string, object, string):mixed $storageCallback
      * @return $this
      */
     public function store(callable $storageCallback)
@@ -214,7 +206,7 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Specify the callback that should be used to determine the file's storage name.
      *
-     * @param  callable  $storeAsCallback
+     * @param callable(\Illuminate\Http\Request):string $storeAsCallback
      * @return $this
      */
     public function storeAs(callable $storeAsCallback)
@@ -227,7 +219,7 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Specify the callback that should be used to retrieve the thumbnail URL.
      *
-     * @param  callable  $thumbnailUrlCallback
+     * @param callable(mixed, string, mixed):?string  $thumbnailUrlCallback
      * @return $this
      */
     public function thumbnail(callable $thumbnailUrlCallback)
@@ -240,7 +232,7 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Specify the callback that should be used to retrieve the preview URL.
      *
-     * @param  callable  $previewUrlCallback
+     * @param callable(mixed, ?string, mixed):?string  $previewUrlCallback
      * @return $this
      */
     public function preview(callable $previewUrlCallback)
@@ -253,7 +245,7 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Specify the column where the file's original name should be stored.
      *
-     * @param  string  $column
+     * @param string $column
      * @return $this
      */
     public function storeOriginalName($column)
@@ -266,7 +258,7 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Specify the column where the file size should be stored.
      *
-     * @param  string  $column
+     * @param string $column
      * @return $this
      */
     public function storeSize($column)
@@ -279,8 +271,8 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  object  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param object $model
      * @return void
      */
     public function fillForAction(NovaRequest $request, $model)
@@ -293,19 +285,19 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param string $requestAttribute
+     * @param object $model
+     * @param string $attribute
      * @return mixed
      */
     protected function fillAttribute(NovaRequest $request, $requestAttribute, $model, $attribute)
     {
-        if (is_null($file = $request->file($requestAttribute)) || ! $file->isValid()) {
+        if (is_null($file = $request->file($requestAttribute)) || !$file->isValid()) {
             return;
         }
 
-        $hasExistingFile = ! is_null($this->getStoragePath());
+        $hasExistingFile = !is_null($this->getStoragePath());
 
         $result = call_user_func(
             $this->storageCallback,
@@ -325,7 +317,7 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
             return $result;
         }
 
-        if (! is_array($result)) {
+        if (!is_array($result)) {
             return $model->{$attribute} = $result;
         }
 
@@ -359,15 +351,14 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
     /**
      * Prepare the field for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge(parent::jsonSerialize(), [
             'thumbnailUrl' => $this->resolveThumbnailUrl(),
             'previewUrl' => $this->resolvePreviewUrl(),
-            'downloadable' => $this->downloadsAreEnabled && isset($this->downloadResponseCallback) && ! empty($this->value),
+            'downloadable' => $this->downloadsAreEnabled && isset($this->downloadResponseCallback) && !empty($this->value),
             'deletable' => isset($this->deleteCallback) && $this->deletable,
             'acceptedTypes' => $this->acceptedTypes,
         ]);

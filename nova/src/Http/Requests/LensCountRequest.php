@@ -29,7 +29,7 @@ class LensCountRequest extends NovaRequest
     public function toQuery()
     {
         return tap($this->lens()->query(LensRequest::createFrom($this), $this->newQuery()), function ($query) {
-            if (! $query instanceof Builder) {
+            if (!$query instanceof Builder) {
                 throw new LensCountException('Lens must return an Eloquent query instance in order to count lens resources.');
             }
         });

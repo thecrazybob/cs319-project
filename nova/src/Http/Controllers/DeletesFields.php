@@ -11,21 +11,21 @@ trait DeletesFields
     /**
      * Delete the deletable fields on the given model / resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model $model
      * @return void
      */
     protected function forceDeleteFields(NovaRequest $request, $model)
     {
-        return $this->deleteFields($request, $model, false);
+        $this->deleteFields($request, $model, false);
     }
 
     /**
      * Delete the deletable fields on the given model / resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  bool  $skipSoftDeletes
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param bool $skipSoftDeletes
      * @return void
      */
     protected function deleteFields(NovaRequest $request, $model, $skipSoftDeletes = true)
@@ -35,10 +35,10 @@ trait DeletesFields
         }
 
         $request->newResourceWith($model)
-                    ->deletableFields($request)
-                    ->filter->isPrunable()
-                    ->each(function ($field) use ($request, $model) {
-                        DeleteField::forRequest($request, $field, $model);
-                    });
+            ->deletableFields($request)
+            ->filter->isPrunable()
+            ->each(function ($field) use ($request, $model) {
+                DeleteField::forRequest($request, $field, $model);
+            });
     }
 }

@@ -3,11 +3,10 @@
 namespace Laravel\Nova\Testing\Browser\Pages;
 
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
 
 class Attach extends Page
 {
-    use HasSearchableRelations;
+    use InteractsWithRelations;
 
     public $resourceName;
     public $resourceId;
@@ -16,9 +15,9 @@ class Attach extends Page
     /**
      * Create a new page instance.
      *
-     * @param  string  $resourceName
-     * @param  string  $resourceId
-     * @param  string  $relation
+     * @param string $resourceName
+     * @param string $resourceId
+     * @param string $relation
      * @return void
      */
     public function __construct($resourceName, $resourceId, $relation)
@@ -26,6 +25,8 @@ class Attach extends Page
         $this->relation = $relation;
         $this->resourceId = $resourceId;
         $this->resourceName = $resourceName;
+
+        $this->setNovaPage("/resources/{$this->resourceName}/{$this->resourceId}/attach/{$this->relation}");
     }
 
     /**
@@ -35,51 +36,54 @@ class Attach extends Page
      */
     public function url()
     {
-        return Nova::path().'/resources/'.$this->resourceName.'/'.$this->resourceId.'/attach/'.$this->relation.'?viaRelationship='.$this->relation.'&polymorphic=0';
+        return $this->novaPageUrl . '?' . http_build_query([
+                'viaRelationship' => $this->relation,
+                'polymorphic' => 0,
+            ]);
     }
 
     /**
      * Select the attachable resource with the given ID.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string|int  $id
+     * @param \Laravel\Dusk\Browser $browser
+     * @param string|int $id
      * @return void
      */
     public function selectAttachable(Browser $browser, $id)
     {
-        $browser->select('@attachable-select', $id);
+        $this->selectRelation($browser, 'attachable-select', $id);
     }
 
     /**
      * Click the attach button.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
+     * @param \Laravel\Dusk\Browser $browser
      * @return void
      */
-    public function clickAttach(Browser $browser)
+    public function create(Browser $browser)
     {
         $browser->click('@attach-button')->pause(750);
     }
 
     /**
+     * Click the update and continue editing button.
+     *
+     * @param \Laravel\Dusk\Browser $browser
+     * @return void
+     */
+    public function createAndAttachAnother(Browser $browser)
+    {
+        $browser->click('@attach-and-attach-another-button')->pause(750);
+    }
+
+    /**
      * Assert that the browser is on the page.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
+     * @param \Laravel\Dusk\Browser $browser
      * @return void
      */
     public function assert(Browser $browser)
     {
-        $browser->pause(500)
-                ->waitFor('#nova .content form', 25);
-    }
-
-    /**
-     * Get the element shortcuts for the page.
-     *
-     * @return array
-     */
-    public function elements()
-    {
-        return [];
+        $browser->assertOk()->waitFor('@nova-form');
     }
 }

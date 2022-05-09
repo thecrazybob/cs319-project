@@ -1,65 +1,60 @@
 <template>
-  <modal @modal-close="handleClose">
-    <form
-      @submit.prevent="handleConfirm"
-      slot-scope="props"
-      class="bg-white rounded-lg shadow-lg overflow-hidden"
-      style="width: 460px"
-    >
-      <slot>
-        <div class="p-8">
-          <heading :level="2" class="mb-6">{{
-            __('Restore Resource')
-          }}</heading>
-          <p class="text-80 leading-normal">
-            {{ __('Are you sure you want to restore the selected resources?') }}
-          </p>
-        </div>
-      </slot>
+    <Modal data-testid="restore-resource-modal" :show="show" maxWidth="sm">
+        <form
+            @submit.prevent="$emit('confirm')"
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+            style="width: 460px"
+        >
+            <slot>
+                <ModalHeader v-text="__('Restore Resource')"/>
+                <ModalContent>
+                    <p class="leading-normal">
+                        {{ __('Are you sure you want to restore the selected resources?') }}
+                    </p>
+                </ModalContent>
+            </slot>
 
-      <div class="bg-30 px-6 py-3 flex">
-        <div class="ml-auto">
-          <button
-            type="button"
-            data-testid="cancel-button"
-            @click.prevent="handleClose"
-            class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
-          >
-            {{ __('Cancel') }}
-          </button>
+            <ModalFooter>
+                <div class="ml-auto">
+                    <LinkButton
+                        type="button"
+                        data-testid="cancel-button"
+                        dusk="cancel-restore-button"
+                        @click.prevent="$emit('close')"
+                        class="mr-3"
+                    >
+                        {{ __('Cancel') }}
+                    </LinkButton>
 
-          <button
-            ref="confirmButton"
-            id="confirm-restore-button"
-            data-testid="confirm-button"
-            type="submit"
-            class="btn btn-default btn-primary"
-          >
-            {{ __('Restore') }}
-          </button>
-        </div>
-      </div>
-    </form>
-  </modal>
+                    <DefaultButton
+                        ref="confirmButton"
+                        data-testid="confirm-button"
+                        dusk="confirm-restore-button"
+                        type="submit"
+                    >
+                        {{ __('Restore') }}
+                    </DefaultButton>
+                </div>
+            </ModalFooter>
+        </form>
+    </Modal>
 </template>
 
 <script>
 export default {
-  methods: {
-    handleClose() {
-      this.$emit('close')
+    emits: ['confirm', 'close'],
+
+    props: {
+        show: {type: Boolean, default: false},
     },
 
-    handleConfirm() {
-      this.$emit('confirm')
+    /**
+     * Mount the component.
+     */
+    mounted() {
+        this.$nextTick(() => {
+            // this.$refs.confirmButton.focus()
+        })
     },
-  },
-
-  /**
-   * Mount the component.
-   */
-  mounted() {
-    this.$refs.confirmButton.focus()
-  },
 }
 </script>

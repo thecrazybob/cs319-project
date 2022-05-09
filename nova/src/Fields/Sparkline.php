@@ -18,7 +18,7 @@ class Sparkline extends Field
     /**
      * The data used in the chart.
      *
-     * @var array|\Closure|\Laravel\Nova\Metrics\Trend
+     * @var array|(\Closure(\Laravel\Nova\Http\Requests\NovaRequest):mixed)|\Laravel\Nova\Metrics\Trend
      */
     public $data = [];
 
@@ -32,21 +32,21 @@ class Sparkline extends Field
     /**
      * Indicates if the element should be shown on the creation view.
      *
-     * @var \Closure|bool
+     * @var (callable(\Laravel\Nova\Http\Requests\NovaRequest):bool)|bool
      */
     public $showOnCreation = false;
 
     /**
      * Indicates if the element should be shown on the update view.
      *
-     * @var \Closure|bool
+     * @var (callable(\Laravel\Nova\Http\Requests\NovaRequest, mixed):bool)|bool
      */
     public $showOnUpdate = false;
 
     /**
      * Set the data for the Spark Line.
      *
-     * @param  array|\Closure|\Laravel\Nova\Metrics\Trend  $data
+     * @param array|(\Closure(\Laravel\Nova\Http\Requests\NovaRequest):mixed)|\Laravel\Nova\Metrics\Trend  $data
      * @return $this
      */
     public function data($data)
@@ -59,7 +59,7 @@ class Sparkline extends Field
     /**
      * Get field data.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array|mixed
      */
     public function getData(NovaRequest $request)
@@ -98,7 +98,7 @@ class Sparkline extends Field
     /**
      * Set the component height.
      *
-     * @param  int  $height
+     * @param int $height
      * @return $this
      */
     public function height($height)
@@ -111,7 +111,7 @@ class Sparkline extends Field
     /**
      * Set the component width.
      *
-     * @param  int  $width
+     * @param int $width
      * @return $this
      */
     public function width($width)
@@ -124,10 +124,9 @@ class Sparkline extends Field
     /**
      * Prepare the element for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge(parent::jsonSerialize(), [
             'chartStyle' => $this->chartStyle,

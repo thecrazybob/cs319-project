@@ -17,7 +17,7 @@
     <a
       v-if="!shouldShow"
       @click="toggle"
-      class="cursor-pointer dim inline-block text-primary font-bold"
+      class="cursor-pointer inline-block font-bold"
       :class="{ 'mt-6': expanded }"
       aria-role="button"
     >

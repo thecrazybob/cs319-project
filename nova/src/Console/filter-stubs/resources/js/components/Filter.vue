@@ -1,28 +1,29 @@
 <template>
-    <div>
-        <h3 class="text-sm uppercase tracking-wide text-80 bg-30 p-3">
-            {{ filter.name }}
-        </h3>
+    <FilterContainer>
+        <span>{{ filter.name }}</span>
 
-        <div class="p-2">
-            <select
-                :dusk="filter.name + '-filter-select'"
-                class="block w-full form-control-sm form-select"
-                :value="value"
-                @change="handleChange"
+        <template #filter>
+            <SelectControl
+                :dusk="`${filter.name}-select-filter"
+                label="label"
+                class="w-full block"
+                size="sm"
+                v-model:selected="value"
+                @change="value = $event"
+                :options="filter.options"
             >
-                <option value="" selected>&mdash;</option>
-
-                <option v-for="option in filter.options" :value="option.value">
-                    {{ option.name }}
-                </option>
-            </select>
-        </div>
-    </div>
+                <option value="" :selected="value == ''">&mdash;</option>
+            </SelectControl>
+        </template>
+    </FilterContainer>
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
+
 export default {
+    emits: ['change'],
+
     props: {
         resourceName: {
             type: String,
@@ -32,13 +33,43 @@ export default {
             type: String,
             required: true,
         },
+        lens: String,
+    },
+
+    data: () => ({
+        value: null,
+        debouncedHandleChange: null,
+    }),
+
+    created() {
+        this.debouncedHandleChange = debounce(() => this.handleChange(), 500)
+
+        this.setCurrentFilterValue()
+    },
+
+    mounted() {
+        Nova.$on('filter-reset', this.setCurrentFilterValue)
+    },
+
+    beforeUnmount() {
+        Nova.$off('filter-reset', this.setCurrentFilterValue)
+    },
+
+    watch: {
+        value() {
+            this.debouncedHandleChange()
+        },
     },
 
     methods: {
-        handleChange(event) {
+        setCurrentFilterValue() {
+            this.value = this.filter.currentValue
+        },
+
+        handleChange() {
             this.$store.commit(`${this.resourceName}/updateFilterState`, {
                 filterClass: this.filterKey,
-                value: event.target.value,
+                value: this.value,
             })
 
             this.$emit('change')
@@ -50,10 +81,6 @@ export default {
             return this.$store.getters[`${this.resourceName}/getFilter`](
                 this.filterKey
             )
-        },
-
-        value() {
-            return this.filter.currentValue
         },
     },
 }
