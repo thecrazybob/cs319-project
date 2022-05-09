@@ -32,8 +32,8 @@ class FormCreate extends Component implements HasForms
                 ->required()
                 ->label('File Name:'),
             Select::make('vaccine_type')->options([
-                'covid' => 'covid',
-                'other' => 'other',
+                'covid' => 'Covid',
+                'other' => 'Other',
             ])
             ->required()
             ->label('Vaccine Type:'),
@@ -44,6 +44,7 @@ class FormCreate extends Component implements HasForms
                 ->numeric()
                 ->mask(fn (TextInput\Mask $mask) => $mask
                 ->numeric()
+                ->maxValue(10)
                 ->integer(),
             ),
             FileUpload::make('file_path')

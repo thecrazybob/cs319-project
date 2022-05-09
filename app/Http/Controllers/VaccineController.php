@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Test;
 use App\Models\Vaccine;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -17,8 +18,17 @@ class VaccineController extends Controller
     public function index(Request $request)
     {
         $vaccines = Vaccine::where('patient_id', auth()->user()->patient_id)->get();
+        $requirement = Vaccine::where('patient_id', auth()->user()->patient_id)->where('vaccine_type', 'covid')->max('dose_no') > 2 ? 'Fulfilling requirement' : 'Requirements not fullfilled';
+        $requirement_bool =  Vaccine::where('patient_id', auth()->user()->patient_id)->where('vaccine_type', 'covid')->max('dose_no') > 2 ? true : false;
+        $dose_count = Vaccine::where('patient_id', auth()->user()->patient_id)->where('vaccine_type', 'covid')->max('dose_no');
+        $next_dose = Vaccine::where('patient_id', auth()->user()->patient_id)->latest('vaccine_date')->first()->vaccine_date->addMonths(5)->format('d M Y');
+        $last_test = Test::where('patient_id', auth()->user()->patient_id)->where('test_type', 'pcr')->latest('test_date')->first()->test_date->format('d M Y');
+        return view('vaccine.index', compact('vaccines', 'requirement', 'requirement_bool', 'dose_count', 'next_dose', 'last_test'));
+    }
 
-        return view('vaccine.index');
+    public function count(): int
+    {
+        return Vaccine::where('vaccine_type', 'pcr')->count();
     }
 
     /**
@@ -78,7 +88,8 @@ class VaccineController extends Controller
     public function destroy(Request $request, Vaccine $vaccine)
     {
         $vaccine->delete();
-
         return redirect()->route('vaccine.index');
     }
+
+
 }

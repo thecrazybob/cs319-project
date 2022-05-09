@@ -44,8 +44,8 @@ class FormEdit extends Component implements HasForms
                 ->required()
                 ->label('Name:'),
             Select::make('vaccine_type')->options([
-                'covid' => 'covid',
-                'other' => 'other',
+                'covid' => 'Covid',
+                'other' => 'Other',
             ])
             ->required()
             ->label('Vaccine Type:'),
