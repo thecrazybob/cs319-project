@@ -13,9 +13,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 class Doctor extends Resource
 {
     public function title()
-    {
-        return \App\Models\User::where('doctor_id', $this->id)->first()->name;;
-    }
+{
+    return \App\Models\User::where('doctor_id', $this->id)->first()->name;;
+}
 
     /**
      * The model the resource corresponds to.
@@ -36,7 +36,8 @@ class Doctor extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -57,7 +58,7 @@ class Doctor extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -68,7 +69,7 @@ class Doctor extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -79,7 +80,7 @@ class Doctor extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -90,7 +91,7 @@ class Doctor extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

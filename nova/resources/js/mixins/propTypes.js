@@ -1,65 +1,65 @@
 import pick from 'lodash/pick'
 
 const propTypes = {
-    preventInitialLoading: {
-        type: Boolean,
-        default: false,
-    },
+  preventInitialLoading: {
+    type: Boolean,
+    default: false,
+  },
 
-    showHelpText: {
-        type: Boolean,
-        default: false,
-    },
+  showHelpText: {
+    type: Boolean,
+    default: false,
+  },
 
-    shownViaNewRelationModal: {
-        type: Boolean,
-        default: false,
-    },
+  shownViaNewRelationModal: {
+    type: Boolean,
+    default: false,
+  },
 
-    resourceId: {type: [Number, String]},
+  resourceId: { type: [Number, String] },
 
-    resourceName: {type: String},
+  resourceName: { type: String },
 
-    relatedResourceId: {type: [Number, String]},
+  relatedResourceId: { type: [Number, String] },
 
-    relatedResourceName: {type: String},
+  relatedResourceName: { type: String },
 
-    field: {
-        type: Object,
-        required: true,
-    },
+  field: {
+    type: Object,
+    required: true,
+  },
 
-    viaResource: {
-        type: String,
-        required: false,
-    },
+  viaResource: {
+    type: String,
+    required: false,
+  },
 
-    viaResourceId: {
-        type: [String, Number],
-        required: false,
-    },
+  viaResourceId: {
+    type: [String, Number],
+    required: false,
+  },
 
-    viaRelationship: {
-        type: String,
-        required: false,
-    },
+  viaRelationship: {
+    type: String,
+    required: false,
+  },
 
-    relationshipType: {
-        type: String,
-        default: '',
-    },
+  relationshipType: {
+    type: String,
+    default: '',
+  },
 
-    shouldOverrideMeta: {
-        type: Boolean,
-        default: false,
-    },
+  shouldOverrideMeta: {
+    type: Boolean,
+    default: false,
+  },
 
-    disablePagination: {
-        type: Boolean,
-        default: false,
-    },
+  disablePagination: {
+    type: Boolean,
+    default: false,
+  },
 }
 
 export function mapProps(attributes) {
-    return pick(propTypes, attributes)
+  return pick(propTypes, attributes)
 }

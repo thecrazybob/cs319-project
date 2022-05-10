@@ -43,13 +43,13 @@ trait InteractsWithRelatedResources
     public function findParentModel()
     {
         return once(function () {
-            if (!$this->viaRelationship()) {
+            if (! $this->viaRelationship()) {
                 return null;
             }
 
             return Nova::modelInstanceForKey($this->viaResource)
-                ->newQueryWithoutScopes()
-                ->find($this->viaResourceId);
+                                ->newQueryWithoutScopes()
+                                ->find($this->viaResourceId);
         });
     }
 
@@ -94,7 +94,7 @@ trait InteractsWithRelatedResources
      */
     public function pivotName()
     {
-        if (!$this->viaRelationship()) {
+        if (! $this->viaRelationship()) {
             return Resource::DEFAULT_PIVOT_NAME;
         }
 
@@ -109,8 +109,8 @@ trait InteractsWithRelatedResources
         $parent = $parentResource->model();
 
         return ($parent && $parentResource->hasRelatableField($this, $this->viaRelationship))
-            ? class_basename($parent->{$this->viaRelationship}()->getPivotClass())
-            : Resource::DEFAULT_PIVOT_NAME;
+                    ? class_basename($parent->{$this->viaRelationship}()->getPivotClass())
+                    : Resource::DEFAULT_PIVOT_NAME;
     }
 
     /**

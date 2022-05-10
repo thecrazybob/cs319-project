@@ -70,7 +70,7 @@ class NovaNotification extends \Illuminate\Notifications\Notification
     /**
      * Set the icon used for the notification.
      *
-     * @param string $icon
+     * @param  string  $icon
      * @return $this
      */
     public function icon($icon)
@@ -83,7 +83,7 @@ class NovaNotification extends \Illuminate\Notifications\Notification
     /**
      * Set the message used for the notification.
      *
-     * @param string $message
+     * @param  string  $message
      * @return $this
      */
     public function message($message)
@@ -96,7 +96,7 @@ class NovaNotification extends \Illuminate\Notifications\Notification
     /**
      * Set the URL used for the notification call-to-action button.
      *
-     * @param string $url
+     * @param  string  $url
      * @return $this
      */
     public function url($url)
@@ -109,8 +109,8 @@ class NovaNotification extends \Illuminate\Notifications\Notification
     /**
      * Set the action text and URL used for the notification.
      *
-     * @param string $text
-     * @param \Laravel\Nova\URL|string $url
+     * @param  string  $text
+     * @param  \Laravel\Nova\URL|string  $url
      * @return $this
      */
     public function action(string $text, $url)
@@ -124,7 +124,7 @@ class NovaNotification extends \Illuminate\Notifications\Notification
     /**
      * Set the notification's visual type.
      *
-     * @param string $type
+     * @param  string  $type
      * @return $this
      */
     public function type(string $type = 'success')
@@ -155,7 +155,7 @@ class NovaNotification extends \Illuminate\Notifications\Notification
     /**
      * Get the notification channels.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array|string
      */
     public function via($notifiable)

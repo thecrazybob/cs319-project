@@ -16,7 +16,7 @@ class ActionModelCollection extends EloquentCollection
     /**
      * Remove models the user does not have permission to execute the action against.
      *
-     * @param \Laravel\Nova\Http\Requests\ActionRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
      * @return static
      */
     public function filterForExecution(ActionRequest $request)
@@ -36,9 +36,9 @@ class ActionModelCollection extends EloquentCollection
     /**
      * Remove models the user does not have permission to execute the action against.
      *
-     * @param \Laravel\Nova\Http\Requests\ActionRequest $request
-     * @param \Laravel\Nova\Resource $resource
-     * @param \Laravel\Nova\Actions\Action|\Laravel\Nova\Actions\DestructiveAction $action
+     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
+     * @param  \Laravel\Nova\Actions\Action|\Laravel\Nova\Actions\DestructiveAction  $action
      * @return bool
      */
     protected function filterByResourceAuthorization(ActionRequest $request, $resource, $action)

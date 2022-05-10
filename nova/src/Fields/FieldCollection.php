@@ -21,13 +21,13 @@ class FieldCollection extends Collection
     /**
      * Assign the fields with the given panels to their parent panel.
      *
-     * @param string $label
+     * @param  string  $label
      * @return static<TKey, \Laravel\Nova\Fields\Field>
      */
     public function assignDefaultPanel($label)
     {
         return $this->map(function ($field) use ($label) {
-            if (!$field->panel) {
+            if (! $field->panel) {
                 $field->panel = $label;
             }
 
@@ -40,8 +40,8 @@ class FieldCollection extends Collection
      *
      * @template TGetDefault
      *
-     * @param string $attribute
-     * @param TGetDefault|\Closure():TGetDefault  $default
+     * @param  string  $attribute
+     * @param  TGetDefault|\Closure():TGetDefault  $default
      * @return \Laravel\Nova\Fields\Field|TGetDefault
      */
     public function findFieldByAttribute($attribute, $default = null)
@@ -55,7 +55,7 @@ class FieldCollection extends Collection
     /**
      * Filter elements should be displayed for the given request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return static<int, \Laravel\Nova\Fields\Field>
      */
     public function authorized(Request $request)
@@ -68,7 +68,7 @@ class FieldCollection extends Collection
     /**
      * Filter elements should be displayed for the given request.
      *
-     * @param mixed $resource
+     * @param  mixed  $resource
      * @return static<int, \Laravel\Nova\Fields\Field>
      */
     public function resolve($resource)
@@ -83,13 +83,13 @@ class FieldCollection extends Collection
     /**
      * Resolve value of fields for display.
      *
-     * @param mixed $resource
+     * @param  mixed  $resource
      * @return static<int, \Laravel\Nova\Fields\Field>
      */
     public function resolveForDisplay($resource)
     {
         return $this->each(function ($field) use ($resource) {
-            if ($field instanceof ListableField || !$field instanceof Resolvable) {
+            if ($field instanceof ListableField || ! $field instanceof Resolvable) {
                 return;
             }
 
@@ -104,8 +104,8 @@ class FieldCollection extends Collection
     /**
      * Filter fields for showing on detail.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param mixed $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  mixed  $resource
      * @return static<int, \Laravel\Nova\Fields\Field>
      */
     public function filterForDetail(NovaRequest $request, $resource)
@@ -118,8 +118,8 @@ class FieldCollection extends Collection
     /**
      * Filter fields for showing on preview.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param mixed $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  mixed  $resource
      * @return static<int, \Laravel\Nova\Fields\Field>
      */
     public function filterForPreview(NovaRequest $request, $resource)
@@ -132,8 +132,8 @@ class FieldCollection extends Collection
     /**
      * Filter fields for showing on index.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param mixed $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  mixed  $resource
      * @return static<int, \Laravel\Nova\Fields\Field>
      */
     public function filterForIndex(NovaRequest $request, $resource)
@@ -146,7 +146,7 @@ class FieldCollection extends Collection
     /**
      * Reject if the field is readonly.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return static<int, \Laravel\Nova\Fields\Field>
      */
     public function withoutReadonly(NovaRequest $request)
@@ -207,7 +207,7 @@ class FieldCollection extends Collection
     /**
      * Apply depends on for the request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return $this
      */
     public function applyDependsOn(NovaRequest $request)

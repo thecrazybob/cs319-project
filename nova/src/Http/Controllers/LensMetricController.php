@@ -10,7 +10,7 @@ class LensMetricController extends Controller
     /**
      * List the metrics for the given resource.
      *
-     * @param \Laravel\Nova\Http\Requests\LensMetricRequest $request
+     * @param  \Laravel\Nova\Http\Requests\LensMetricRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(LensMetricRequest $request)
@@ -23,7 +23,7 @@ class LensMetricController extends Controller
     /**
      * Get the specified metric's value.
      *
-     * @param \Laravel\Nova\Http\Requests\LensMetricRequest $request
+     * @param  \Laravel\Nova\Http\Requests\LensMetricRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(LensMetricRequest $request)

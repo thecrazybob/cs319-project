@@ -25,7 +25,7 @@ class ResourceUpdateController extends Controller
     /**
      * Create a new resource.
      *
-     * @param \Laravel\Nova\Http\Requests\UpdateResourceRequest $request
+     * @param  \Laravel\Nova\Http\Requests\UpdateResourceRequest  $request
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Illuminate\Http\Exceptions\HttpResponseException
@@ -82,8 +82,8 @@ class ResourceUpdateController extends Controller
     /**
      * Determine if the model has been updated since it was retrieved.
      *
-     * @param \Laravel\Nova\Http\Requests\UpdateResourceRequest $request
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Laravel\Nova\Http\Requests\UpdateResourceRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return bool
      */
     protected function modelHasBeenUpdatedSinceRetrieval(UpdateResourceRequest $request, $model)
@@ -97,12 +97,12 @@ class ResourceUpdateController extends Controller
 
         $column = $model->getUpdatedAtColumn();
 
-        if (!$model->{$column}) {
+        if (! $model->{$column}) {
             return false;
         }
 
         return $request->input('_retrieved_at') && $model->usesTimestamps() && $model->{$column}->gt(
-                Carbon::createFromTimestamp($request->input('_retrieved_at'))
-            );
+            Carbon::createFromTimestamp($request->input('_retrieved_at'))
+        );
     }
 }

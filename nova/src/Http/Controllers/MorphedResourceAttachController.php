@@ -10,8 +10,8 @@ class MorphedResourceAttachController extends ResourceAttachController
     /**
      * Initialize a fresh pivot model for the relationship.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Relations\MorphToMany $relationship
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Relations\MorphToMany  $relationship
      * @return \Illuminate\Database\Eloquent\Relations\Pivot
      */
     protected function initializePivot(NovaRequest $request, $relationship)

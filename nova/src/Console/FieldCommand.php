@@ -27,38 +27,38 @@ class FieldCommand extends ComponentGeneratorCommand
      */
     public function handle()
     {
-        if (!$this->hasValidNameArgument()) {
+        if (! $this->hasValidNameArgument()) {
             return;
         }
 
         (new Filesystem)->copyDirectory(
-            __DIR__ . '/field-stubs',
+            __DIR__.'/field-stubs',
             $this->componentPath()
         );
 
         // Field.js replacements...
-        $this->replace('{{ component }}', $this->componentName(), $this->componentPath() . '/resources/js/field.js');
+        $this->replace('{{ component }}', $this->componentName(), $this->componentPath().'/resources/js/field.js');
 
         // Field.php replacements...
-        $this->replace('{{ namespace }}', $this->componentNamespace(), $this->componentPath() . '/src/Field.stub');
-        $this->replace('{{ class }}', $this->componentClass(), $this->componentPath() . '/src/Field.stub');
-        $this->replace('{{ component }}', $this->componentName(), $this->componentPath() . '/src/Field.stub');
+        $this->replace('{{ namespace }}', $this->componentNamespace(), $this->componentPath().'/src/Field.stub');
+        $this->replace('{{ class }}', $this->componentClass(), $this->componentPath().'/src/Field.stub');
+        $this->replace('{{ component }}', $this->componentName(), $this->componentPath().'/src/Field.stub');
 
         (new Filesystem)->move(
-            $this->componentPath() . '/src/Field.stub',
-            $this->componentPath() . '/src/' . $this->componentClass() . '.php'
+            $this->componentPath().'/src/Field.stub',
+            $this->componentPath().'/src/'.$this->componentClass().'.php'
         );
 
         // FieldServiceProvider.php replacements...
-        $this->replace('{{ namespace }}', $this->componentNamespace(), $this->componentPath() . '/src/FieldServiceProvider.stub');
-        $this->replace('{{ component }}', $this->componentName(), $this->componentPath() . '/src/FieldServiceProvider.stub');
+        $this->replace('{{ namespace }}', $this->componentNamespace(), $this->componentPath().'/src/FieldServiceProvider.stub');
+        $this->replace('{{ component }}', $this->componentName(), $this->componentPath().'/src/FieldServiceProvider.stub');
 
         // webpack.mix.js replacements...
-        $this->replace('{{ name }}', $this->component(), $this->componentPath() . '/webpack.mix.js');
+        $this->replace('{{ name }}', $this->component(), $this->componentPath().'/webpack.mix.js');
 
         (new Filesystem)->move(
-            $this->componentPath() . '/src/FieldServiceProvider.stub',
-            $this->componentPath() . '/src/FieldServiceProvider.php'
+            $this->componentPath().'/src/FieldServiceProvider.stub',
+            $this->componentPath().'/src/FieldServiceProvider.php'
         );
 
         // Field composer.json replacements...

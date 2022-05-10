@@ -1,11 +1,11 @@
 <template>
-    <div :class="`text-${field.textAlign}`">
+  <div :class="`text-${field.textAlign}`">
     <span>
       <span v-if="field.viewable && field.value">
         <Link
-            @click.stop
-            :href="$url(`/resources/${field.resourceName}/${field.belongsToId}`)"
-            class="link-default"
+          @click.stop
+          :href="$url(`/resources/${field.resourceName}/${field.belongsToId}`)"
+          class="link-default"
         >
           {{ field.value }}
         </Link>
@@ -13,11 +13,11 @@
       <span v-else-if="field.value">{{ field.value }}</span>
       <span v-else>&mdash;</span>
     </span>
-    </div>
+  </div>
 </template>
 
 <script>
 export default {
-    props: ['resourceName', 'field'],
+  props: ['resourceName', 'field'],
 }
 </script>

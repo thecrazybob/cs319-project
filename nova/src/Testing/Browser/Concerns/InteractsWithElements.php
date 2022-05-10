@@ -10,9 +10,9 @@ trait InteractsWithElements
     /**
      * Type on "date" input.
      *
-     * @param \Laravel\Dusk\Browser $browser
-     * @param string $selector
-     * @param \Carbon\CarbonInterface $carbon
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @param  string  $selector
+     * @param  \Carbon\CarbonInterface  $carbon
      * @return void
      */
     public function typeOnDate(Browser $browser, string $selector, CarbonInterface $carbon)
@@ -23,9 +23,9 @@ trait InteractsWithElements
     /**
      * Type on "datetime-local" input.
      *
-     * @param \Laravel\Dusk\Browser $browser
-     * @param string $selector
-     * @param \Carbon\CarbonInterface $carbon
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @param  string  $selector
+     * @param  \Carbon\CarbonInterface  $carbon
      * @return void
      */
     public function typeOnDateTimeLocal(Browser $browser, string $selector, CarbonInterface $carbon)

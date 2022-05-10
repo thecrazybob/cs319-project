@@ -1,29 +1,29 @@
 <template>
-    <ResourceCreate
-        :resource-name="resourceName"
-        :via-resource="viaResource"
-        :via-resource-id="viaResourceId"
-        :via-relationship="viaRelationship"
-        mode="form"
-    />
+  <ResourceCreate
+    :resource-name="resourceName"
+    :via-resource="viaResource"
+    :via-resource-id="viaResourceId"
+    :via-relationship="viaRelationship"
+    mode="form"
+  />
 </template>
 
 <script>
-import {mapProps} from '@/mixins'
+import { mapProps } from '@/mixins'
 import ResourceCreate from '@/views/Create'
 
 export default {
-    name: 'Create',
+  name: 'Create',
 
-    components: {
-        ResourceCreate,
-    },
+  components: {
+    ResourceCreate,
+  },
 
-    props: mapProps([
-        'resourceName',
-        'viaResource',
-        'viaResourceId',
-        'viaRelationship',
-    ]),
+  props: mapProps([
+    'resourceName',
+    'viaResource',
+    'viaResourceId',
+    'viaRelationship',
+  ]),
 }
 </script>

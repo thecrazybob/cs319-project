@@ -1,75 +1,75 @@
 <template>
-    <FilterContainer>
-        <div class="" @click="handleChange">
-            <label class="block">{{ filter.name }}</label>
+  <FilterContainer>
+    <div class="" @click="handleChange">
+      <label class="block">{{ filter.name }}</label>
 
-            <IconBoolean
-                :dusk="`${field.uniqueKey}-filter`"
-                class="mt-2"
-                :value="value"
-                :nullable="true"
-            />
-        </div>
-    </FilterContainer>
+      <IconBoolean
+        :dusk="`${field.uniqueKey}-filter`"
+        class="mt-2"
+        :value="value"
+        :nullable="true"
+      />
+    </div>
+  </FilterContainer>
 </template>
 
 <script>
 import isNil from 'lodash/isNil'
 
 export default {
-    emits: ['change'],
+  emits: ['change'],
 
-    props: {
-        resourceName: {
-            type: String,
-            required: true,
-        },
-        filterKey: {
-            type: String,
-            required: true,
-        },
-        lens: String,
+  props: {
+    resourceName: {
+      type: String,
+      required: true,
+    },
+    filterKey: {
+      type: String,
+      required: true,
+    },
+    lens: String,
+  },
+
+  methods: {
+    handleChange() {
+      let value = this.nextValue(this.value)
+
+      this.$store.commit(`${this.resourceName}/updateFilterState`, {
+        filterClass: this.filterKey,
+        value,
+      })
+
+      this.$emit('change')
     },
 
-    methods: {
-        handleChange() {
-            let value = this.nextValue(this.value)
+    nextValue(value) {
+      if (value === true) {
+        return false
+      } else if (value === false) {
+        return null
+      }
 
-            this.$store.commit(`${this.resourceName}/updateFilterState`, {
-                filterClass: this.filterKey,
-                value,
-            })
+      return true
+    },
+  },
 
-            this.$emit('change')
-        },
-
-        nextValue(value) {
-            if (value === true) {
-                return false
-            } else if (value === false) {
-                return null
-            }
-
-            return true
-        },
+  computed: {
+    filter() {
+      return this.$store.getters[`${this.resourceName}/getFilter`](
+        this.filterKey
+      )
     },
 
-    computed: {
-        filter() {
-            return this.$store.getters[`${this.resourceName}/getFilter`](
-                this.filterKey
-            )
-        },
-
-        field() {
-            return this.filter.field
-        },
-
-        value() {
-            let value = this.filter.currentValue
-
-            return value === true || value === false ? value : null
-        },
+    field() {
+      return this.filter.field
     },
+
+    value() {
+      let value = this.filter.currentValue
+
+      return value === true || value === false ? value : null
+    },
+  },
 }
 </script>

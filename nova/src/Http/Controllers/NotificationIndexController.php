@@ -10,7 +10,7 @@ class NotificationIndexController extends Controller
     /**
      * Return the details for the Dashboard.
      *
-     * @param \Laravel\Nova\Http\Requests\NotificationRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NotificationRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(NotificationRequest $request)

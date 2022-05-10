@@ -4,11 +4,11 @@ let path = require('path')
 require('./mix')
 
 mix
-    .setPublicPath('dist')
-    .js('resources/js/asset.js', 'js')
-    .vue({version: 3})
-    .css('resources/css/asset.css', 'css')
-    .alias({
-        '@': path.join(__dirname, 'resources/js/'),
-    })
-    .nova('{{ name }}')
+  .setPublicPath('dist')
+  .js('resources/js/asset.js', 'js')
+  .vue({ version: 3 })
+  .css('resources/css/asset.css', 'css')
+  .alias({
+    '@': path.join(__dirname, 'resources/js/'),
+  })
+  .nova('{{ name }}')

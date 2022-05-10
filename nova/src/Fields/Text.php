@@ -28,7 +28,7 @@ class Text extends Field implements FilterableField
     /**
      * Set the callback or array to be used to determine the field's suggestions list.
      *
-     * @param array|callable $suggestions
+     * @param  array|callable  $suggestions
      * @return $this
      */
     public function suggestions($suggestions)
@@ -41,7 +41,7 @@ class Text extends Field implements FilterableField
     /**
      * Resolve the display suggestions for the field.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function resolveSuggestions(NovaRequest $request)
@@ -66,7 +66,7 @@ class Text extends Field implements FilterableField
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter
      */
     protected function makeFilter(NovaRequest $request)

@@ -1,25 +1,25 @@
 <template>
-    <ResourceLens :resourceName="resourceName" :lens="lens"/>
+  <ResourceLens :resourceName="resourceName" :lens="lens" />
 </template>
 
 <script>
-import {mapProps} from '@/mixins'
+import { mapProps } from '@/mixins'
 import ResourceLens from '@/views/Lens'
 
 export default {
-    name: 'Lens',
+  name: 'Lens',
 
-    components: {
-        ResourceLens,
+  components: {
+    ResourceLens,
+  },
+
+  props: {
+    lens: {
+      type: String,
+      required: true,
     },
 
-    props: {
-        lens: {
-            type: String,
-            required: true,
-        },
-
-        ...mapProps(['resourceName']),
-    },
+    ...mapProps(['resourceName']),
+  },
 }
 </script>

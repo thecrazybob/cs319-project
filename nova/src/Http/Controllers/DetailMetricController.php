@@ -10,7 +10,7 @@ class DetailMetricController extends Controller
     /**
      * Get the specified metric's value.
      *
-     * @param \Laravel\Nova\Http\Requests\MetricRequest $request
+     * @param  \Laravel\Nova\Http\Requests\MetricRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(MetricRequest $request)

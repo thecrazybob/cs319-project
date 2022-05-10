@@ -32,9 +32,9 @@ abstract class Filter implements FilterContract, JsonSerializable
     /**
      * Apply the filter to the given query.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param mixed $value
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
     abstract public function apply(NovaRequest $request, $query, $value);
@@ -42,7 +42,7 @@ abstract class Filter implements FilterContract, JsonSerializable
     /**
      * Get the filter's available options.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function options(NovaRequest $request)

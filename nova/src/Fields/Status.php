@@ -39,7 +39,7 @@ class Status extends Text
     /**
      * Specify the values that should be considered "loading".
      *
-     * @param array<int, string> $loadingWords
+     * @param  array<int, string>  $loadingWords
      * @return $this
      */
     public function loadingWhen(array $loadingWords)
@@ -50,7 +50,7 @@ class Status extends Text
     /**
      * Specify the values that should be considered "failed".
      *
-     * @param array<int, string> $failedWords
+     * @param  array<int, string>  $failedWords
      * @return $this
      */
     public function failedWhen(array $failedWords)
@@ -61,7 +61,7 @@ class Status extends Text
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter
      */
     protected function makeFilter(NovaRequest $request)

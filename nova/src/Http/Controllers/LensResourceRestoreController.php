@@ -11,7 +11,7 @@ class LensResourceRestoreController extends Controller
     /**
      * Force delete the given resource(s).
      *
-     * @param \Laravel\Nova\Http\Requests\RestoreLensResourceRequest $request
+     * @param  \Laravel\Nova\Http\Requests\RestoreLensResourceRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function __invoke(RestoreLensResourceRequest $request)

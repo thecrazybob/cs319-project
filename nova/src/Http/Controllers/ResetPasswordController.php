@@ -14,7 +14,6 @@ use Laravel\Nova\Nova;
 class ResetPasswordController extends Controller
 {
     use ValidatesRequests;
-
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
@@ -35,7 +34,7 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('nova.guest:' . config('nova.guard'));
+        $this->middleware('nova.guest:'.config('nova.guard'));
     }
 
     /**
@@ -43,7 +42,7 @@ class ResetPasswordController extends Controller
      *
      * If no token is present, display the link request form.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Inertia\Response
      */
     public function showResetForm(Request $request)

@@ -12,7 +12,7 @@ class ResourceIndexController extends Controller
     /**
      * Show Resource Index page using Inertia.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceIndexRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceIndexRequest  $request
      * @return \Inertia\Response
      */
     public function __invoke(ResourceIndexRequest $request)

@@ -12,7 +12,7 @@ class Index extends Page
     /**
      * Create a new page instance.
      *
-     * @param string $resourceName
+     * @param  string  $resourceName
      * @return void
      */
     public function __construct($resourceName)
@@ -25,7 +25,7 @@ class Index extends Page
     /**
      * Create the related resource.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      *
      * @throws \Facebook\WebDriver\Exception\TimeOutException
@@ -40,7 +40,7 @@ class Index extends Page
     /**
      * Assert that the browser is on the page.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function assert(Browser $browser)
@@ -56,7 +56,7 @@ class Index extends Page
     public function elements()
     {
         return [
-            '@nova-resource-index' => '#app [data-testid="content"] [dusk="' . $this->resourceName . '-index-component"]',
+            '@nova-resource-index' => '#app [data-testid="content"] [dusk="'.$this->resourceName.'-index-component"]',
         ];
     }
 }

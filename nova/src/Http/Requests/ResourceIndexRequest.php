@@ -18,7 +18,7 @@ class ResourceIndexRequest extends NovaRequest
         return app()->make(QueryBuilder::class, [$this->resource()])->search(
             $this, $this->newQuery(), $this->search,
             $this->filters()->all(), $this->orderings(), $this->trashed()
-        )->paginate((int)$this->perPage());
+        )->paginate((int) $this->perPage());
     }
 
     /**
@@ -44,7 +44,7 @@ class ResourceIndexRequest extends NovaRequest
         $resource = $this->resource();
 
         if ($this->viaRelationship()) {
-            return (int)$resource::$perPageViaRelationship;
+            return (int) $resource::$perPageViaRelationship;
         }
 
         $perPageOptions = $resource::perPageOptions();
@@ -53,6 +53,6 @@ class ResourceIndexRequest extends NovaRequest
             $perPageOptions = [$resource::newModel()->getPerPage()];
         }
 
-        return (int)in_array($this->perPage, $perPageOptions) ? $this->perPage : $perPageOptions[0];
+        return (int) in_array($this->perPage, $perPageOptions) ? $this->perPage : $perPageOptions[0];
     }
 }

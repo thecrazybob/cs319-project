@@ -1,23 +1,23 @@
 <template>
-    <DashboardView :name="name"/>
+  <DashboardView :name="name" />
 </template>
 
 <script>
 import DashboardView from '@/views/Dashboard'
 
 export default {
-    name: 'Dashboard',
+  name: 'Dashboard',
 
-    components: {
-        DashboardView,
-    },
+  components: {
+    DashboardView,
+  },
 
-    props: {
-        name: {
-            type: String,
-            required: false,
-            default: 'main',
-        },
+  props: {
+    name: {
+      type: String,
+      required: false,
+      default: 'main',
     },
+  },
 }
 </script>

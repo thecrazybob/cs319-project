@@ -30,7 +30,7 @@ class VaccineController extends Controller
     {
         $vaccine = Vaccine::find($vaccine);
         $file_path = $vaccine->file->file_path;
-        return response()->download(storage_path('app/public/' . $file_path));
+        return response()->download(storage_path('app/public/'.$file_path));
     }
 
     /**

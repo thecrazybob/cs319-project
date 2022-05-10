@@ -19,9 +19,9 @@ interface FilterableField
     /**
      * Apply the filter to the given query.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param mixed $value
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $value
      * @return void
      */
     public function applyFilter(NovaRequest $request, $query, $value);
@@ -29,7 +29,7 @@ interface FilterableField
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter|null
      */
     public function resolveFilter(NovaRequest $request);

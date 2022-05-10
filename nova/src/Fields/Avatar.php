@@ -9,9 +9,9 @@ class Avatar extends Image implements Cover
     /**
      * Create a new field.
      *
-     * @param string|null $name
-     * @param string|null $attribute
-     * @param string|null $disk
+     * @param  string|null  $name
+     * @param  string|null  $attribute
+     * @param  string|null  $disk
      * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest, string, object, string):mixed)|null  $storageCallback
      * @return void
      */
@@ -25,8 +25,8 @@ class Avatar extends Image implements Cover
     /**
      * Create Avatar field using Gravatar service.
      *
-     * @param string $name
-     * @param string|null $attribute
+     * @param  string  $name
+     * @param  string|null  $attribute
      * @return \Laravel\Nova\Fields\Gravatar
      */
     public static function gravatar($name = 'Avatar', $attribute = 'email')
@@ -37,8 +37,8 @@ class Avatar extends Image implements Cover
     /**
      * Create Avatar field using ui-avatars service.
      *
-     * @param string $name
-     * @param string|null $attribute
+     * @param  string  $name
+     * @param  string|null  $attribute
      * @return \Laravel\Nova\Fields\UiAvatar
      */
     public static function uiavatar($name = 'Avatar', $attribute = 'name')

@@ -68,8 +68,8 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|null $attribute
+     * @param  string  $name
+     * @param  string|null  $attribute
      * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest, string, object, string):mixed)|null  $storageCallback
      * @return void
      */
@@ -97,7 +97,7 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
     /**
      * Set the name of the disk the file is stored on by default.
      *
-     * @param string $disk
+     * @param  string  $disk
      * @return $this
      *
      * @throws \Exception
@@ -130,7 +130,7 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
     /**
      * Specify the callback that should be used to determine the file's storage name.
      *
-     * @param callable(\Illuminate\Http\Request):string $storeAsCallback
+     * @param  callable(\Illuminate\Http\Request):string  $storeAsCallback
      * @return $this
      */
     public function storeAs(callable $storeAsCallback)
@@ -149,17 +149,17 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
     protected function prepareStorageCallback($storageCallback)
     {
         $this->storageCallback = $storageCallback ?? function ($request, $model, $attribute, $requestAttribute) {
-                return $this->mergeExtraStorageColumns($request, [
-                    $this->attribute => $this->storeFile($request, $requestAttribute),
-                ]);
-            };
+            return $this->mergeExtraStorageColumns($request, [
+                $this->attribute => $this->storeFile($request, $requestAttribute),
+            ]);
+        };
     }
 
     /**
      * Store the file on disk.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param string $requestAttribute
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $requestAttribute
      * @return string
      */
     protected function storeFile($request, $requestAttribute)
@@ -169,17 +169,17 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
                 ? call_user_func($this->storeAsCallback, $request)
                 : str_replace('tmp/', '', $key);
 
-            Storage::disk($this->getStorageDisk())->copy($key, $this->getStorageDir() . '/' . $fileName);
+            Storage::disk($this->getStorageDisk())->copy($key, $this->getStorageDir().'/'.$fileName);
 
-            return ltrim($this->getStorageDir() . '/' . $fileName, '/');
+            return ltrim($this->getStorageDir().'/'.$fileName, '/');
         });
     }
 
     /**
      * Merge the specified extra file information columns into the storable attributes.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param array $attributes
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $attributes
      * @return array
      */
     protected function mergeExtraStorageColumns($request, array $attributes)
@@ -210,7 +210,7 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
     /**
      * Specify the column where the file's original name should be stored.
      *
-     * @param string $column
+     * @param  string  $column
      * @return $this
      */
     public function storeOriginalName($column)
@@ -223,10 +223,10 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param string $requestAttribute
-     * @param object $model
-     * @param string $attribute
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  string  $requestAttribute
+     * @param  object  $model
+     * @param  string  $attribute
      * @return mixed
      */
     protected function fillAttribute(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -235,7 +235,7 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
             return;
         }
 
-        $hasExistingFile = !is_null($this->getStoragePath());
+        $hasExistingFile = ! is_null($this->getStoragePath());
 
         $result = call_user_func(
             $this->storageCallback,
@@ -255,7 +255,7 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
             return $result;
         }
 
-        if (!is_array($result)) {
+        if (! is_array($result)) {
             return $model->{$attribute} = $result;
         }
 
@@ -286,7 +286,7 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
         return array_merge(parent::jsonSerialize(), [
             'thumbnailUrl' => $this->resolveThumbnailUrl(),
             'previewUrl' => $this->resolvePreviewUrl(),
-            'downloadable' => $this->downloadsAreEnabled && isset($this->downloadResponseCallback) && !empty($this->value),
+            'downloadable' => $this->downloadsAreEnabled && isset($this->downloadResponseCallback) && ! empty($this->value),
             'deletable' => isset($this->deleteCallback) && $this->deletable,
             'acceptedTypes' => $this->acceptedTypes,
         ]);

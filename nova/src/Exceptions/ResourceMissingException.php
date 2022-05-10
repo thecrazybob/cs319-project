@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ResourceMissingException extends Exception
 {
     /**
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      */
     public function __construct(Model $model)
     {

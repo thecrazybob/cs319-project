@@ -72,7 +72,7 @@ trait InteractsWithResources
     /**
      * Find the resource model instance for the request.
      *
-     * @param mixed|null $resourceId
+     * @param  mixed|null  $resourceId
      * @return \Laravel\Nova\Resource
      *
      * @throw \Illuminate\Database\Eloquent\ModelNotFoundException
@@ -85,7 +85,7 @@ trait InteractsWithResources
     /**
      * Find the model instance for the request or throw an exception.
      *
-     * @param mixed|null $resourceId
+     * @param  mixed|null  $resourceId
      * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
@@ -104,7 +104,7 @@ trait InteractsWithResources
     /**
      * Find the model instance for the request.
      *
-     * @param mixed|null $resourceId
+     * @param  mixed|null  $resourceId
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function findModel($resourceId = null)
@@ -117,22 +117,22 @@ trait InteractsWithResources
     /**
      * Get the query to find the model instance for the request.
      *
-     * @param mixed|null $resourceId
+     * @param  mixed|null  $resourceId
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function findModelQuery($resourceId = null)
     {
         return app()->make(QueryBuilder::class, [$this->resource()])
-            ->whereKey(
-                $this->newQueryWithoutScopes(),
-                $resourceId ?? $this->resourceId
-            )->toBase();
+                    ->whereKey(
+                        $this->newQueryWithoutScopes(),
+                        $resourceId ?? $this->resourceId
+                    )->toBase();
     }
 
     /**
      * Get a new instance of the resource being requested.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Laravel\Nova\Resource
      */
     public function newResourceWith($model)

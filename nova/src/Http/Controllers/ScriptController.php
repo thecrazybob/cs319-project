@@ -11,7 +11,7 @@ class ScriptController extends Controller
     /**
      * Serve the requested script.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Script
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -19,9 +19,9 @@ class ScriptController extends Controller
     public function __invoke(NovaRequest $request)
     {
         $asset = collect(Nova::allScripts())
-            ->filter(function ($asset) use ($request) {
-                return $asset->name() === $request->script;
-            })->first();
+                    ->filter(function ($asset) use ($request) {
+                        return $asset->name() === $request->script;
+                    })->first();
 
         abort_if(is_null($asset), 404);
 

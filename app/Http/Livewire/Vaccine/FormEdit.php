@@ -18,7 +18,6 @@ class FormEdit extends Component implements HasForms
 {
     use InteractsWithForms;
     use WireToast;
-
     public $name = '';
     public $file_path;
     public $vaccine_date;
@@ -48,17 +47,17 @@ class FormEdit extends Component implements HasForms
                 'covid' => 'covid',
                 'other' => 'other',
             ])
-                ->required()
-                ->label('Vaccine Type:'),
+            ->required()
+            ->label('Vaccine Type:'),
             DatePicker::make('vaccine_date')
                 ->required()
                 ->label('Vaccine Date:'),
             TextInput::make('dose_no')
                 ->numeric()
-                ->mask(fn(TextInput\Mask $mask) => $mask
-                    ->numeric()
-                    ->integer(),
-                ),
+                ->mask(fn (TextInput\Mask $mask) => $mask
+                ->numeric()
+                ->integer(),
+            ),
             FileUpload::make('file_path')
                 ->preserveFilenames()
                 ->maxSize(102400)

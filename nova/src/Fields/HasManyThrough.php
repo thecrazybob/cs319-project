@@ -28,9 +28,9 @@ class HasManyThrough extends HasMany implements ListableField, RelatableField
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|null $attribute
-     * @param class-string<\Laravel\Nova\Resource>|null $resource
+     * @param  string  $name
+     * @param  string|null  $attribute
+     * @param  class-string<\Laravel\Nova\Resource>|null  $resource
      * @return void
      */
     public function __construct($name, $attribute = null, $resource = null)
@@ -68,10 +68,10 @@ class HasManyThrough extends HasMany implements ListableField, RelatableField
     public function asPanel()
     {
         return Panel::make($this->name)
-            ->withMeta([
-                'fields' => [$this],
-                'prefixComponent' => true,
-            ])->withComponent('relationship-panel');
+                    ->withMeta([
+                        'fields' => [$this],
+                        'prefixComponent' => true,
+                    ])->withComponent('relationship-panel');
     }
 
     /**
@@ -84,7 +84,7 @@ class HasManyThrough extends HasMany implements ListableField, RelatableField
         return array_merge([
             'hasManyThroughRelationship' => $this->hasManyThroughRelationship,
             'relatable' => true,
-            'perPage' => $this->resourceClass::$perPageViaRelationship,
+            'perPage'=> $this->resourceClass::$perPageViaRelationship,
             'resourceName' => $this->resourceName,
             'singularLabel' => $this->singularLabel ?? $this->resourceClass::singularLabel(),
         ], parent::jsonSerialize());

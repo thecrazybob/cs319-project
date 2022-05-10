@@ -11,7 +11,7 @@ class TrashedStatus
     /**
      * Get trashed status from boolean.
      *
-     * @param bool $withTrashed
+     * @param  bool  $withTrashed
      * @return string
      */
     public static function fromBoolean($withTrashed)

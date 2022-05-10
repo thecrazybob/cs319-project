@@ -23,8 +23,8 @@ class FilterDecoder
     /**
      * Create a new FilterDecoder instance.
      *
-     * @param string $filterString
-     * @param \Illuminate\Support\Collection|array|null $availableFilters
+     * @param  string  $filterString
+     * @param  \Illuminate\Support\Collection|array|null  $availableFilters
      */
     public function __construct($filterString, $availableFilters = null)
     {

@@ -30,36 +30,36 @@ class CardCommand extends ComponentGeneratorCommand
      */
     public function handle()
     {
-        if (!$this->hasValidNameArgument()) {
+        if (! $this->hasValidNameArgument()) {
             return;
         }
 
         (new Filesystem)->copyDirectory(
-            __DIR__ . '/card-stubs',
+            __DIR__.'/card-stubs',
             $this->componentPath()
         );
 
         // Card.js replacements...
-        $this->replace('{{ title }}', $this->componentTitle(), $this->componentPath() . '/resources/js/components/Card.vue');
-        $this->replace('{{ component }}', $this->componentName(), $this->componentPath() . '/resources/js/card.js');
+        $this->replace('{{ title }}', $this->componentTitle(), $this->componentPath().'/resources/js/components/Card.vue');
+        $this->replace('{{ component }}', $this->componentName(), $this->componentPath().'/resources/js/card.js');
 
         // Card.php replacements...
-        $this->replace('{{ namespace }}', $this->componentNamespace(), $this->componentPath() . '/src/Card.stub');
-        $this->replace('{{ class }}', $this->componentClass(), $this->componentPath() . '/src/Card.stub');
-        $this->replace('{{ component }}', $this->componentName(), $this->componentPath() . '/src/Card.stub');
+        $this->replace('{{ namespace }}', $this->componentNamespace(), $this->componentPath().'/src/Card.stub');
+        $this->replace('{{ class }}', $this->componentClass(), $this->componentPath().'/src/Card.stub');
+        $this->replace('{{ component }}', $this->componentName(), $this->componentPath().'/src/Card.stub');
 
         (new Filesystem)->move(
-            $this->componentPath() . '/src/Card.stub',
-            $this->componentPath() . '/src/' . $this->componentClass() . '.php'
+            $this->componentPath().'/src/Card.stub',
+            $this->componentPath().'/src/'.$this->componentClass().'.php'
         );
 
         // CardServiceProvider.php replacements...
-        $this->replace('{{ namespace }}', $this->componentNamespace(), $this->componentPath() . '/src/CardServiceProvider.stub');
-        $this->replace('{{ component }}', $this->componentName(), $this->componentPath() . '/src/CardServiceProvider.stub');
-        $this->replace('{{ name }}', $this->componentName(), $this->componentPath() . '/src/CardServiceProvider.stub');
+        $this->replace('{{ namespace }}', $this->componentNamespace(), $this->componentPath().'/src/CardServiceProvider.stub');
+        $this->replace('{{ component }}', $this->componentName(), $this->componentPath().'/src/CardServiceProvider.stub');
+        $this->replace('{{ name }}', $this->componentName(), $this->componentPath().'/src/CardServiceProvider.stub');
 
         // webpack.mix.js replacements...
-        $this->replace('{{ name }}', $this->component(), $this->componentPath() . '/webpack.mix.js');
+        $this->replace('{{ name }}', $this->component(), $this->componentPath().'/webpack.mix.js');
 
         // Card composer.json replacements...
         $this->prepareComposerReplacements();
@@ -79,8 +79,8 @@ class CardCommand extends ComponentGeneratorCommand
     protected function stubsToRename()
     {
         return [
-            $this->componentPath() . '/src/CardServiceProvider.stub',
-            $this->componentPath() . '/routes/api.stub',
+            $this->componentPath().'/src/CardServiceProvider.stub',
+            $this->componentPath().'/routes/api.stub',
         ];
     }
 

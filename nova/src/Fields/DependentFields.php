@@ -12,7 +12,7 @@ trait DependentFields
     /**
      * Sync depends on logic.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return $this
      */
     public function syncDependsOn(NovaRequest $request)
@@ -26,7 +26,7 @@ trait DependentFields
     /**
      * Apply depends on logic.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return $this
      */
     public function applyDependsOn(NovaRequest $request)

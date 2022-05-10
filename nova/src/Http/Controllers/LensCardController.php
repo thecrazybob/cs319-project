@@ -10,7 +10,7 @@ class LensCardController extends Controller
     /**
      * List the cards for the given lens.
      *
-     * @param \Laravel\Nova\Http\Requests\LensCardRequest $request
+     * @param  \Laravel\Nova\Http\Requests\LensCardRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(LensCardRequest $request)

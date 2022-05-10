@@ -14,8 +14,8 @@ class Create extends Page
     /**
      * Create a new page instance.
      *
-     * @param string $resourceName
-     * @param array $queryParams
+     * @param  string  $resourceName
+     * @param  array  $queryParams
      * @return void
      */
     public function __construct($resourceName, $queryParams = [])
@@ -34,7 +34,7 @@ class Create extends Page
     public function url()
     {
         if ($this->queryParams) {
-            return $this->novaPageUrl . '?' . http_build_query($this->queryParams);
+            return $this->novaPageUrl.'?'.http_build_query($this->queryParams);
         }
 
         return $this->novaPageUrl;
@@ -43,7 +43,7 @@ class Create extends Page
     /**
      * Click the create button.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function create(Browser $browser)
@@ -54,7 +54,7 @@ class Create extends Page
     /**
      * Click the create and add another button.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function createAndAddAnother(Browser $browser)
@@ -65,7 +65,7 @@ class Create extends Page
     /**
      * Assert that the browser is on the page.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function assert(Browser $browser)
@@ -76,12 +76,12 @@ class Create extends Page
     /**
      * Assert that there are no search results.
      *
-     * @param \Laravel\Dusk\Browser $browser
-     * @param string $resourceName
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @param  string  $resourceName
      * @return void
      */
     public function assertNoRelationSearchResults(Browser $browser, $resourceName)
     {
-        $browser->assertMissing('@' . $resourceName . '-search-input-result-0');
+        $browser->assertMissing('@'.$resourceName.'-search-input-result-0');
     }
 }

@@ -16,7 +16,7 @@ class Page extends Dusk
     /**
      * Create a new page instance.
      *
-     * @param string $path
+     * @param  string  $path
      * @return void
      */
     public function __construct($path = '/')
@@ -37,20 +37,20 @@ class Page extends Dusk
     /**
      * Assert page not found.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function assertOk(Browser $browser)
     {
         $browser->waitForLocation($this->novaPageUrl)
-            ->assertPathIs($this->novaPageUrl)
-            ->waitFor('@nova-content');
+                ->assertPathIs($this->novaPageUrl)
+                ->waitFor('@nova-content');
     }
 
     /**
      * Assert page not found.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function assertNotFound(Browser $browser)
@@ -61,7 +61,7 @@ class Page extends Dusk
     /**
      * Assert page not forbidden.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function assertForbidden(Browser $browser)
@@ -85,11 +85,11 @@ class Page extends Dusk
     /**
      * Set Nova Page URL.
      *
-     * @param string $path
+     * @param  string  $path
      * @return void
      */
     protected function setNovaPage(string $path)
     {
-        $this->novaPageUrl = Nova::path() . '/' . trim($path, '/');
+        $this->novaPageUrl = Nova::path().'/'.trim($path, '/');
     }
 }

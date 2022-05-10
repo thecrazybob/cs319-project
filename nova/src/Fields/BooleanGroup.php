@@ -56,7 +56,7 @@ class BooleanGroup extends Field implements FilterableField
     /**
      * Set the options for the field.
      *
-     * @param \Closure():(array|\Illuminate\Support\Collection)|array|\Illuminate\Support\Collection  $options
+     * @param  \Closure():(array|\Illuminate\Support\Collection)|array|\Illuminate\Support\Collection  $options
      * @return $this
      */
     public function options($options)
@@ -105,7 +105,7 @@ class BooleanGroup extends Field implements FilterableField
     /**
      * Set the text to be used when there are no booleans to show.
      *
-     * @param string $text
+     * @param  string  $text
      * @return $this
      */
     public function noValueText($text)
@@ -118,10 +118,10 @@ class BooleanGroup extends Field implements FilterableField
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param string $requestAttribute
-     * @param object $model
-     * @param string $attribute
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  string  $requestAttribute
+     * @param  object  $model
+     * @param  string  $attribute
      * @return void
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -134,7 +134,7 @@ class BooleanGroup extends Field implements FilterableField
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter
      */
     protected function makeFilter(NovaRequest $request)
@@ -154,7 +154,7 @@ class BooleanGroup extends Field implements FilterableField
                 return is_null($value);
             })->all();
 
-            $query->when(!empty($value), function ($query) use ($value, $attribute) {
+            $query->when(! empty($value), function ($query) use ($value, $attribute) {
                 return $query->whereJsonContains($attribute, $value);
             });
         };

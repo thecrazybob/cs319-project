@@ -10,7 +10,7 @@ class DashboardMetricController extends Controller
     /**
      * Get the specified metric's value.
      *
-     * @param \Laravel\Nova\Http\Requests\DashboardMetricRequest $request
+     * @param  \Laravel\Nova\Http\Requests\DashboardMetricRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(DashboardMetricRequest $request)

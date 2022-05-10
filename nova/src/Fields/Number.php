@@ -11,8 +11,8 @@ class Number extends Text
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|\Closure|callable|object|null $attribute
+     * @param  string  $name
+     * @param  string|\Closure|callable|object|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
@@ -27,7 +27,7 @@ class Number extends Text
     /**
      * The minimum value that can be assigned to the field.
      *
-     * @param mixed $min
+     * @param  mixed  $min
      * @return $this
      */
     public function min($min)
@@ -38,7 +38,7 @@ class Number extends Text
     /**
      * The maximum value that can be assigned to the field.
      *
-     * @param mixed $max
+     * @param  mixed  $max
      * @return $this
      */
     public function max($max)
@@ -49,7 +49,7 @@ class Number extends Text
     /**
      * The step size the field will increment and decrement by.
      *
-     * @param mixed $step
+     * @param  mixed  $step
      * @return $this
      */
     public function step($step)
@@ -60,7 +60,7 @@ class Number extends Text
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter
      */
     protected function makeFilter(NovaRequest $request)
@@ -78,9 +78,9 @@ class Number extends Text
         return function (NovaRequest $request, $query, $value, $attribute) {
             [$min, $max] = $value;
 
-            if (!is_null($min) && !is_null($max)) {
+            if (! is_null($min) && ! is_null($max)) {
                 return $query->whereBetween($attribute, [$min, $max]);
-            } elseif (!is_null($min)) {
+            } elseif (! is_null($min)) {
                 return $query->where($attribute, '>=', $min);
             }
 

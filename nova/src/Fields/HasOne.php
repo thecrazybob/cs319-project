@@ -96,9 +96,9 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|null $attribute
-     * @param class-string<\Laravel\Nova\Resource>|null $resource
+     * @param  string  $name
+     * @param  string|null  $attribute
+     * @param  class-string<\Laravel\Nova\Resource>|null  $resource
      * @return void
      */
     public function __construct($name, $attribute = null, $resource = null)
@@ -117,8 +117,8 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
 
             if ($this->ofManyRelationship === false && $parentResource && $request->viaResourceId) {
                 $parent = $parentResource::newModel()
-                    ->with($this->attribute)
-                    ->find($request->viaResourceId);
+                            ->with($this->attribute)
+                            ->find($request->viaResourceId);
 
                 return optional($parent->{$this->attribute})->exists === true;
             }
@@ -130,9 +130,9 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Make one-of-many relationship field.
      *
-     * @param string $name
-     * @param string|null $attribute
-     * @param class-string<\Laravel\Nova\Resource>|null $resource
+     * @param  string  $name
+     * @param  string|null  $attribute
+     * @param  class-string<\Laravel\Nova\Resource>|null  $resource
      * @return static
      */
     public static function ofMany($name, $attribute = null, $resource = null)
@@ -167,21 +167,21 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Determine if the field should be displayed for the given request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public function authorize(Request $request)
     {
         return call_user_func(
-                [$this->resourceClass, 'authorizedToViewAny'], $request
-            ) && parent::authorize($request);
+            [$this->resourceClass, 'authorizedToViewAny'], $request
+        ) && parent::authorize($request);
     }
 
     /**
      * Resolve the field's value.
      *
-     * @param mixed $resource
-     * @param string|null $attribute
+     * @param  mixed  $resource
+     * @param  string|null  $attribute
      * @return void
      */
     public function resolve($resource, $attribute = null)
@@ -192,7 +192,7 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
             $value = $resource->getRelation($this->attribute);
         }
 
-        if (!$value) {
+        if (! $value) {
             $value = $resource->{$this->attribute}()->withoutGlobalScopes()->getResults();
         }
 
@@ -212,7 +212,7 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Set the displayable singular label of the resource.
      *
-     * @param string $singularLabel
+     * @param  string  $singularLabel
      * @return $this
      */
     public function singularLabel($singularLabel)
@@ -230,10 +230,10 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     public function asPanel()
     {
         return Panel::make($this->name)
-            ->withMeta([
-                'fields' => [$this],
-                'prefixComponent' => true,
-            ])->withComponent('relationship-panel');
+                    ->withMeta([
+                        'fields' => [$this],
+                        'prefixComponent' => true,
+                    ])->withComponent('relationship-panel');
     }
 
     /**
@@ -258,7 +258,7 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
                 'createButtonLabel' => $this->resourceClass::createButtonLabel(),
                 'from' => array_filter([
                     'viaResource' => $request->resource,
-                    'viaResourceId' => $request->resourceId,
+                    'viaResourceId' =>  $request->resourceId,
                     'viaRelationship' => $request->viaRelationship,
                 ]),
             ], parent::jsonSerialize());
@@ -268,7 +268,7 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Determine if the field is required.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return bool
      */
     public function isRequired(NovaRequest $request)
@@ -277,7 +277,7 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
             $this->isRequired = parent::isRequired($request);
         }
 
-        $this->nullable = !$this->isRequired;
+        $this->nullable = ! $this->isRequired;
 
         return $this->isRequired;
     }
@@ -285,7 +285,7 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Set the Closure used to determine if the HasOne field has already been filled.
      *
-     * @param \Closure(\Laravel\Nova\Http\Requests\NovaRequest):bool  $callback
+     * @param  \Closure(\Laravel\Nova\Http\Requests\NovaRequest):bool  $callback
      * @return $this
      */
     public function alreadyFilledWhen($callback)
@@ -298,7 +298,7 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Determine if the HasOne field has alreaady been filled.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return bool
      */
     public function alreadyFilled(NovaRequest $request)
@@ -309,8 +309,8 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Check showing on index.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param mixed $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  mixed  $resource
      * @return bool
      */
     public function isShownOnIndex(NovaRequest $request, $resource): bool
@@ -321,10 +321,10 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param object $model
-     * @param string $attribute
-     * @param string|null $requestAttribute
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  object  $model
+     * @param  string  $attribute
+     * @param  string|null  $requestAttribute
      * @return (\Closure():void)|null
      */
     public function fillInto(NovaRequest $request, $model, $attribute, $requestAttribute = null)
@@ -338,7 +338,7 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
 
         if (
             $this->ofManyRelationship === true
-            || ($this->nullable && !$filled && $editMode === 'create')
+            || ($this->nullable && ! $filled && $editMode === 'create')
         ) {
             return null;
         }
@@ -379,7 +379,7 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Get the creation rules for this field.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array<string, array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\Rule|callable>>
      */
     public function getCreationRules(NovaRequest $request)
@@ -391,14 +391,14 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
         $resource = new $resourceClass($relation);
 
         return $relation->exists === false
-            ? $this->getResourceCreationRules($request, $resource)
-            : $this->getResourceUpdateRules($request, $resource);
+                    ? $this->getResourceCreationRules($request, $resource)
+                    : $this->getResourceUpdateRules($request, $resource);
     }
 
     /**
      * Get the update rules for this field.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array<string, array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\Rule|callable>>
      */
     public function getUpdateRules(NovaRequest $request)
@@ -410,15 +410,15 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
         $resource = new $resourceClass($relation);
 
         return $relation->exists === false
-            ? $this->getResourceCreationRules($request, $resource)
-            : $this->getResourceUpdateRules($request, $resource);
+                    ? $this->getResourceCreationRules($request, $resource)
+                    : $this->getResourceUpdateRules($request, $resource);
     }
 
     /**
      * Get the creation rules for this field.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Laravel\Nova\Resource $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
      * @return array<string, array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\Rule|callable>>
      */
     public function getResourceCreationRules(NovaRequest $request, $resource)
@@ -443,8 +443,8 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Get the update rules for this resource fields.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Laravel\Nova\Resource $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
      * @return array<string, array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\Rule|callable>>
      */
     public function getResourceUpdateRules(NovaRequest $request, $resource)
@@ -467,7 +467,7 @@ class HasOne extends Field implements RelatableField, BehavesAsPanel
     /**
      * Get the validation attribute names for the field.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array<string, string>
      */
     public function getValidationAttributeNames(NovaRequest $request)

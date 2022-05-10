@@ -1,26 +1,26 @@
 <template>
-    <div v-if="hasItems" class="sidebar-menu pb-24 space-y-6" role="navigation">
-        <component
-            :key="item.key"
-            :is="item.component"
-            v-for="(item, index) in mainMenu"
-            :item="item"
-        />
-    </div>
+  <div v-if="hasItems" class="sidebar-menu pb-24 space-y-6" role="navigation">
+    <component
+      :key="item.key"
+      :is="item.component"
+      v-for="(item, index) in mainMenu"
+      :item="item"
+    />
+  </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
-    name: 'MainMenu',
+  name: 'MainMenu',
 
-    computed: {
-        ...mapGetters(['mainMenu']),
+  computed: {
+    ...mapGetters(['mainMenu']),
 
-        hasItems() {
-            return this.mainMenu.length > 0
-        },
+    hasItems() {
+      return this.mainMenu.length > 0
     },
+  },
 }
 </script>

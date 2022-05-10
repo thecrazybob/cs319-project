@@ -11,7 +11,7 @@ class ResourceReplicateController extends Controller
     /**
      * Show Resource Replicate page using Inertia.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
      * @return \Inertia\Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException

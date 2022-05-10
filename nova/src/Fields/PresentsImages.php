@@ -21,7 +21,7 @@ trait PresentsImages
     /**
      * Set the maximum width of the component.
      *
-     * @param int $maxWidth
+     * @param  int  $maxWidth
      * @return $this
      */
     public function maxWidth($maxWidth)

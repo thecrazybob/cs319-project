@@ -39,18 +39,18 @@ class NovaCoreServiceProvider extends ServiceProvider
             $this->app->register(NovaServiceProvider::class);
         }
 
-        if (!$this->app->configurationIsCached()) {
-            $this->mergeConfigFrom(__DIR__ . '/../config/nova.php', 'nova');
+        if (! $this->app->configurationIsCached()) {
+            $this->mergeConfigFrom(__DIR__.'/../config/nova.php', 'nova');
         }
 
         Route::middlewareGroup('nova', config('nova.middleware', []));
         Route::middlewareGroup('nova:api', config('nova.api_middleware', []));
 
         $this->app->make(HttpKernel::class)
-            ->pushMiddleware(ServeNova::class);
+                    ->pushMiddleware(ServeNova::class);
 
         $this->app->afterResolving(NovaRequest::class, function ($request, $app) {
-            if (!$app->bound(NovaRequest::class)) {
+            if (! $app->bound(NovaRequest::class)) {
                 $app->instance(NovaRequest::class, $request);
             }
         });
@@ -66,8 +66,8 @@ class NovaCoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (!defined('NOVA_PATH')) {
-            define('NOVA_PATH', realpath(__DIR__ . '/../'));
+        if (! defined('NOVA_PATH')) {
+            define('NOVA_PATH', realpath(__DIR__.'/../'));
         }
 
         $this->app->singleton(ImpersonatesUsers::class, SessionImpersonator::class);
@@ -114,8 +114,8 @@ class NovaCoreServiceProvider extends ServiceProvider
      */
     protected function registerResources()
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'nova');
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'nova');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nova');
 
         $this->registerRoutes();
     }
@@ -128,7 +128,7 @@ class NovaCoreServiceProvider extends ServiceProvider
     protected function registerRoutes()
     {
         Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+            $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
         });
     }
 

@@ -14,7 +14,7 @@ abstract class Resource implements Responsable
     /**
      * Handle the resource for Inertia response.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array|null
      */
     public function handle($request)
@@ -33,7 +33,7 @@ abstract class Resource implements Responsable
     /**
      * Create an HTTP response that represents the object.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function toResponse($request)
@@ -44,7 +44,7 @@ abstract class Resource implements Responsable
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     abstract public function toArray($request);

@@ -38,8 +38,8 @@ class Slug extends Field
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|\Closure|callable|object|null $attribute
+     * @param  string  $name
+     * @param  string|\Closure|callable|object|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
@@ -51,7 +51,7 @@ class Slug extends Field
     /**
      * The field the slug should be generated from.
      *
-     * @param string|\Laravel\Nova\Fields\Field $from
+     * @param  string|\Laravel\Nova\Fields\Field  $from
      * @return $this
      */
     public function from($from)
@@ -64,7 +64,7 @@ class Slug extends Field
     /**
      * Set the separator used for slugifying the field.
      *
-     * @param string $separator
+     * @param  string  $separator
      * @return $this
      */
     public function separator($separator)

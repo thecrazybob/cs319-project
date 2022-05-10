@@ -23,7 +23,7 @@ abstract class Tool
     /**
      * Determine if the element should be displayed for the given request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public function authorize(Request $request)
@@ -44,7 +44,7 @@ abstract class Tool
     /**
      * Build the menu that renders the navigation links for the tool.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     abstract public function menu(Request $request);

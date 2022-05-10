@@ -11,7 +11,7 @@ class HomeController extends Controller
     /**
      * Show Nova homepage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function __invoke(Request $request)

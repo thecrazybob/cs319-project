@@ -9,8 +9,8 @@ class Badge extends Field
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|\Closure|callable|object|null $attribute
+     * @param  string  $name
+     * @param  string|\Closure|callable|object|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
@@ -71,7 +71,7 @@ class Badge extends Field
     /**
      * Add badge types and their corresponding CSS classes to the built-in ones.
      *
-     * @param array<string, string> $types
+     * @param  array<string, string>  $types
      * @return $this
      */
     public function addTypes(array $types)
@@ -84,7 +84,7 @@ class Badge extends Field
     /**
      * Set the badge types and their corresponding CSS classes.
      *
-     * @param array<string, string> $types
+     * @param  array<string, string>  $types
      * @return $this
      */
     public function types(array $types)
@@ -97,7 +97,7 @@ class Badge extends Field
     /**
      * Set the labels for each possible field value.
      *
-     * @param array $labels
+     * @param  array  $labels
      * @return $this
      */
     public function labels(array $labels)
@@ -110,7 +110,7 @@ class Badge extends Field
     /**
      * Set the callback to be used to determine the field's displayable label.
      *
-     * @param callable $labelCallback
+     * @param  callable  $labelCallback
      * @return $this
      */
     public function label(callable $labelCallback)
@@ -123,7 +123,7 @@ class Badge extends Field
     /**
      * Map the possible field values to the built-in badge types.
      *
-     * @param array $map
+     * @param  array  $map
      * @return $this
      */
     public function map(array $map)
@@ -144,7 +144,7 @@ class Badge extends Field
     {
         $mappedValue = $this->map[$this->value] ?? $this->value;
 
-        if (!isset($this->types[$mappedValue])) {
+        if (! isset($this->types[$mappedValue])) {
             throw new Exception("Error trying to find type [{$mappedValue}] inside of the field's type mapping.");
         }
 

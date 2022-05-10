@@ -16,7 +16,7 @@ class ResourceDestroyController extends Controller
     /**
      * Destroy the given resource(s).
      *
-     * @param \Laravel\Nova\Http\Requests\DeleteResourceRequest $request
+     * @param  \Laravel\Nova\Http\Requests\DeleteResourceRequest  $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function __invoke(DeleteResourceRequest $request)
@@ -27,7 +27,7 @@ class ResourceDestroyController extends Controller
 
                 $uses = class_uses_recursive($model);
 
-                if (in_array(Actionable::class, $uses) && !in_array(SoftDeletes::class, $uses)) {
+                if (in_array(Actionable::class, $uses) && ! in_array(SoftDeletes::class, $uses)) {
                     $model->actions()->delete();
                 }
 
@@ -44,7 +44,7 @@ class ResourceDestroyController extends Controller
             });
         });
 
-        if ($request->isForSingleResource() && !is_null($redirect = $request->resource()::redirectAfterDelete($request))) {
+        if ($request->isForSingleResource() && ! is_null($redirect = $request->resource()::redirectAfterDelete($request))) {
             return response()->json([
                 'redirect' => URL::make($redirect),
             ]);

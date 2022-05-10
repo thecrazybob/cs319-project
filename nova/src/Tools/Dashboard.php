@@ -13,7 +13,7 @@ class Dashboard extends Tool
     /**
      * Build the menu that renders the navigation links for the tool.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function menu(Request $request)
@@ -24,8 +24,8 @@ class Dashboard extends Tool
             return MenuSection::make('Dashboards', $dashboards->map(function ($dashboard) {
                 return MenuItem::dashboard(new $dashboard);
             }))
-                ->collapsable()
-                ->icon('view-grid');
+            ->collapsable()
+            ->icon('view-grid');
         }
 
         if ($dashboards->count() == 1) {

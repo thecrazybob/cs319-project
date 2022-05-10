@@ -29,9 +29,9 @@ trait Filterable
             throw new InvalidArgumentException('$filterableCallback needs to be callable/Closure');
         }
 
-        $this->filterableCallback = !is_null($filterableCallback)
-            ? $filterableCallback
-            : $this->defaultFilterableCallback();
+        $this->filterableCallback = ! is_null($filterableCallback)
+                                        ? $filterableCallback
+                                        : $this->defaultFilterableCallback();
 
         return $this;
     }
@@ -51,9 +51,9 @@ trait Filterable
     /**
      * Apply the filter to the given query.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param mixed $value
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $value
      * @return void
      */
     public function applyFilter(NovaRequest $request, $query, $value)
@@ -74,7 +74,7 @@ trait Filterable
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter|null
      */
     public function resolveFilter(NovaRequest $request)
@@ -97,7 +97,7 @@ trait Filterable
     /**
      * Define filterable attribute.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return string
      */
     protected function filterableAttribute(NovaRequest $request)
@@ -108,7 +108,7 @@ trait Filterable
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter|null
      */
     abstract protected function makeFilter(NovaRequest $request);

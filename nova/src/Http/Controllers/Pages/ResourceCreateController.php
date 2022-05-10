@@ -11,7 +11,7 @@ class ResourceCreateController extends Controller
     /**
      * Show Resource Create page using Inertia.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
      * @return \Inertia\Response
      */
     public function __invoke(ResourceCreateOrAttachRequest $request)

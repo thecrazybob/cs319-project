@@ -196,7 +196,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Create a new resource instance.
      *
-     * @param TModel|null $resource
+     * @param  TModel|null  $resource
      * @return void
      */
     public function __construct($resource)
@@ -207,7 +207,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get the fields displayed by the resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     abstract public function fields(NovaRequest $request);
@@ -239,9 +239,9 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
 
         return new static($model->replicate(
             $this->deletableFields(resolve(NovaRequest::class))
-                ->map(function ($field) {
-                    return $field->attribute;
-                })->all()
+                    ->map(function ($field) {
+                        return $field->attribute;
+                    })->all()
         ));
     }
 
@@ -258,7 +258,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Determine if this resource is available for navigation.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public static function availableForNavigation(Request $request)
@@ -289,13 +289,13 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      */
     public static function searchable()
     {
-        return (static::$searchable && !empty(static::searchableColumns())) || (static::$searchable && static::usesScout());
+        return (static::$searchable && ! empty(static::searchableColumns())) || (static::$searchable && static::usesScout());
     }
 
     /**
      * Determine whether the global search links will take the user to the detail page.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return string
      */
     public function globalSearchLink(NovaRequest $request)
@@ -321,8 +321,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     public static function searchableColumns()
     {
         return empty(static::$search)
-            ? [static::newModel()->getKeyName()]
-            : static::$search;
+                    ? [static::newModel()->getKeyName()]
+                    : static::$search;
     }
 
     /**
@@ -352,7 +352,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      */
     public function title()
     {
-        return (string)data_get($this, static::$title);
+        return (string) data_get($this, static::$title);
     }
 
     /**
@@ -411,7 +411,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get meta information about this resource for client side consumption.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array<string, mixed>
      */
     public static function additionalInformation(Request $request)
@@ -432,7 +432,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Indicates whether Nova should check for modifications between viewing and updating a resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public static function trafficCop(Request $request)
@@ -443,8 +443,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Support\Collection<int, \Laravel\Nova\Fields\Field> $fields
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Support\Collection<int, \Laravel\Nova\Fields\Field>  $fields
      * @return array<string, mixed>
      */
     public function serializeForIndex(NovaRequest $request, $fields = null)
@@ -468,8 +468,8 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Laravel\Nova\Resource $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
      * @return array<string, mixed>
      */
     public function serializeForDetail(NovaRequest $request, Resource $resource)
@@ -491,7 +491,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array<string, mixed>
      */
     public function serializeForPreview(NovaRequest $request)
@@ -505,7 +505,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Determine if the resource may be updated, factoring in attachments.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return bool
      */
     protected function authorizedToUpdateForSerialization(NovaRequest $request)
@@ -522,7 +522,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Determine if the resource may be deleted, factoring in detachments.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return bool
      */
     protected function authorizedToDeleteForSerialization(NovaRequest $request)
@@ -561,7 +561,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization using the given fields.
      *
-     * @param \Illuminate\Support\Collection<int, \Laravel\Nova\Fields\Field> $fields
+     * @param  \Illuminate\Support\Collection<int, \Laravel\Nova\Fields\Field>  $fields
      * @return array
      */
     protected function serializeWithId(Collection $fields)
@@ -575,31 +575,31 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Return the location to redirect the user after creation.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Laravel\Nova\Resource $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
      * @return \Laravel\Nova\URL|string
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
-        return '/resources/' . static::uriKey() . '/' . $resource->getKey();
+        return '/resources/'.static::uriKey().'/'.$resource->getKey();
     }
 
     /**
      * Return the location to redirect the user after update.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Laravel\Nova\Resource $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
      * @return \Laravel\Nova\URL|string
      */
     public static function redirectAfterUpdate(NovaRequest $request, $resource)
     {
-        return '/resources/' . static::uriKey() . '/' . $resource->getKey();
+        return '/resources/'.static::uriKey().'/'.$resource->getKey();
     }
 
     /**
      * Return the location to redirect the user after deletion.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\URL|string|null
      */
     public static function redirectAfterDelete(NovaRequest $request)

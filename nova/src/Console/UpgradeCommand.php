@@ -77,8 +77,8 @@ class UpgradeCommand extends Command
     /**
      * Create backup to the files.
      *
-     * @param array<int, string> $files
-     * @param bool $removeOriginal
+     * @param  array<int, string>  $files
+     * @param  bool  $removeOriginal
      * @return void
      */
     protected function backupFiles(array $files, $removeOriginal = false)
@@ -97,9 +97,9 @@ class UpgradeCommand extends Command
     /**
      * Replace the given string in the given file.
      *
-     * @param string|array $search
-     * @param string|array $replace
-     * @param string $path
+     * @param  string|array  $search
+     * @param  string|array  $replace
+     * @param  string  $path
      * @return void
      */
     protected function replace($search, $replace, $path)

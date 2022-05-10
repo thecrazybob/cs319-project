@@ -15,7 +15,7 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
-        $transactions = Transaction::where('patient_id', $patient_id)->get();
+        $transactions = Transaction::where('patient_id', auth()->user()->patient_id)->get();
 
         return view('transaction.index', compact('transactions'));
     }

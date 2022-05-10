@@ -1,11 +1,11 @@
 <template>
-    <div :class="`text-${field.textAlign}`">
-        <IconBoolean :value="field.value"/>
-    </div>
+  <div :class="`text-${field.textAlign}`">
+    <IconBoolean :value="field.value" />
+  </div>
 </template>
 
 <script>
 export default {
-    props: ['resourceName', 'field'],
+  props: ['resourceName', 'field'],
 }
 </script>

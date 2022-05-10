@@ -18,7 +18,7 @@ class EloquentFilter extends Filter
      */
     public function key()
     {
-        return 'resource:' . $this->field->resourceClass::uriKey() . ':' . $this->field->attribute;
+        return 'resource:'.$this->field->resourceClass::uriKey().':'.$this->field->attribute;
     }
 
     /**

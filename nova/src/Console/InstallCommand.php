@@ -82,8 +82,8 @@ class InstallCommand extends Command
         $eol = array_keys($lineEndingCount, max($lineEndingCount))[0];
 
         file_put_contents(config_path('app.php'), str_replace(
-            "{$namespace}\\Providers\EventServiceProvider::class," . $eol,
-            "{$namespace}\\Providers\EventServiceProvider::class," . $eol . "        {$namespace}\Providers\NovaServiceProvider::class," . $eol,
+            "{$namespace}\\Providers\EventServiceProvider::class,".$eol,
+            "{$namespace}\\Providers\EventServiceProvider::class,".$eol."        {$namespace}\Providers\NovaServiceProvider::class,".$eol,
             $appConfig
         ));
     }
@@ -104,8 +104,8 @@ class InstallCommand extends Command
     /**
      * Set the namespace on the given file.
      *
-     * @param string $file
-     * @param string $namespace
+     * @param  string  $file
+     * @param  string  $namespace
      * @return void
      */
     protected function setAppNamespaceOn($file, $namespace)

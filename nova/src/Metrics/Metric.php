@@ -38,15 +38,15 @@ abstract class Metric extends Card
     /**
      * Calculate the metric's value.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return mixed
      */
     public function resolve(NovaRequest $request)
     {
         $resolver = function () use ($request) {
             return $this->onlyOnDetail
-                ? $this->calculate($request, $request->findModelOrFail())
-                : $this->calculate($request);
+                    ? $this->calculate($request, $request->findModelOrFail())
+                    : $this->calculate($request);
         };
 
         if ($cacheFor = $this->cacheFor()) {
@@ -65,7 +65,7 @@ abstract class Metric extends Card
     /**
      * Get the appropriate cache key for the metric.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return string
      */
     protected function getCacheKey(NovaRequest $request)
@@ -114,7 +114,7 @@ abstract class Metric extends Card
     /**
      * Set whether the metric should refresh when actions are run.
      *
-     * @param bool $value
+     * @param  bool  $value
      * @return $this
      */
     public function refreshWhenActionsRun($value = true)
@@ -125,7 +125,7 @@ abstract class Metric extends Card
     /**
      * Set whether the metric should refresh when actions are run.
      *
-     * @param bool $value
+     * @param  bool  $value
      * @return $this
      *
      * @deprecated Use "refreshWhenActionsRun"
@@ -140,7 +140,7 @@ abstract class Metric extends Card
     /**
      * Set whether the metric should refresh when filter changed.
      *
-     * @param bool $value
+     * @param  bool  $value
      * @return $this
      */
     public function refreshWhenFiltersChange($value = true)
@@ -171,12 +171,12 @@ abstract class Metric extends Card
     /**
      * Convert datetime to application timezone.
      *
-     * @param \Carbon\CarbonInterface $datetime
+     * @param  \Carbon\CarbonInterface  $datetime
      * @return \Carbon\CarbonInterface
      */
     protected function asQueryDatetime($datetime)
     {
-        if (!$datetime instanceof \DateTimeImmutable) {
+        if (! $datetime instanceof \DateTimeImmutable) {
             return $datetime->copy()->timezone(config('app.timezone'));
         }
 
@@ -186,7 +186,7 @@ abstract class Metric extends Card
     /**
      * Format date between.
      *
-     * @param array $ranges
+     * @param  array  $ranges
      * @return array
      */
     protected function formatQueryDateBetween(array $ranges)

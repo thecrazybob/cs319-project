@@ -18,7 +18,7 @@ trait ResolvesFilters
     /**
      * Set filters for current metric.
      *
-     * @param \Illuminate\Support\Collection $filters
+     * @param  \Illuminate\Support\Collection  $filters
      * @return $this
      */
     public function setAvailableFilters(Collection $filters)
@@ -31,8 +31,8 @@ trait ResolvesFilters
     /**
      * Apply filter query.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder
      */
     public function applyFilterQuery(NovaRequest $request, $query)

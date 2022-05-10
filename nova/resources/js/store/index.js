@@ -1,10 +1,10 @@
-import {createStore} from 'vuex'
+import { createStore } from 'vuex'
 import nova from './nova'
 
 export function registerStore(app) {
-    app.use(
-        createStore({
-            ...nova,
-        })
-    )
+  app.use(
+    createStore({
+      ...nova,
+    })
+  )
 }

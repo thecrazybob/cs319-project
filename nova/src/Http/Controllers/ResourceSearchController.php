@@ -13,7 +13,7 @@ class ResourceSearchController extends Controller
     /**
      * List the resources for administration.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceSearchRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceSearchRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(ResourceSearchRequest $request)
@@ -26,10 +26,10 @@ class ResourceSearchController extends Controller
 
         return response()->json([
             'resources' => $request->searchIndex()
-                ->mapInto($resource)
-                ->map(function ($resource) use ($request) {
-                    return $this->transformResult($request, $resource);
-                })->values(),
+                        ->mapInto($resource)
+                        ->map(function ($resource) use ($request) {
+                            return $this->transformResult($request, $resource);
+                        })->values(),
             'softDeletes' => $resource::softDeletes(),
             'withTrashed' => $withTrashed,
         ]);
@@ -38,8 +38,8 @@ class ResourceSearchController extends Controller
     /**
      * Determine if the query should include trashed models.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param string $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  string  $resource
      * @return bool
      */
     protected function shouldIncludeTrashed(NovaRequest $request, $resource)
@@ -62,15 +62,15 @@ class ResourceSearchController extends Controller
     /**
      * Transform the result from resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Laravel\Nova\Resource $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
      * @return array
      */
     protected function transformResult(NovaRequest $request, Resource $resource)
     {
         return array_filter([
             'avatar' => $resource->resolveAvatarUrl($request),
-            'display' => (string)$resource->title(),
+            'display' => (string) $resource->title(),
             'subtitle' => $resource->subtitle(),
             'value' => Util::safeInt($resource->getKey()),
         ]);

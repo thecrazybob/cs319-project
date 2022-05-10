@@ -10,7 +10,7 @@ class FilterController extends Controller
     /**
      * List the filters for the given resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(NovaRequest $request)

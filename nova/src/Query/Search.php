@@ -24,8 +24,8 @@ class Search
     /**
      * Create a new search builder instance.
      *
-     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $queryBuilder
-     * @param string $searchKeyword
+     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation  $queryBuilder
+     * @param  string  $searchKeyword
      * @return void
      */
     public function __construct($queryBuilder, $searchKeyword)
@@ -37,8 +37,8 @@ class Search
     /**
      * Get the raw results of the search.
      *
-     * @param class-string<\Laravel\Nova\Resource> $resourceClass
-     * @param array<int, string|\Laravel\Nova\Query\Search\Column> $searchColumns
+     * @param  class-string<\Laravel\Nova\Resource>  $resourceClass
+     * @param  array<int, string|\Laravel\Nova\Query\Search\Column>  $searchColumns
      * @return mixed
      */
     public function handle($resourceClass, array $searchColumns)
@@ -48,7 +48,7 @@ class Search
 
             collect($searchColumns)
                 ->each(function ($column) use ($query, $connectionType) {
-                    if ($column instanceof Column || (!is_string($column) && is_callable($column))) {
+                    if ($column instanceof Column || (! is_string($column) && is_callable($column))) {
                         $column($query, $this->searchKeyword, $connectionType);
                     } else {
                         Column::from($column)->__invoke($query, $this->searchKeyword, $connectionType);

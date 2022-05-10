@@ -24,14 +24,14 @@ class ActionRequest extends NovaRequest
     public function action()
     {
         return once(function () {
-            $hasResources = !empty($this->resources);
+            $hasResources = ! empty($this->resources);
 
             return $this->availableActions()
-                ->filter(function ($action) use ($hasResources) {
-                    return $hasResources ? true : $action->isStandalone();
-                })->first(function ($action) {
-                    return $action->uriKey() == $this->query('action');
-                }) ?: abort($this->actionExists() ? 403 : 404);
+                        ->filter(function ($action) use ($hasResources) {
+                            return $hasResources ? true : $action->isStandalone();
+                        })->first(function ($action) {
+                            return $action->uriKey() == $this->query('action');
+                        }) ?: abort($this->actionExists() ? 403 : 404);
         });
     }
 
@@ -43,8 +43,8 @@ class ActionRequest extends NovaRequest
     protected function resolveActions()
     {
         return $this->isPivotAction()
-            ? $this->newResource()->resolvePivotActions($this)
-            : $this->newResource()->resolveActions($this);
+                    ? $this->newResource()->resolvePivotActions($this)
+                    : $this->newResource()->resolveActions($this);
     }
 
     /**
@@ -82,8 +82,8 @@ class ActionRequest extends NovaRequest
     /**
      * Get the selected models for the action in chunks.
      *
-     * @param int $count
-     * @param \Closure(\Laravel\Nova\Actions\ActionModelCollection):mixed  $callback
+     * @param  int  $count
+     * @param  \Closure(\Laravel\Nova\Actions\ActionModelCollection):mixed  $callback
      * @return mixed
      */
     public function chunks($count, Closure $callback)
@@ -112,14 +112,14 @@ class ActionRequest extends NovaRequest
         }
 
         $query = $this->viaRelationship()
-            ? $this->modelsViaRelationship()
-            : tap($this->newQueryWithoutScopes(), function ($query) {
-                $resource = $this->resource();
+                    ? $this->modelsViaRelationship()
+                    : tap($this->newQueryWithoutScopes(), function ($query) {
+                        $resource = $this->resource();
 
-                $resource::indexQuery(
-                    $this, $query->with($resource::$with)
-                );
-            });
+                        $resource::indexQuery(
+                            $this, $query->with($resource::$with)
+                        );
+                    });
 
         return $query->tap(function ($query) {
             $query->whereKey(explode(',', $this->resources))
@@ -137,21 +137,21 @@ class ActionRequest extends NovaRequest
         return tap($this->findParentResource(), function ($resource) {
             abort_unless($resource->hasRelatableField($this, $this->viaRelationship), 404);
         })->model()->{$this->viaRelationship}()
-            ->withoutGlobalScopes()
-            ->whereIn($this->model()->getQualifiedKeyName(), explode(',', $this->resources));
+                        ->withoutGlobalScopes()
+                        ->whereIn($this->model()->getQualifiedKeyName(), explode(',', $this->resources));
     }
 
     /**
      * Map the chunk of models into an appropriate state.
      *
-     * @param \Illuminate\Support\LazyCollection|\Illuminate\Database\Eloquent\Collection $chunk
+     * @param  \Illuminate\Support\LazyCollection|\Illuminate\Database\Eloquent\Collection  $chunk
      * @return \Laravel\Nova\Actions\ActionModelCollection
      */
     protected function mapChunk($chunk)
     {
         return ActionModelCollection::make($this->isPivotAction()
-            ? $chunk->map->pivot
-            : $chunk);
+                    ? $chunk->map->pivot
+                    : $chunk);
     }
 
     /**
@@ -189,10 +189,10 @@ class ActionRequest extends NovaRequest
             $fields = new Fluent;
 
             $results = collect($this->action()->fields($this))
-                ->filter->authorizedToSee($this)
-                ->mapWithKeys(function ($field) use ($fields) {
-                    return [$field->attribute => $field->fillForAction($this, $fields)];
-                });
+                            ->filter->authorizedToSee($this)
+                            ->mapWithKeys(function ($field) use ($fields) {
+                                return [$field->attribute => $field->fillForAction($this, $fields)];
+                            });
 
             return new ActionFields(collect($fields->getAttributes()), $results->filter(function ($field) {
                 return is_callable($field);
@@ -205,14 +205,14 @@ class ActionRequest extends NovaRequest
      *
      * When running pivot actions, this is the key of the owning model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return int
      */
     public function actionableKey($model)
     {
         return $this->isPivotAction()
-            ? $model->{$this->pivotRelation()->getForeignPivotKeyName()}
-            : $model->getKey();
+                        ? $model->{$this->pivotRelation()->getForeignPivotKeyName()}
+                        : $model->getKey();
     }
 
     /**
@@ -225,8 +225,8 @@ class ActionRequest extends NovaRequest
     public function actionableModel()
     {
         return $this->isPivotAction()
-            ? $this->newViaResource()->model()
-            : $this->model();
+                        ? $this->newViaResource()->model()
+                        : $this->model();
     }
 
     /**
@@ -234,14 +234,14 @@ class ActionRequest extends NovaRequest
      *
      * When running pivot actions, this is the key of the target model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return int
      */
     public function targetKey($model)
     {
         return $this->isPivotAction()
-            ? $model->{$this->pivotRelation()->getRelatedPivotKeyName()}
-            : $model->getKey();
+                        ? $model->{$this->pivotRelation()->getRelatedPivotKeyName()}
+                        : $model->getKey();
     }
 
     /**

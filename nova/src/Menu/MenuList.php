@@ -28,7 +28,7 @@ class MenuList implements \JsonSerializable
     /**
      * Construct a new Menu List instance.
      *
-     * @param array $items
+     * @param  array  $items
      */
     public function __construct($items)
     {
@@ -38,7 +38,7 @@ class MenuList implements \JsonSerializable
     /**
      * Set menu's items.
      *
-     * @param array $items
+     * @param  array  $items
      * @return $this
      */
     public function items($items = [])

@@ -18,7 +18,7 @@ abstract class Filter extends BaseFilter
     /**
      * Construct a new filter.
      *
-     * @param \Laravel\Nova\Contracts\FilterableField $field
+     * @param  \Laravel\Nova\Contracts\FilterableField  $field
      */
     public function __construct(FilterableField $field)
     {
@@ -42,15 +42,15 @@ abstract class Filter extends BaseFilter
      */
     public function key()
     {
-        return class_basename($this->field) . ':' . $this->field->attribute;
+        return class_basename($this->field).':'.$this->field->attribute;
     }
 
     /**
      * Apply the filter to the given query.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param mixed $value
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply(NovaRequest $request, $query, $value)
@@ -78,7 +78,7 @@ abstract class Filter extends BaseFilter
     public function jsonSerialize(): array
     {
         return array_merge(parent::jsonSerialize(), [
-            'component' => 'filter-' . $this->component,
+            'component' => 'filter-'.$this->component,
             'field' => $this->serializeField(),
         ]);
     }

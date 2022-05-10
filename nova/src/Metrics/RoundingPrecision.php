@@ -21,7 +21,7 @@ trait RoundingPrecision
     /**
      * Set the precision level used when rounding the value.
      *
-     * @param int $precision
+     * @param  int  $precision
      * @param  1|2|3|4  $mode
      * @return $this
      */

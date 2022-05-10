@@ -37,9 +37,9 @@ abstract class Asset implements Responsable
     /**
      * Construct a new Asset instance.
      *
-     * @param string|self $name
-     * @param string|null $path
-     * @param bool|null $remote
+     * @param  string|self  $name
+     * @param  string|null  $path
+     * @param  bool|null  $remote
      */
     public function __construct($name, $path, $remote = null)
     {
@@ -63,7 +63,7 @@ abstract class Asset implements Responsable
     /**
      * Make a remote URL.
      *
-     * @param string $path
+     * @param  string  $path
      * @return static
      */
     public static function remote($path)
@@ -104,7 +104,7 @@ abstract class Asset implements Responsable
     /**
      * Create an HTTP response that represents the object.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function toResponse($request)
@@ -113,7 +113,7 @@ abstract class Asset implements Responsable
 
         return response(
             file_get_contents($this->path), 200, $this->toResponseHeaders(),
-        )->setLastModified(DateTime::createFromFormat('U', (string)filemtime($this->path)));
+        )->setLastModified(DateTime::createFromFormat('U', (string) filemtime($this->path)));
     }
 
     /**

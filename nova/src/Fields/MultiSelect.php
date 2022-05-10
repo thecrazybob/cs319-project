@@ -35,7 +35,7 @@ class MultiSelect extends Field implements FilterableField
     /**
      * Set the options for the select menu.
      *
-     * @param array<string|int, array<string, mixed>|string>|\Closure|callable|\Illuminate\Support\Collection $options
+     * @param  array<string|int, array<string, mixed>|string>|\Closure|callable|\Illuminate\Support\Collection  $options
      * @return $this
      */
     public function options($options)
@@ -60,10 +60,10 @@ class MultiSelect extends Field implements FilterableField
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param string $requestAttribute
-     * @param object $model
-     * @param string $attribute
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  string  $requestAttribute
+     * @param  object  $model
+     * @param  string  $attribute
      * @return mixed
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -78,7 +78,7 @@ class MultiSelect extends Field implements FilterableField
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter
      */
     protected function makeFilter(NovaRequest $request)

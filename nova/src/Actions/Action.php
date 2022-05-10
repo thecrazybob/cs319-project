@@ -157,8 +157,8 @@ class Action implements JsonSerializable
     /**
      * Determine if the action is executable for the given request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return bool
      */
     public function authorizedToRun(Request $request, $model)
@@ -169,7 +169,7 @@ class Action implements JsonSerializable
     /**
      * Return a message response from the action.
      *
-     * @param string $message
+     * @param  string  $message
      * @return array<string, string>
      */
     public static function message($message)
@@ -180,7 +180,7 @@ class Action implements JsonSerializable
     /**
      * Return a dangerous message response from the action.
      *
-     * @param string $message
+     * @param  string  $message
      * @return array<string, string>
      */
     public static function danger($message)
@@ -201,7 +201,7 @@ class Action implements JsonSerializable
     /**
      * Return a redirect response from the action.
      *
-     * @param string $url
+     * @param  string  $url
      * @return array<string, string>
      */
     public static function redirect($url)
@@ -212,11 +212,11 @@ class Action implements JsonSerializable
     /**
      * Return a Inertia visit from the action.
      *
-     * @param string $path
-     * @param array<string, mixed> $options
-     * @return array<string, array<string, mixed>>
      * @deprecated
      *
+     * @param  string  $path
+     * @param  array<string, mixed>  $options
+     * @return array<string, array<string, mixed>>
      */
     public static function push($path, $options = [])
     {
@@ -226,15 +226,15 @@ class Action implements JsonSerializable
     /**
      * Return a Inertia visit from the action.
      *
-     * @param string $path
-     * @param array<string, mixed> $options
+     * @param  string  $path
+     * @param  array<string, mixed>  $options
      * @return array<string, array<string, mixed>>
      */
     public static function visit($path, $options = [])
     {
         return [
             'visit' => [
-                'path' => '/' . ltrim($path, '/'),
+                'path' => '/'.ltrim($path, '/'),
                 'options' => $options,
             ],
         ];
@@ -243,7 +243,7 @@ class Action implements JsonSerializable
     /**
      * Return an open new tab response from the action.
      *
-     * @param string $url
+     * @param  string  $url
      * @return array<string, string>
      */
     public static function openInNewTab($url)
@@ -254,8 +254,8 @@ class Action implements JsonSerializable
     /**
      * Return a download response from the action.
      *
-     * @param string $url
-     * @param string $name
+     * @param  string  $url
+     * @param  string  $name
      * @return array<string, string>
      */
     public static function download($url, $name)
@@ -266,8 +266,8 @@ class Action implements JsonSerializable
     /**
      * Return an action modal response from the action.
      *
-     * @param string $modal
-     * @param array<string, mixed> $data
+     * @param  string  $modal
+     * @param  array<string, mixed>  $data
      * @return array<string, string|mixed>
      */
     public static function modal($modal, $data)
@@ -278,7 +278,7 @@ class Action implements JsonSerializable
     /**
      * Execute the action for the given request.
      *
-     * @param \Laravel\Nova\Http\Requests\ActionRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
      * @return mixed
      *
      * @throws \Laravel\Nova\Exceptions\MissingActionHandlerException|\Throwable
@@ -296,7 +296,7 @@ class Action implements JsonSerializable
         } else {
             $method = ActionMethod::determine($this, $request->targetModel());
 
-            if (!method_exists($this, $method)) {
+            if (! method_exists($this, $method)) {
                 throw MissingActionHandlerException::make($this, $method);
             }
 
@@ -307,7 +307,7 @@ class Action implements JsonSerializable
 
         $response = $dispatcher->dispatch();
 
-        if (!$response->wasExecuted) {
+        if (! $response->wasExecuted) {
             return static::danger(__('Sorry! You are not authorized to perform this action.'));
         }
 
@@ -321,8 +321,8 @@ class Action implements JsonSerializable
     /**
      * Handle chunk results.
      *
-     * @param \Laravel\Nova\Fields\ActionFields $fields
-     * @param array<int, mixed> $results
+     * @param  \Laravel\Nova\Fields\ActionFields  $fields
+     * @param  array<int, mixed>  $results
      * @return mixed
      */
     public function handleResult(ActionFields $fields, $results)
@@ -333,8 +333,8 @@ class Action implements JsonSerializable
     /**
      * Handle any post-validation processing.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Contracts\Validation\Validator $validator
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return void
      */
     protected function afterValidation(NovaRequest $request, $validator)
@@ -345,7 +345,7 @@ class Action implements JsonSerializable
     /**
      * Mark the action event record for the model as finished.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return int
      */
     protected function markAsFinished($model)
@@ -358,8 +358,8 @@ class Action implements JsonSerializable
     /**
      * Mark the action event record for the model as failed.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param \Throwable|string $e
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  \Throwable|string  $e
      * @return int
      */
     protected function markAsFailed($model, $e = null)
@@ -372,7 +372,7 @@ class Action implements JsonSerializable
     /**
      * Get the fields available on the action.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -383,7 +383,7 @@ class Action implements JsonSerializable
     /**
      * Validate the given request.
      *
-     * @param \Laravel\Nova\Http\Requests\ActionRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
      * @return array<string, mixed>
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -411,15 +411,15 @@ class Action implements JsonSerializable
     /**
      * Indicate that this action is only available on the resource index view.
      *
-     * @param bool $value
+     * @param  bool  $value
      * @return $this
      */
     public function onlyOnIndex($value = true)
     {
         $this->onlyOnIndex = $value;
         $this->showOnIndex = $value;
-        $this->showOnDetail = !$value;
-        $this->showInline = !$value;
+        $this->showOnDetail = ! $value;
+        $this->showInline = ! $value;
 
         return $this;
     }
@@ -441,15 +441,15 @@ class Action implements JsonSerializable
     /**
      * Indicate that this action is only available on the resource detail view.
      *
-     * @param bool $value
+     * @param  bool  $value
      * @return $this
      */
     public function onlyOnDetail($value = true)
     {
         $this->onlyOnDetail = $value;
         $this->showOnDetail = $value;
-        $this->showOnIndex = !$value;
-        $this->showInline = !$value;
+        $this->showOnIndex = ! $value;
+        $this->showInline = ! $value;
 
         return $this;
     }
@@ -471,7 +471,7 @@ class Action implements JsonSerializable
     /**
      * Indicate that this action is only available on the resource's table row.
      *
-     * @param bool $value
+     * @param  bool  $value
      * @return $this
      */
     public function onlyOnTableRow($value = true)
@@ -482,14 +482,14 @@ class Action implements JsonSerializable
     /**
      * Indicate that this action is only available on the resource's table row.
      *
-     * @param bool $value
+     * @param  bool  $value
      * @return $this
      */
     public function onlyInline($value = true)
     {
         $this->showInline = $value;
-        $this->showOnIndex = !$value;
-        $this->showOnDetail = !$value;
+        $this->showOnIndex = ! $value;
+        $this->showOnDetail = ! $value;
 
         return $this;
     }
@@ -545,9 +545,9 @@ class Action implements JsonSerializable
     /**
      * Show the action on the table row.
      *
-     * @return $this
      * @deprecated
      *
+     * @return $this
      */
     public function showOnTableRow()
     {
@@ -569,7 +569,7 @@ class Action implements JsonSerializable
     /**
      * Register a callback that should be invoked after the action is finished executing.
      *
-     * @param callable(\Illuminate\Support\Collection):mixed $callback
+     * @param  callable(\Illuminate\Support\Collection):mixed  $callback
      * @return $this
      */
     public function then($callback)
@@ -582,7 +582,7 @@ class Action implements JsonSerializable
     /**
      * Set the current batch ID being handled by the action.
      *
-     * @param string $actionBatchId
+     * @param  string  $actionBatchId
      * @return $this
      */
     public function withActionBatchId(string $actionBatchId)
@@ -595,8 +595,8 @@ class Action implements JsonSerializable
     /**
      * Register `then`, `catch`, and `finally` callbacks on the pending batch.
      *
-     * @param \Laravel\Nova\Fields\ActionFields $fields
-     * @param \Illuminate\Bus\PendingBatch $batch
+     * @param  \Laravel\Nova\Fields\ActionFields  $fields
+     * @param  \Illuminate\Bus\PendingBatch  $batch
      * @return void
      */
     public function withBatch(ActionFields $fields, PendingBatch $batch)
@@ -607,7 +607,7 @@ class Action implements JsonSerializable
     /**
      * Set the callback to be run to authorize running the action.
      *
-     * @param \Closure(\Laravel\Nova\Http\Requests\NovaRequest, mixed):bool  $callback
+     * @param  \Closure(\Laravel\Nova\Http\Requests\NovaRequest, mixed):bool  $callback
      * @return $this
      */
     public function canRun(Closure $callback)
@@ -720,7 +720,7 @@ class Action implements JsonSerializable
     /**
      * Set the text for the action's confirmation button.
      *
-     * @param string $text
+     * @param  string  $text
      * @return $this
      */
     public function confirmButtonText($text)
@@ -733,7 +733,7 @@ class Action implements JsonSerializable
     /**
      * Set the text for the action's cancel button.
      *
-     * @param string $text
+     * @param  string  $text
      * @return $this
      */
     public function cancelButtonText($text)
@@ -746,7 +746,7 @@ class Action implements JsonSerializable
     /**
      * Set the text for the action's confirmation message.
      *
-     * @param string $text
+     * @param  string  $text
      * @return $this
      */
     public function confirmText($text)

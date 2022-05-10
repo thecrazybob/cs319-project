@@ -14,7 +14,7 @@ abstract class DateFilter extends Filter
     /**
      * Set the first day of the week.
      *
-     * @param int $day
+     * @param  int  $day
      * @return $this
      */
     public function firstDayOfWeek($day)

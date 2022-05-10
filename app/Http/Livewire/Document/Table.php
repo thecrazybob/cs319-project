@@ -38,15 +38,15 @@ class Table extends Component implements HasTable
         return [
             IconButtonAction::make('edit')
                 ->label('Edit document')
-                ->url(fn(Document $record): string => route('document.edit', $record))
+                ->url(fn (Document $record): string => route('document.edit', $record))
                 ->icon('heroicon-o-pencil'),
             IconButtonAction::make('show')
                 ->label('View document')
-                ->url(fn(Document $record): string => route('document.show', $record))
+                ->url(fn (Document $record): string => route('document.show', $record))
                 ->icon('heroicon-o-download'),
             IconButtonAction::make('destroy')
                 ->label('Delete document')
-                ->action(fn(Document $record) => $record->delete() && $record->file->delete())
+                ->action(fn (Document $record) => $record->delete() && $record->file->delete())
                 ->icon('heroicon-o-trash'),
         ];
     }

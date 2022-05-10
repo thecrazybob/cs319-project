@@ -25,10 +25,8 @@ class Table extends Component implements HasTable
     {
         return [
             TextColumn::make('id'),
-            TextColumn::make('patient_id')
-                ->getStateUsing(fn($invoice) => User::where('patient_id', $invoice->patient_id)->first()->name),
-            TextColumn::make('amount'),
-            TextColumn::make('status'),
+            TextColumn::make('amount')->formatStateUsing(fn ($state) => $state . ' ' . 'TRY'),
+            TextColumn::make('status')->formatStateUsing(fn ($state) => ucfirst($state)),
             TextColumn::make('description'),
             TextColumn::make('created_at')->date(),
             TextColumn::make('updated_at')->date(),
@@ -38,10 +36,10 @@ class Table extends Component implements HasTable
     protected function getTableActions(): array
     {
         return [
-            IconButtonAction::make('show')
-                ->label('View Invoice')
-                ->url(fn(Invoice $record): string => route('invoice.show', $record))
-                ->icon('heroicon-o-download'),
+            IconButtonAction::make('pay')
+                ->icon('heroicon-o-credit-card')
+                ->label('Pay Invoice')
+                ->url(fn (Invoice $record): string => route('invoice.edit', $record)),
         ];
     }
 

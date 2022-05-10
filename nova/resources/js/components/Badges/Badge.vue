@@ -1,7 +1,7 @@
 <template>
   <span
-      class="whitespace-nowrap px-2 py-1 rounded-full uppercase text-xs font-bold"
-      :class="extraClasses"
+    class="whitespace-nowrap px-2 py-1 rounded-full uppercase text-xs font-bold"
+    :class="extraClasses"
   >
     {{ label }}
   </span>
@@ -9,16 +9,16 @@
 
 <script>
 export default {
-    props: {
-        label: {
-            type: [Boolean, String],
-            required: false,
-        },
-
-        extraClasses: {
-            type: [Array, String],
-            required: false,
-        },
+  props: {
+    label: {
+      type: [Boolean, String],
+      required: false,
     },
+
+    extraClasses: {
+      type: [Array, String],
+      required: false,
+    },
+  },
 }
 </script>

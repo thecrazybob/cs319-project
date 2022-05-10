@@ -17,15 +17,15 @@ class DateFilter extends Filter
     /**
      * Apply the filter to the given query.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param mixed $value
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply(NovaRequest $request, $query, $value)
     {
         $value = collect($value)->transform(function ($value) {
-            return !empty($value) ? rescue(function () use ($value) {
+            return ! empty($value) ? rescue(function () use ($value) {
                 return CarbonImmutable::createFromFormat('Y-m-d', $value);
             }, null) : null;
         });

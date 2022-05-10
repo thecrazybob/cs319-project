@@ -26,7 +26,7 @@ class Table extends Component implements HasTable
         return [
             TextColumn::make('id'),
             TextColumn::make('doctor_name')
-                ->getStateUsing(fn($record) => User::where('doctor_id', $record->doctor_id)->first()->name),
+                ->getStateUsing(fn ($record) => User::where('doctor_id', $record->doctor_id)->first()->name),
             TextColumn::make('subject'),
             TextColumn::make('days'),
             TextColumn::make('report_date')->date(),
@@ -40,7 +40,7 @@ class Table extends Component implements HasTable
         return [
             IconButtonAction::make('show')
                 ->label('View report')
-                ->url(fn(Report $record): string => route('report.show', $record))
+                ->url(fn (Report $record): string => route('report.show', $record))
                 ->icon('heroicon-o-download'),
         ];
     }

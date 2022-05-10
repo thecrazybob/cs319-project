@@ -36,7 +36,7 @@ class NovaExceptionHandler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param \Throwable $e
+     * @param  \Throwable  $e
      * @return void
      *
      * @throws \Throwable
@@ -56,8 +56,8 @@ class NovaExceptionHandler extends ExceptionHandler
     /**
      * Prepare exception for rendering.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Throwable $e
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Throwable $e)
@@ -72,8 +72,8 @@ class NovaExceptionHandler extends ExceptionHandler
     /**
      * Render Inertia Exception.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface|\Throwable $e
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface|\Throwable  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function renderInertiaException($request, $e)

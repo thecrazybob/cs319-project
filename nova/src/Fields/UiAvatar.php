@@ -21,8 +21,8 @@ class UiAvatar extends Avatar
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|null $attribute
+     * @param  string  $name
+     * @param  string|null  $attribute
      * @return void
      */
     public function __construct($name = 'Avatar', $attribute = 'name')
@@ -37,8 +37,8 @@ class UiAvatar extends Avatar
     /**
      * Resolve the field's value.
      *
-     * @param mixed $resource
-     * @param string|null $attribute
+     * @param  mixed  $resource
+     * @param  string|null  $attribute
      * @return void
      */
     public function resolve($resource, $attribute = null)
@@ -46,7 +46,7 @@ class UiAvatar extends Avatar
         parent::resolve($resource, $attribute);
 
         $callback = function () {
-            return 'https://ui-avatars.com/api/?' . http_build_query(array_merge($this->settings, ['name' => $this->value]));
+            return 'https://ui-avatars.com/api/?'.http_build_query(array_merge($this->settings, ['name' => $this->value]));
         };
 
         $this->preview($callback)->thumbnail($callback);
@@ -55,7 +55,7 @@ class UiAvatar extends Avatar
     /**
      * Set the font-size.
      *
-     * @param float|int $fontSize
+     * @param  float|int  $fontSize
      * @return $this
      */
     public function fontSize($fontSize)
@@ -68,7 +68,7 @@ class UiAvatar extends Avatar
     /**
      * Set the color.
      *
-     * @param string $color
+     * @param  string  $color
      * @return $this
      */
     public function color($color)
@@ -81,7 +81,7 @@ class UiAvatar extends Avatar
     /**
      * Set the background color.
      *
-     * @param string $color
+     * @param  string  $color
      * @return $this
      */
     public function backgroundColor($color)

@@ -24,6 +24,6 @@ class ReportController extends Controller
     public function show(Request $request, Report $report)
     {
         $file_path = $report->file->file_path;
-        return response()->download(storage_path('app/public/' . $file_path));
+        return response()->download(storage_path('app/public/'.$file_path));
     }
 }

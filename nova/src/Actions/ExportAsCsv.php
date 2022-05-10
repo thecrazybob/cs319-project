@@ -60,7 +60,7 @@ class ExportAsCsv extends Action
     /**
      * Construct a new action instance.
      *
-     * @param string|null $name
+     * @param  string|null  $name
      * @return void
      */
     public function __construct($name = null)
@@ -72,7 +72,7 @@ class ExportAsCsv extends Action
     /**
      * Get the fields available on the action.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -87,9 +87,9 @@ class ExportAsCsv extends Action
     /**
      * Perform the action request using custom dispatch handler.
      *
-     * @param \Laravel\Nova\Http\Requests\ActionRequest $request
-     * @param \Laravel\Nova\Actions\Response $response
-     * @param \Laravel\Nova\Fields\ActionFields $fields
+     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
+     * @param  \Laravel\Nova\Actions\Response  $response
+     * @param  \Laravel\Nova\Fields\ActionFields  $fields
      * @return \Laravel\Nova\Actions\Response
      */
     protected function dispatchRequestUsing(ActionRequest $request, Response $response, ActionFields $fields)

@@ -17,8 +17,8 @@ class Heading extends Field
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|null $attribute
+     * @param  string  $name
+     * @param  string|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */

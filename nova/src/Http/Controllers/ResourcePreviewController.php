@@ -10,7 +10,7 @@ class ResourcePreviewController extends Controller
     /**
      * Preview the resource for administration.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourcePreviewRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourcePreviewRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(ResourcePreviewRequest $request)
@@ -23,7 +23,7 @@ class ResourcePreviewController extends Controller
         $resource->authorizeToView($request);
 
         return response()->json([
-            'title' => (string)$resource->title(),
+            'title' => (string) $resource->title(),
             'resource' => $resource->serializeForPreview($request),
         ]);
     }

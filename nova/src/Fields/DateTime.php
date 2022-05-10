@@ -24,30 +24,30 @@ class DateTime extends Field implements FilterableField
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|\Closure|callable|object|null $attribute
+     * @param  string  $name
+     * @param  string|\Closure|callable|object|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback ?? function ($value, $request) {
-                if (!is_null($value)) {
-                    if ($value instanceof DateTimeInterface) {
-                        return $value instanceof CarbonInterface
-                            ? $value->toIso8601String()
-                            : $value->format(DateTimeInterface::ATOM);
-                    }
-
-                    throw new Exception("DateTime field must cast to 'datetime' in Eloquent model.");
+            if (! is_null($value)) {
+                if ($value instanceof DateTimeInterface) {
+                    return $value instanceof CarbonInterface
+                                ? $value->toIso8601String()
+                                : $value->format(DateTimeInterface::ATOM);
                 }
-            });
+
+                throw new Exception("DateTime field must cast to 'datetime' in Eloquent model.");
+            }
+        });
     }
 
     /**
      * Resolve the default value for the field.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return string
      */
     protected function resolveDefaultValue(NovaRequest $request)
@@ -56,8 +56,8 @@ class DateTime extends Field implements FilterableField
 
         if ($value instanceof DateTimeInterface) {
             return $value instanceof CarbonInterface
-                ? $value->toIso8601String()
-                : $value->format(DateTimeInterface::ATOM);
+                        ? $value->toIso8601String()
+                        : $value->format(DateTimeInterface::ATOM);
         }
 
         return $value;
@@ -66,7 +66,7 @@ class DateTime extends Field implements FilterableField
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter
      */
     protected function makeFilter(NovaRequest $request)
@@ -84,10 +84,10 @@ class DateTime extends Field implements FilterableField
         return function (NovaRequest $request, $query, $value, $attribute) {
             [$min, $max] = $value;
 
-            if (!is_null($min) && !is_null($max)) {
+            if (! is_null($min) && ! is_null($max)) {
                 return $query->whereDate($attribute, '>=', $min)
-                    ->whereDate($attribute, '<=', $max);
-            } elseif (!is_null($min)) {
+                             ->whereDate($attribute, '<=', $max);
+            } elseif (! is_null($min)) {
                 return $query->whereDate($attribute, '>=', $min);
             }
 

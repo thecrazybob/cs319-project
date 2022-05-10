@@ -1,17 +1,17 @@
 <template>
-    <ResourceIndex
-        :resourceName="resourceName"
-        :shouldOverrideMeta="true"
-        :shouldEnableShortcut="true"
-    />
+  <ResourceIndex
+    :resourceName="resourceName"
+    :shouldOverrideMeta="true"
+    :shouldEnableShortcut="true"
+  />
 </template>
 
 <script>
-import {mapProps} from '@/mixins'
+import { mapProps } from '@/mixins'
 
 export default {
-    name: 'Index',
+  name: 'Index',
 
-    props: mapProps(['resourceName']),
+  props: mapProps(['resourceName']),
 }
 </script>

@@ -11,7 +11,7 @@ class ResourceUpdateController extends Controller
     /**
      * Show Resource Update page using Inertia.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
      * @return \Inertia\Response
      */
     public function __invoke(ResourceUpdateOrUpdateAttachedRequest $request)

@@ -22,6 +22,6 @@ class DiagnosisController extends Controller
     {
         $diagnosis = Diagnosis::find($diagnosis);
         $file_path = $diagnosis->file->file_path;
-        return response()->download(storage_path('app/public/' . $file_path));
+        return response()->download(storage_path('app/public/'.$file_path));
     }
 }

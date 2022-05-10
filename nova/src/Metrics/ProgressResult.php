@@ -61,8 +61,8 @@ class ProgressResult implements JsonSerializable
     /**
      * Create a new progress result instance.
      *
-     * @param int|float $value
-     * @param int|float $target
+     * @param  int|float  $value
+     * @param  int|float  $target
      * @return void
      */
     public function __construct($value, $target)
@@ -76,7 +76,7 @@ class ProgressResult implements JsonSerializable
     /**
      * Indicate that the metric represents a dollar value.
      *
-     * @param string $symbol
+     * @param  string  $symbol
      * @return $this
      */
     public function dollars($symbol = '$')
@@ -87,7 +87,7 @@ class ProgressResult implements JsonSerializable
     /**
      * Indicate that the metric represents a euro value.
      *
-     * @param string $symbol
+     * @param  string  $symbol
      * @return $this
      */
     public function euros($symbol = '€')
@@ -98,7 +98,7 @@ class ProgressResult implements JsonSerializable
     /**
      * Set the metric value prefix.
      *
-     * @param string $prefix
+     * @param  string  $prefix
      * @return $this
      */
     public function prefix($prefix)
@@ -111,7 +111,7 @@ class ProgressResult implements JsonSerializable
     /**
      * Set the metric value suffix.
      *
-     * @param string $suffix
+     * @param  string  $suffix
      * @return $this
      */
     public function suffix($suffix)
@@ -136,7 +136,7 @@ class ProgressResult implements JsonSerializable
     /**
      * Set the metric value formatting.
      *
-     * @param string $format
+     * @param  string  $format
      * @return $this
      */
     public function format($format)

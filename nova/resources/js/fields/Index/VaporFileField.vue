@@ -2,6 +2,6 @@
 import FileField from '@/fields/Index/FileField'
 
 export default {
-    extends: FileField,
+  extends: FileField,
 }
 </script>

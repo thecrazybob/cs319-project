@@ -23,7 +23,7 @@ class Response
     /**
      * Mark response as successful.
      *
-     * @param array|mixed|null $results
+     * @param  array|mixed|null  $results
      * @return $this
      */
     public function successful($results = null)

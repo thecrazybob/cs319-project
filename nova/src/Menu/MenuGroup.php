@@ -42,8 +42,8 @@ class MenuGroup implements \JsonSerializable
     /**
      * Construct a new Menu Group instance.
      *
-     * @param string $name
-     * @param array $items
+     * @param  string  $name
+     * @param  array  $items
      */
     public function __construct($name, $items = [])
     {
@@ -70,9 +70,9 @@ class MenuGroup implements \JsonSerializable
      */
     public function key()
     {
-        return md5($this->name . $this->items->reduce(function ($carry, $item) {
-                return $carry . '-' . $item->name;
-            }, ''));
+        return md5($this->name.$this->items->reduce(function ($carry, $item) {
+            return $carry.'-'.$item->name;
+        }, ''));
     }
 
     /**

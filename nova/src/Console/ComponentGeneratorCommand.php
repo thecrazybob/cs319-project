@@ -18,7 +18,7 @@ abstract class ComponentGeneratorCommand extends Command
      */
     protected function prepareComposerReplacements()
     {
-        $composerJson = $this->componentPath() . '/composer.json';
+        $composerJson = $this->componentPath().'/composer.json';
 
         $this->replace('{{ name }}', $this->component(), $composerJson);
         $this->replace('{{ escapedNamespace }}', $this->escapedComponentNamespace(), $composerJson);
@@ -27,9 +27,9 @@ abstract class ComponentGeneratorCommand extends Command
     /**
      * Register and build the component.
      *
-     * @param string $componentType
-     * @param bool $interactsWithComposer
-     * @param bool $interactsWithNpm
+     * @param  string  $componentType
+     * @param  bool  $interactsWithComposer
+     * @param  bool  $interactsWithNpm
      * @return void
      */
     protected function buildComponent($componentType, $interactsWithComposer = true, $interactsWithNpm = true)
@@ -69,8 +69,8 @@ abstract class ComponentGeneratorCommand extends Command
     /**
      * Run the given command as a process.
      *
-     * @param string $command
-     * @param string $path
+     * @param  string  $command
+     * @param  string  $path
      * @return void
      */
     protected function executeCommand($command, $path)
@@ -124,7 +124,7 @@ abstract class ComponentGeneratorCommand extends Command
 
         $composer['repositories'][] = [
             'type' => 'path',
-            'url' => './' . $this->relativeComponentPath(),
+            'url' => './'.$this->relativeComponentPath(),
         ];
 
         file_put_contents(
@@ -142,8 +142,8 @@ abstract class ComponentGeneratorCommand extends Command
     {
         $package = json_decode(file_get_contents(base_path('package.json')), true);
 
-        $package['scripts']['build-' . $this->componentName()] = 'cd ' . $this->relativeComponentPath() . ' && npm run dev';
-        $package['scripts']['build-' . $this->componentName() . '-prod'] = 'cd ' . $this->relativeComponentPath() . ' && npm run prod';
+        $package['scripts']['build-'.$this->componentName()] = 'cd '.$this->relativeComponentPath().' && npm run dev';
+        $package['scripts']['build-'.$this->componentName().'-prod'] = 'cd '.$this->relativeComponentPath().' && npm run prod';
 
         file_put_contents(
             base_path('package.json'),
@@ -174,9 +174,9 @@ abstract class ComponentGeneratorCommand extends Command
     /**
      * Replace the given string in the given file.
      *
-     * @param string|array $search
-     * @param string|array $replace
-     * @param string $path
+     * @param  string|array  $search
+     * @param  string|array  $replace
+     * @param  string  $path
      * @return void
      */
     protected function replace($search, $replace, $path)
@@ -191,7 +191,7 @@ abstract class ComponentGeneratorCommand extends Command
      */
     protected function componentPath()
     {
-        return base_path('nova-components/' . $this->componentClass());
+        return base_path('nova-components/'.$this->componentClass());
     }
 
     /**
@@ -201,7 +201,7 @@ abstract class ComponentGeneratorCommand extends Command
      */
     protected function relativeComponentPath()
     {
-        return 'nova-components/' . $this->componentClass();
+        return 'nova-components/'.$this->componentClass();
     }
 
     /**
@@ -211,7 +211,7 @@ abstract class ComponentGeneratorCommand extends Command
      */
     protected function componentNamespace()
     {
-        return Str::studly($this->componentVendor()) . '\\' . $this->componentClass();
+        return Str::studly($this->componentVendor()).'\\'.$this->componentClass();
     }
 
     /**

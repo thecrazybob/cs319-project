@@ -20,7 +20,7 @@ class PendingRouteRegistration
     /**
      * Register the Nova authentication routes.
      *
-     * @param array<int, class-string|string> $middleware
+     * @param  array<int, class-string|string>  $middleware
      * @return $this
      */
     public function withAuthenticationRoutes($middleware = ['nova'])
@@ -50,7 +50,7 @@ class PendingRouteRegistration
     /**
      * Register the Nova password reset routes.
      *
-     * @param array<int, class-string|string> $middleware
+     * @param  array<int, class-string|string>  $middleware
      * @return $this
      */
     public function withPasswordResetRoutes($middleware = ['nova'])
@@ -118,7 +118,7 @@ class PendingRouteRegistration
      */
     public function __destruct()
     {
-        if (!$this->registered) {
+        if (! $this->registered) {
             $this->register();
         }
     }

@@ -14,7 +14,7 @@ trait TransformsResults
     /**
      * Set the callback used to transform the value before presentation.
      *
-     * @param \Closure|callable $transformCallback
+     * @param  \Closure|callable  $transformCallback
      * @return $this
      */
     public function transform($transformCallback)
@@ -27,13 +27,13 @@ trait TransformsResults
     /**
      * Resolve the transformed value result.
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return mixed
      */
     public function resolveTransformedValue($value)
     {
         return transform($value, $this->transformCallback ?? function ($value) {
-                return $value;
-            });
+            return $value;
+        });
     }
 }

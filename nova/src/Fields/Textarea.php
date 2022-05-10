@@ -34,7 +34,7 @@ class Textarea extends Field implements FilterableField
     /**
      * Set the number of rows used for the textarea.
      *
-     * @param int $rows
+     * @param  int  $rows
      * @return $this
      */
     public function rows($rows)
@@ -47,8 +47,8 @@ class Textarea extends Field implements FilterableField
     /**
      * Resolve the field's value for display.
      *
-     * @param mixed $resource
-     * @param string|null $attribute
+     * @param  mixed  $resource
+     * @param  string|null  $attribute
      * @return void
      */
     public function resolveForDisplay($resource, $attribute = null)
@@ -61,7 +61,7 @@ class Textarea extends Field implements FilterableField
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter
      */
     protected function makeFilter(NovaRequest $request)

@@ -24,7 +24,7 @@ class LensRequest extends NovaRequest
     /**
      * Apply the specified filters to the given query.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function withFilters($query)
@@ -35,7 +35,7 @@ class LensRequest extends NovaRequest
     /**
      * Apply the specified filters to the given query.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function filter($query)
@@ -48,12 +48,12 @@ class LensRequest extends NovaRequest
     /**
      * Apply the specified ordering to the given query.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function withOrdering($query)
     {
-        if (!$this->orderBy || !$this->orderByDirection) {
+        if (! $this->orderBy || ! $this->orderByDirection) {
             return $query;
         }
 
@@ -71,7 +71,7 @@ class LensRequest extends NovaRequest
 
         if ($fieldExists) {
             return $query->orderBy(
-                ($this->tableOrderPrefix ? $query->getModel()->getTable() . '.' : '') . $this->orderBy,
+                ($this->tableOrderPrefix ? $query->getModel()->getTable().'.' : '').$this->orderBy,
                 $this->orderByDirection === 'asc' ? 'asc' : 'desc'
             );
         }
@@ -104,7 +104,7 @@ class LensRequest extends NovaRequest
     /**
      * Map the given models to the appropriate resource for the request.
      *
-     * @param \Illuminate\Support\Collection $models
+     * @param  \Illuminate\Support\Collection  $models
      * @return \Illuminate\Support\Collection
      */
     public function toResources(Collection $models)
@@ -120,12 +120,12 @@ class LensRequest extends NovaRequest
                 $this, $lenResource->resolveFields($this)
             ), function ($payload) use ($model, $lenResource) {
                 $payload['actions'] = collect(array_values($lenResource->actions($this)))
-                    ->filter(function ($action) {
-                        return $action->shownOnIndex() || $action->shownOnTableRow();
-                    })
-                    ->filter->authorizedToSee($this)
-                    ->filter->authorizedToRun($this, $model)
-                    ->values();
+                        ->filter(function ($action) {
+                            return $action->shownOnIndex() || $action->shownOnTableRow();
+                        })
+                        ->filter->authorizedToSee($this)
+                        ->filter->authorizedToRun($this, $model)
+                        ->values();
 
                 return $payload;
             });
@@ -135,7 +135,7 @@ class LensRequest extends NovaRequest
     /**
      * Get foreign key name for relation.
      *
-     * @param \Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @param  \Illuminate\Database\Eloquent\Relations\Relation  $relation
      * @return string
      */
     protected function getRelationForeignKeyName(Relation $relation)
@@ -160,7 +160,7 @@ class LensRequest extends NovaRequest
             $perPageOptions = [$resource::newModel()->getPerPage()];
         }
 
-        return (int)in_array($this->perPage, $perPageOptions) ? $this->perPage : $perPageOptions[0];
+        return (int) in_array($this->perPage, $perPageOptions) ? $this->perPage : $perPageOptions[0];
     }
 
     /**

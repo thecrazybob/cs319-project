@@ -18,7 +18,7 @@ class MorphToFilter extends EloquentFilter
      */
     public function key()
     {
-        return 'resource:morphable:' . $this->field->attribute;
+        return 'resource:morphable:'.$this->field->attribute;
     }
 
     /**

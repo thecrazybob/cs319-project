@@ -1,36 +1,36 @@
 <template>
-    <ResourceUpdate
-        :resource-name="resourceName"
-        :resource-id="resourceId"
-        :via-resource="viaResource"
-        :via-resource-id="viaResourceId"
-        :via-relationship="viaRelationship"
-        :form-unique-id="formUniqueId"
-    />
+  <ResourceUpdate
+    :resource-name="resourceName"
+    :resource-id="resourceId"
+    :via-resource="viaResource"
+    :via-resource-id="viaResourceId"
+    :via-relationship="viaRelationship"
+    :form-unique-id="formUniqueId"
+  />
 </template>
 
 <script>
-import {mapProps} from '@/mixins'
+import { mapProps } from '@/mixins'
 import ResourceUpdate from '@/views/Update'
-import {uid} from 'uid/single'
+import { uid } from 'uid/single'
 
 export default {
-    name: 'Update',
+  name: 'Update',
 
-    components: {
-        ResourceUpdate,
-    },
+  components: {
+    ResourceUpdate,
+  },
 
-    props: mapProps([
-        'resourceName',
-        'resourceId',
-        'viaResource',
-        'viaResourceId',
-        'viaRelationship',
-    ]),
+  props: mapProps([
+    'resourceName',
+    'resourceId',
+    'viaResource',
+    'viaResourceId',
+    'viaRelationship',
+  ]),
 
-    data: () => ({
-        formUniqueId: uid(),
-    }),
+  data: () => ({
+    formUniqueId: uid(),
+  }),
 }
 </script>

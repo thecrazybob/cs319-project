@@ -23,8 +23,8 @@ class ApplyFilter
     /**
      * Create a new invokable filter applier.
      *
-     * @param \Laravel\Nova\Filters\Filter $filter
-     * @param mixed $value
+     * @param  \Laravel\Nova\Filters\Filter  $filter
+     * @param  mixed  $value
      * @return void
      */
     public function __construct($filter, $value)
@@ -36,8 +36,8 @@ class ApplyFilter
     /**
      * Apply the filter to the given query.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function __invoke(NovaRequest $request, $query)

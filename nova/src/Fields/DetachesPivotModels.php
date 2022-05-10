@@ -26,10 +26,10 @@ trait DetachesPivotModels
                 $pivotFields = $resource->resolvePivotFields($request, $request->resource);
 
                 $pivotFields->whereInstanceOf(Deletable::class)
-                    ->filter->isPrunable()
-                    ->each(function ($field) use ($request, $pivot) {
-                        DeleteField::forRequest($request, $field, $pivot)->save();
-                    });
+                        ->filter->isPrunable()
+                        ->each(function ($field) use ($request, $pivot) {
+                            DeleteField::forRequest($request, $field, $pivot)->save();
+                        });
 
                 $pivot->delete();
             }

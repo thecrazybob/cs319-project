@@ -11,8 +11,8 @@ class NotificationReadController extends Controller
     /**
      * Mark the given notification as read.
      *
-     * @param NotificationRequest $request
-     * @param Notification $notification
+     * @param  NotificationRequest  $request
+     * @param  Notification  $notification
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(NotificationRequest $request, Notification $notification)

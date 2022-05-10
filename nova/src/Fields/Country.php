@@ -7,8 +7,8 @@ class Country extends Select
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|\Closure|callable|object|null $attribute
+     * @param  string  $name
+     * @param  string|\Closure|callable|object|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */

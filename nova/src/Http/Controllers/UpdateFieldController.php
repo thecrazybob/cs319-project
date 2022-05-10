@@ -11,7 +11,7 @@ class UpdateFieldController extends Controller
     /**
      * List the update fields for the given resource.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(ResourceUpdateOrUpdateAttachedRequest $request)
@@ -22,7 +22,7 @@ class UpdateFieldController extends Controller
     /**
      * Synchronize the field for updating.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function sync(ResourceUpdateOrUpdateAttachedRequest $request)

@@ -1,17 +1,17 @@
 <template>
-    <div class="flex items-center">
+  <div class="flex items-center">
     <span class="mr-3 text-60" v-if="field.loadingWords?.includes(field.value)">
-      <loader width="30"/>
+      <loader width="30" />
     </span>
 
-        <span :class="{ 'text-red-500': field.failedWords?.includes(field.value) }">
+    <span :class="{ 'text-red-500': field.failedWords?.includes(field.value) }">
       {{ field.value }}
     </span>
-    </div>
+  </div>
 </template>
 
 <script>
 export default {
-    props: ['resourceName', 'field'],
+  props: ['resourceName', 'field'],
 }
 </script>

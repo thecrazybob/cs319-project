@@ -14,9 +14,9 @@ class SearchableMorphToRelation extends SearchableRelation
     /**
      * Construct a new search.
      *
-     * @param string $relation
-     * @param \Illuminate\Database\Query\Expression|string $column
-     * @param array<int, class-string<\Illuminate\Database\Eloquent\Model|\Laravel\Nova\Resource>|string> $types
+     * @param  string  $relation
+     * @param  \Illuminate\Database\Query\Expression|string  $column
+     * @param  array<int, class-string<\Illuminate\Database\Eloquent\Model|\Laravel\Nova\Resource>|string>  $types
      * @return void
      */
     public function __construct(string $relation, $column, array $types = [])
@@ -29,15 +29,15 @@ class SearchableMorphToRelation extends SearchableRelation
     /**
      * Apply the search.
      *
-     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $query
-     * @param string $search
-     * @param string $connectionType
-     * @param string $whereOperator
+     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation  $query
+     * @param  string  $search
+     * @param  string  $connectionType
+     * @param  string  $whereOperator
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function __invoke($query, $search, string $connectionType, string $whereOperator = 'orWhere')
     {
-        return $query->{$whereOperator . 'HasMorph'}($this->relation, $this->morphTypes(), function ($query) use ($search, $connectionType) {
+        return $query->{$whereOperator.'HasMorph'}($this->relation, $this->morphTypes(), function ($query) use ($search, $connectionType) {
             return (new Column($this->column))->__invoke(
                 $query, $search, $connectionType, 'where'
             );

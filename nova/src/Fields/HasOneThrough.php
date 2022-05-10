@@ -59,9 +59,9 @@ class HasOneThrough extends Field implements ListableField, RelatableField
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|null $attribute
-     * @param class-string<\Laravel\Nova\Resource>|null $resource
+     * @param  string  $name
+     * @param  string|null  $attribute
+     * @param  class-string<\Laravel\Nova\Resource>|null  $resource
      * @return void
      */
     public function __construct($name, $attribute = null, $resource = null)
@@ -111,21 +111,21 @@ class HasOneThrough extends Field implements ListableField, RelatableField
     /**
      * Determine if the field should be displayed for the given request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public function authorize(Request $request)
     {
         return call_user_func(
-                [$this->resourceClass, 'authorizedToViewAny'], $request
-            ) && parent::authorize($request);
+            [$this->resourceClass, 'authorizedToViewAny'], $request
+        ) && parent::authorize($request);
     }
 
     /**
      * Resolve the field's value.
      *
-     * @param mixed $resource
-     * @param string|null $attribute
+     * @param  mixed  $resource
+     * @param  string|null  $attribute
      * @return void
      */
     public function resolve($resource, $attribute = null)
@@ -136,7 +136,7 @@ class HasOneThrough extends Field implements ListableField, RelatableField
     /**
      * Set the displayable singular label of the resource.
      *
-     * @param string $singularLabel
+     * @param  string  $singularLabel
      * @return $this
      */
     public function singularLabel($singularLabel)
@@ -154,10 +154,10 @@ class HasOneThrough extends Field implements ListableField, RelatableField
     public function asPanel()
     {
         return Panel::make($this->name)
-            ->withMeta([
-                'fields' => [$this],
-                'prefixComponent' => true,
-            ])->withComponent('relationship-panel');
+                    ->withMeta([
+                        'fields' => [$this],
+                        'prefixComponent' => true,
+                    ])->withComponent('relationship-panel');
     }
 
     /**
@@ -182,7 +182,7 @@ class HasOneThrough extends Field implements ListableField, RelatableField
     /**
      * Set the Closure used to determine if the HasOne field has already been filled.
      *
-     * @param \Closure(\Laravel\Nova\Http\Requests\NovaRequest):bool  $callback
+     * @param  \Closure(\Laravel\Nova\Http\Requests\NovaRequest):bool  $callback
      * @return $this
      */
     public function alreadyFilledWhen($callback)
@@ -195,7 +195,7 @@ class HasOneThrough extends Field implements ListableField, RelatableField
     /**
      * Determine if the HasOne field has alreaady been filled.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return bool
      */
     public function alreadyFilled(NovaRequest $request)

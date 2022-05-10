@@ -11,7 +11,7 @@ class CreationPivotFieldController extends Controller
     /**
      * List the pivot fields for the given resource and relation.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(ResourceCreateOrAttachRequest $request)
@@ -22,7 +22,7 @@ class CreationPivotFieldController extends Controller
     /**
      * Synchronize the pivot field for creation.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function sync(ResourceCreateOrAttachRequest $request)
@@ -35,7 +35,7 @@ class CreationPivotFieldController extends Controller
             )->filter(function ($field) use ($request) {
                 return $request->query('field') === $field->attribute;
             })->each->applyDependsOn($request)
-                ->first()
+            ->first()
         );
     }
 }

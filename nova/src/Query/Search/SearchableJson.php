@@ -16,7 +16,7 @@ class SearchableJson extends Column
     /**
      * Construct a new search.
      *
-     * @param \Illuminate\Database\Query\Expression|string $jsonSelectorPath
+     * @param  \Illuminate\Database\Query\Expression|string  $jsonSelectorPath
      * @return void
      */
     public function __construct($jsonSelectorPath)
@@ -27,10 +27,10 @@ class SearchableJson extends Column
     /**
      * Apply the search.
      *
-     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $query
-     * @param string $search
-     * @param string $connectionType
-     * @param string $whereOperator
+     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation  $query
+     * @param  string  $search
+     * @param  string  $connectionType
+     * @param  string  $whereOperator
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function __invoke($query, $search, string $connectionType, string $whereOperator = 'orWhere')
@@ -42,6 +42,6 @@ class SearchableJson extends Column
             return $query->{$whereOperator}($this->jsonSelectorPath, $likeOperator, "%{$search}%");
         }
 
-        return $query->{$whereOperator . 'Raw'}("lower({$path}) {$likeOperator} ?", ['%' . Str::lower($search) . '%']);
+        return $query->{$whereOperator.'Raw'}("lower({$path}) {$likeOperator} ?", ['%'.Str::lower($search).'%']);
     }
 }

@@ -23,7 +23,7 @@ trait Storable
     /**
      * Set the name of the disk the file is stored on by default.
      *
-     * @param string $disk
+     * @param  string  $disk
      * @return $this
      */
     public function disk($disk)
@@ -36,7 +36,7 @@ trait Storable
     /**
      * Set the file's storage path.
      *
-     * @param string $path
+     * @param  string  $path
      * @return $this
      */
     public function path($path)

@@ -28,7 +28,7 @@ class DocumentController extends Controller
     public function show(Request $request, Document $document)
     {
         $file_path = $document->file->file_path;
-        return response()->download(storage_path('app/public/' . $file_path));
+        return response()->download(storage_path('app/public/'.$file_path));
     }
 
     /**

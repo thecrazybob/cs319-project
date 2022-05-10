@@ -13,7 +13,6 @@ use Inertia\Inertia;
 class ForgotPasswordController extends Controller
 {
     use ValidatesRequests;
-
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
@@ -34,7 +33,7 @@ class ForgotPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('nova.guest:' . config('nova.guard'));
+        $this->middleware('nova.guest:'.config('nova.guard'));
 
         ResetPassword::toMailUsing(function ($notifiable, $token) {
             return (new MailMessage)

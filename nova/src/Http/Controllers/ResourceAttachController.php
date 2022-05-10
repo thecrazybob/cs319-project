@@ -24,7 +24,7 @@ class ResourceAttachController extends Controller
     /**
      * Attach a related resource to the given resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function __invoke(NovaRequest $request)
@@ -72,9 +72,9 @@ class ResourceAttachController extends Controller
     /**
      * Validate the attachment request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param class-string<\Laravel\Nova\Resource> $resourceClass
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  class-string<\Laravel\Nova\Resource>  $resourceClass
      * @return void
      */
     protected function validate(NovaRequest $request, $model, $resourceClass)
@@ -92,8 +92,8 @@ class ResourceAttachController extends Controller
      * Return the validation rules used for the request. Correctly aasign the rules used
      * to the main attribute if the user has defined a custom relation key.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param class-string<\Laravel\Nova\Resource> $resourceClass
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  class-string<\Laravel\Nova\Resource>  $resourceClass
      * @return mixed
      */
     protected function creationRules(NovaRequest $request, $resourceClass)
@@ -111,8 +111,8 @@ class ResourceAttachController extends Controller
     /**
      * Initialize a fresh pivot model for the relationship.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Relations\BelongsToMany $relationship
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Relations\BelongsToMany  $relationship
      * @return \Illuminate\Database\Eloquent\Relations\Pivot
      *
      * @throws \Exception

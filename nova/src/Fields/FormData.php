@@ -10,17 +10,17 @@ class FormData extends Fluent
     /**
      * Make fluent payload from request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param array<string, mixed> $fields
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  array<string, mixed>  $fields
      * @return static
      */
     public static function make(NovaRequest $request, array $fields)
     {
-        if (!is_null($request->resource) && !is_null($request->resourceId)) {
+        if (! is_null($request->resource) && ! is_null($request->resourceId)) {
             $fields["resource:{$request->resource}"] = $request->resourceId;
         }
 
-        if (!is_null($request->relatedResource) && !is_null($request->relatedResourceId)) {
+        if (! is_null($request->relatedResource) && ! is_null($request->relatedResourceId)) {
             $fields["resource:{$request->relatedResource}"] = $request->relatedResourceId;
         }
 
@@ -30,8 +30,8 @@ class FormData extends Fluent
     /**
      * Make fluent payload from request only on specific keys.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param array<int, string> $onlyAttributes
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  array<int, string>  $onlyAttributes
      * @return static
      */
     public static function onlyFrom(NovaRequest $request, array $onlyAttributes)
@@ -42,8 +42,8 @@ class FormData extends Fluent
     /**
      * Get an resource attribute from the fluent instance.
      *
-     * @param string $key
-     * @param mixed $default
+     * @param  string  $key
+     * @param  mixed  $default
      * @return mixed
      */
     public function resource($key, $default = null)

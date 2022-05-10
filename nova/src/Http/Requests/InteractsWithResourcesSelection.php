@@ -32,14 +32,14 @@ trait InteractsWithResourcesSelection
             return null;
         }
 
-        $resourceIds = array_filter(!empty($this->resources) ? Arr::wrap($this->resources) : [$this->resourceId]);
+        $resourceIds = array_filter(! empty($this->resources) ? Arr::wrap($this->resources) : [$this->resourceId]);
 
         if (count($resourceIds) < 1) {
             return $this->resource instanceof Model ? $this->resource->newCollection() : collect();
         }
 
         return $this->newQueryWithoutScopes()
-            ->whereKey($resourceIds)
-            ->get();
+                    ->whereKey($resourceIds)
+                    ->get();
     }
 }

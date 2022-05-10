@@ -39,7 +39,7 @@ class NovaRequest extends FormRequest
     public function isCreateOrAttachRequest()
     {
         return $this instanceof ResourceCreateOrAttachRequest
-            || ($this->editing && in_array($this->editMode, ['create', 'attach']));
+                    || ($this->editing && in_array($this->editMode, ['create', 'attach']));
     }
 
     /**
@@ -50,7 +50,7 @@ class NovaRequest extends FormRequest
     public function isUpdateOrUpdateAttachedRequest()
     {
         return $this instanceof ResourceUpdateOrUpdateAttachedRequest
-            || ($this->editing && in_array($this->editMode, ['update', 'update-attached']));
+                   || ($this->editing && in_array($this->editMode, ['update', 'update-attached']));
     }
 
     /**

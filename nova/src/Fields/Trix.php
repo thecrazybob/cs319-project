@@ -66,7 +66,7 @@ class Trix extends Field implements FilterableField, StorableContract, Deletable
     /**
      * Specify the callback that should be used to store file attachments.
      *
-     * @param callable $callback
+     * @param  callable  $callback
      * @return $this
      */
     public function attach(callable $callback)
@@ -81,7 +81,7 @@ class Trix extends Field implements FilterableField, StorableContract, Deletable
     /**
      * Specify the callback that should be used to delete a single, persisted file attachment.
      *
-     * @param callable $callback
+     * @param  callable  $callback
      * @return $this
      */
     public function detach(callable $callback)
@@ -96,7 +96,7 @@ class Trix extends Field implements FilterableField, StorableContract, Deletable
     /**
      * Specify the callback that should be used to discard pending file attachments.
      *
-     * @param callable $callback
+     * @param  callable  $callback
      * @return $this
      */
     public function discard(callable $callback)
@@ -111,7 +111,7 @@ class Trix extends Field implements FilterableField, StorableContract, Deletable
     /**
      * Specify the callback that should be used to delete the field.
      *
-     * @param callable $deleteCallback
+     * @param  callable  $deleteCallback
      * @return $this
      */
     public function delete(callable $deleteCallback)
@@ -126,8 +126,8 @@ class Trix extends Field implements FilterableField, StorableContract, Deletable
     /**
      * Specify that file uploads should be allowed.
      *
-     * @param string $disk
-     * @param string $path
+     * @param  string  $disk
+     * @param  string  $path
      * @return $this
      */
     public function withFiles($disk = null, $path = '/')
@@ -137,10 +137,10 @@ class Trix extends Field implements FilterableField, StorableContract, Deletable
         $this->disk($disk)->path($path);
 
         $this->attach(new StorePendingAttachment($this))
-            ->detach(new DetachAttachment())
-            ->delete(new DeleteAttachments($this))
-            ->discard(new DiscardPendingAttachments())
-            ->prunable();
+             ->detach(new DetachAttachment())
+             ->delete(new DeleteAttachments($this))
+             ->discard(new DiscardPendingAttachments())
+             ->prunable();
 
         return $this;
     }
@@ -148,10 +148,10 @@ class Trix extends Field implements FilterableField, StorableContract, Deletable
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param string $requestAttribute
-     * @param object $model
-     * @param string $attribute
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  string  $requestAttribute
+     * @param  object  $model
+     * @param  string  $attribute
      * @return void|\Closure
      */
     protected function fillAttribute(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -163,10 +163,10 @@ class Trix extends Field implements FilterableField, StorableContract, Deletable
             $callbacks[] = $maybeCallback;
         }
 
-        if ($request->{$this->attribute . 'DraftId'} && $this->withFiles) {
+        if ($request->{$this->attribute.'DraftId'} && $this->withFiles) {
             $callbacks[] = function () use ($request, $model) {
                 PendingAttachment::persistDraft(
-                    $request->{$this->attribute . 'DraftId'},
+                    $request->{$this->attribute.'DraftId'},
                     $this,
                     $model
                 );
@@ -193,7 +193,7 @@ class Trix extends Field implements FilterableField, StorableContract, Deletable
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter
      */
     protected function makeFilter(NovaRequest $request)

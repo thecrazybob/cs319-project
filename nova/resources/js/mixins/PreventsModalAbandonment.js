@@ -1,41 +1,41 @@
-import {mapGetters, mapMutations} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
-    props: {
-        show: {type: Boolean, default: false},
+  props: {
+    show: { type: Boolean, default: false },
+  },
+
+  methods: {
+    ...mapMutations(['allowLeavingModal', 'preventLeavingModal']),
+
+    /**
+     * Prevent accidental abandonment only if form was changed.
+     */
+    updateModalStatus() {
+      this.preventLeavingModal()
     },
 
-    methods: {
-        ...mapMutations(['allowLeavingModal', 'preventLeavingModal']),
+    handlePreventModalAbandonment(proceed, revert) {
+      if (this.canLeaveModal) {
+        proceed()
+        return
+      }
 
-        /**
-         * Prevent accidental abandonment only if form was changed.
-         */
-        updateModalStatus() {
-            this.preventLeavingModal()
-        },
+      const answer = window.confirm(
+        this.__('Do you really want to leave? You have unsaved changes.')
+      )
 
-        handlePreventModalAbandonment(proceed, revert) {
-            if (this.canLeaveModal) {
-                proceed()
-                return
-            }
+      if (answer) {
+        this.allowLeavingModal()
+        proceed()
+        return
+      }
 
-            const answer = window.confirm(
-                this.__('Do you really want to leave? You have unsaved changes.')
-            )
-
-            if (answer) {
-                this.allowLeavingModal()
-                proceed()
-                return
-            }
-
-            revert()
-        },
+      revert()
     },
+  },
 
-    computed: {
-        ...mapGetters(['canLeaveModal']),
-    },
+  computed: {
+    ...mapGetters(['canLeaveModal']),
+  },
 }

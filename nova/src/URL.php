@@ -28,8 +28,8 @@ class URL implements JsonSerializable
     /**
      * Construct a new URL instance.
      *
-     * @param string|self $url
-     * @param bool $remote
+     * @param  string|self  $url
+     * @param  bool  $remote
      */
     public function __construct($url, $remote = false)
     {
@@ -47,7 +47,7 @@ class URL implements JsonSerializable
     /**
      * Make a remote URL.
      *
-     * @param string $url
+     * @param  string  $url
      * @return static
      */
     public static function remote($url)

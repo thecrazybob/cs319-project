@@ -12,8 +12,8 @@ class DashboardController extends Controller
     /**
      * Show Resource Create page using Inertia.
      *
-     * @param \Laravel\Nova\Http\Requests\DashboardRequest $request
-     * @param string $name
+     * @param  \Laravel\Nova\Http\Requests\DashboardRequest  $request
+     * @param  string  $name
      * @return \Illuminate\Http\RedirectResponse|\Inertia\Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException

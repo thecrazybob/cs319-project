@@ -28,7 +28,7 @@ class Select extends Field implements FilterableField
     /**
      * Set the options for the select menu.
      *
-     * @param array<string|int, array<string, mixed>|string>|\Closure|callable|\Illuminate\Support\Collection $options
+     * @param  array<string|int, array<string, mixed>|string>|\Closure|callable|\Illuminate\Support\Collection  $options
      * @return $this
      */
     public function options($options)
@@ -69,7 +69,7 @@ class Select extends Field implements FilterableField
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter
      */
     protected function makeFilter(NovaRequest $request)
@@ -97,7 +97,7 @@ class Select extends Field implements FilterableField
     /**
      * Serialize options for the field.
      *
-     * @param bool $searchable
+     * @param  bool  $searchable
      * @return array<int, array<string, mixed>>
      */
     protected function serializeOptions($searchable)
@@ -111,7 +111,7 @@ class Select extends Field implements FilterableField
         return collect($options ?? [])->map(function ($label, $value) use ($searchable) {
             if ($searchable && isset($label['group'])) {
                 return [
-                    'label' => $label['group'] . ' - ' . $label['label'],
+                    'label' => $label['group'].' - '.$label['label'],
                     'value' => $value,
                 ];
             }

@@ -9,22 +9,22 @@ class CreationPivotFieldResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
      * @return array
      */
     public function toArray($request)
     {
         return $this->newResourceWith($request)
-            ->creationPivotFields(
-                $request,
-                $request->relatedResource
-            )->applyDependsOn($request)->all();
+                    ->creationPivotFields(
+                        $request,
+                        $request->relatedResource
+                    )->applyDependsOn($request)->all();
     }
 
     /**
      * Get current resource for the request.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
      * @return \Laravel\Nova\Resource
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException

@@ -18,12 +18,12 @@ trait FormatsRelatableDisplayValues
     /**
      * Format the associatable display value.
      *
-     * @param mixed $resource
+     * @param  mixed  $resource
      * @return string
      */
     protected function formatDisplayValue($resource)
     {
-        if (!$resource instanceof Resource) {
+        if (! $resource instanceof Resource) {
             $resource = Nova::newResourceFromModel($resource);
         }
 
@@ -31,7 +31,7 @@ trait FormatsRelatableDisplayValues
             return call_user_func($this->display, $resource);
         }
 
-        return (string)$resource->title();
+        return (string) $resource->title();
     }
 
     /**
@@ -43,10 +43,10 @@ trait FormatsRelatableDisplayValues
     public function display($display)
     {
         $this->display = $display instanceof Closure
-            ? $display
-            : function ($resource) use ($display) {
-                return $resource->{$display};
-            };
+                        ? $display
+                        : function ($resource) use ($display) {
+                            return $resource->{$display};
+                        };
 
         return $this;
     }

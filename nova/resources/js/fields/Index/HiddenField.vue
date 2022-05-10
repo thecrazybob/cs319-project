@@ -1,9 +1,9 @@
 <template>
-    <div class="hidden"/>
+  <div class="hidden" />
 </template>
 
 <script>
 export default {
-    props: ['resourceName', 'field'],
+  props: ['resourceName', 'field'],
 }
 </script>

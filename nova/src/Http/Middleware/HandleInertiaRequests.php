@@ -23,7 +23,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/asset-versioning
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return string|null
      */
     public function version(Request $request)
@@ -36,7 +36,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/shared-data
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function share(Request $request)
@@ -47,7 +47,7 @@ class HandleInertiaRequests extends Middleware
             },
             'currentUser' => function () use ($request) {
                 return with($request->user(), function ($user) use ($request) {
-                    return !is_null($user) ? UserResource::make($user)->toArray($request) : null;
+                    return ! is_null($user) ? UserResource::make($user)->toArray($request) : null;
                 });
             },
             'validLicense' => function () {

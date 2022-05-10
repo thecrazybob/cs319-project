@@ -14,7 +14,7 @@ trait HasPreview
     /**
      * Specify the callback that should be used to retrieve the preview URL.
      *
-     * @param callable(mixed, ?string, mixed):?string  $previewUrlCallback
+     * @param  callable(mixed, ?string, mixed):?string  $previewUrlCallback
      * @return $this
      */
     public function preview(callable $previewUrlCallback)
@@ -32,7 +32,7 @@ trait HasPreview
     public function resolvePreviewUrl()
     {
         return is_callable($this->previewUrlCallback)
-            ? call_user_func($this->previewUrlCallback, $this->value, $this->getStorageDisk(), $this->resource)
-            : null;
+                    ? call_user_func($this->previewUrlCallback, $this->value, $this->getStorageDisk(), $this->resource)
+                    : null;
     }
 }

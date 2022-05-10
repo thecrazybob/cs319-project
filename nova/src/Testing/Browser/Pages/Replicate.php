@@ -9,9 +9,9 @@ class Replicate extends Create
     /**
      * Create a new page instance.
      *
-     * @param string $resourceName
-     * @param int|string $fromResourceId
-     * @param array $queryParams
+     * @param  string  $resourceName
+     * @param  int|string  $fromResourceId
+     * @param  array  $queryParams
      * @return void
      */
     public function __construct($resourceName, $fromResourceId, $queryParams = [])

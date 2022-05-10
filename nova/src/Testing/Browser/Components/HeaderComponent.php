@@ -19,7 +19,7 @@ class HeaderComponent extends Component
     /**
      * Assert that the browser page contains the component.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      *
      * @throws \Facebook\WebDriver\Exception\TimeOutException
@@ -28,24 +28,24 @@ class HeaderComponent extends Component
     {
         tap($this->selector(), function ($selector) use ($browser) {
             $browser->pause(500)
-                ->waitFor($selector)
-                ->assertVisible($selector)
-                ->scrollIntoView($selector);
+                    ->waitFor($selector)
+                    ->assertVisible($selector)
+                    ->scrollIntoView($selector);
         });
     }
 
     /**
      * Open notification panel.
      *
-     * @param \Laravel\Dusk\Browser $browser
-     * @param callable|null $notificationCallback
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @param  callable|null  $notificationCallback
      * @return void
      */
     public function showNotificationPanel(Browser $browser, $notificationCallback = null)
     {
         $browser->closeCurrentDropdown()
-            ->click('@notifications-dropdown')
-            ->elsewhereWhenAvailable('@notifications-content', $notificationCallback ?? function ($browser) {
+                ->click('@notifications-dropdown')
+                ->elsewhereWhenAvailable('@notifications-content', $notificationCallback ?? function ($browser) {
                 });
     }
 

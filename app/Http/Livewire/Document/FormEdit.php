@@ -16,7 +16,6 @@ class FormEdit extends Component implements HasForms
 {
     use InteractsWithForms;
     use WireToast;
-
     public $name = '';
     public $file_path;
     public $document_id;

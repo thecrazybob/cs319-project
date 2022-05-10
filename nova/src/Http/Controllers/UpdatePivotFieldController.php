@@ -11,7 +11,7 @@ class UpdatePivotFieldController extends Controller
     /**
      * List the pivot fields for the given resource and relation.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(ResourceUpdateOrUpdateAttachedRequest $request)
@@ -22,7 +22,7 @@ class UpdatePivotFieldController extends Controller
     /**
      * Synchronize the pivot field for updating.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function sync(ResourceUpdateOrUpdateAttachedRequest $request)
@@ -35,7 +35,7 @@ class UpdatePivotFieldController extends Controller
             )->filter(function ($field) use ($request) {
                 return $request->query('field') === $field->attribute;
             })->each->applyDependsOn($request)
-                ->first()
+            ->first()
         );
     }
 }

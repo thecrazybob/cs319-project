@@ -17,7 +17,7 @@ class DashboardViewResource extends Resource
     /**
      * Construct a new Dashboard Resource.
      *
-     * @param string $name
+     * @param  string  $name
      * @return void
      */
     public function __construct($name)
@@ -28,7 +28,7 @@ class DashboardViewResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param \Laravel\Nova\Http\Requests\DashboardRequest $request
+     * @param  \Laravel\Nova\Http\Requests\DashboardRequest  $request
      * @return array
      */
     public function toArray($request)
@@ -44,7 +44,7 @@ class DashboardViewResource extends Resource
     /**
      * Get authorized dashboard for the request.
      *
-     * @param \Laravel\Nova\Http\Requests\DashboardRequest $request
+     * @param  \Laravel\Nova\Http\Requests\DashboardRequest  $request
      * @return \Laravel\Nova\Dashboard
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException

@@ -11,7 +11,7 @@ class Style extends Asset
      */
     public function url()
     {
-        if (!$this->isRemote()) {
+        if (! $this->isRemote()) {
             return "/nova-api/styles/{$this->name}";
         }
 

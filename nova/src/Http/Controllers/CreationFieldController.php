@@ -12,7 +12,7 @@ class CreationFieldController extends Controller
     /**
      * List the creation fields for the given resource.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -29,14 +29,14 @@ class CreationFieldController extends Controller
     /**
      * Synchronize the field for creation view.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function sync(ResourceCreateOrAttachRequest $request)
     {
         $resource = $request->has('fromResourceId')
-            ? ReplicateViewResource::make($request->fromResourceId)->newResourceWith($request)
-            : CreateViewResource::make()->newResourceWith($request);
+                        ? ReplicateViewResource::make($request->fromResourceId)->newResourceWith($request)
+                        : CreateViewResource::make()->newResourceWith($request);
 
         return response()->json(
             $resource->creationFields($request)

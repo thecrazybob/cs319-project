@@ -16,12 +16,12 @@ class UpdateAttached extends Page
     /**
      * Create a new page instance.
      *
-     * @param string $resourceName
-     * @param string $resourceId
-     * @param string $relation
-     * @param string $relatedId
-     * @param string|null $viaRelationship
-     * @param string|null $viaPivotId
+     * @param  string  $resourceName
+     * @param  string  $resourceId
+     * @param  string  $relation
+     * @param  string  $relatedId
+     * @param  string|null  $viaRelationship
+     * @param  string|null  $viaPivotId
      * @return void
      */
     public function __construct($resourceName, $resourceId, $relation, $relatedId, $viaRelationship = null, $viaPivotId = null)
@@ -43,16 +43,16 @@ class UpdateAttached extends Page
      */
     public function url()
     {
-        return $this->novaPageUrl . '?' . http_build_query(array_filter([
-                'viaRelationship' => $this->viaRelationship ?? $this->relation,
-                'viaPivotId' => $this->viaPivotId,
-            ]));
+        return $this->novaPageUrl.'?'.http_build_query(array_filter([
+            'viaRelationship' => $this->viaRelationship ?? $this->relation,
+            'viaPivotId' => $this->viaPivotId,
+        ]));
     }
 
     /**
      * Click the update button.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function update(Browser $browser)
@@ -63,7 +63,7 @@ class UpdateAttached extends Page
     /**
      * Click the update and continue editing button.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function updateAndContinueEditing(Browser $browser)
@@ -74,7 +74,7 @@ class UpdateAttached extends Page
     /**
      * Assert that the browser is on the page.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      *
      * @throws \Facebook\WebDriver\Exception\TimeOutException

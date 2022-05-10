@@ -51,9 +51,9 @@ abstract class FieldElement extends Element
     public function hideFromIndex($callback = true)
     {
         $this->showOnIndex = is_callable($callback) ? function () use ($callback) {
-            return !call_user_func_array($callback, func_get_args());
+            return ! call_user_func_array($callback, func_get_args());
         }
-            : !$callback;
+        : ! $callback;
 
         return $this;
     }
@@ -67,9 +67,9 @@ abstract class FieldElement extends Element
     public function hideFromDetail($callback = true)
     {
         $this->showOnDetail = is_callable($callback) ? function () use ($callback) {
-            return !call_user_func_array($callback, func_get_args());
+            return ! call_user_func_array($callback, func_get_args());
         }
-            : !$callback;
+        : ! $callback;
 
         return $this;
     }
@@ -83,9 +83,9 @@ abstract class FieldElement extends Element
     public function hideWhenCreating($callback = true)
     {
         $this->showOnCreation = is_callable($callback) ? function () use ($callback) {
-            return !call_user_func_array($callback, func_get_args());
+            return ! call_user_func_array($callback, func_get_args());
         }
-            : !$callback;
+        : ! $callback;
 
         return $this;
     }
@@ -99,9 +99,9 @@ abstract class FieldElement extends Element
     public function hideWhenUpdating($callback = true)
     {
         $this->showOnUpdate = is_callable($callback) ? function () use ($callback) {
-            return !call_user_func_array($callback, func_get_args());
+            return ! call_user_func_array($callback, func_get_args());
         }
-            : !$callback;
+        : ! $callback;
 
         return $this;
     }
@@ -161,8 +161,8 @@ abstract class FieldElement extends Element
     /**
      * Check for showing when updating.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param mixed $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  mixed  $resource
      * @return bool
      */
     public function isShownOnUpdate(NovaRequest $request, $resource): bool
@@ -177,8 +177,8 @@ abstract class FieldElement extends Element
     /**
      * Check showing on index.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param mixed $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  mixed  $resource
      * @return bool
      */
     public function isShownOnIndex(NovaRequest $request, $resource): bool
@@ -193,8 +193,8 @@ abstract class FieldElement extends Element
     /**
      * Determine if the field is to be shown on the detail view.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param mixed $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  mixed  $resource
      * @return bool
      */
     public function isShownOnDetail(NovaRequest $request, $resource): bool
@@ -209,8 +209,8 @@ abstract class FieldElement extends Element
     /**
      * Determine if the field is to be shown in the preview modal.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param mixed $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  mixed  $resource
      * @return bool
      */
     public function isShownOnPreview(NovaRequest $request, $resource): bool
@@ -221,7 +221,7 @@ abstract class FieldElement extends Element
     /**
      * Check for showing when creating.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return bool
      */
     public function isShownOnCreation(NovaRequest $request): bool

@@ -27,8 +27,8 @@ class NotExactlyAttached implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Model|null $model
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model|null  $model
      * @return void
      */
     public function __construct(NovaRequest $request, $model)
@@ -40,8 +40,8 @@ class NotExactlyAttached implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed $value
+     * @param  string  $attribute
+     * @param  mixed  $value
      * @return bool
      */
     public function passes($attribute, $value)
@@ -51,7 +51,7 @@ class NotExactlyAttached implements Rule
 
         $pivot = $relation->newPivot();
         $query = $relation->withoutGlobalScopes()
-            ->where($relation->getQualifiedRelatedPivotKeyName(), '=', $this->request->input($this->request->relatedResource));
+                        ->where($relation->getQualifiedRelatedPivotKeyName(), '=', $this->request->input($this->request->relatedResource));
 
         $resource = Nova::newResourceFromModel($this->model);
 

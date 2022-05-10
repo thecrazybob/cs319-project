@@ -11,7 +11,7 @@ class LensController extends Controller
     /**
      * List the lenses for the given resource.
      *
-     * @param \Laravel\Nova\Http\Requests\LensRequest $request
+     * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(LensRequest $request)
@@ -24,7 +24,7 @@ class LensController extends Controller
     /**
      * Get the specified lens and its resources.
      *
-     * @param \Laravel\Nova\Http\Requests\LensRequest $request
+     * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(LensRequest $request)

@@ -9,21 +9,21 @@ trait ResolvesFilters
     /**
      * Get the filters that are available for the given request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection<int, \Laravel\Nova\Filters\Filter>
      */
     public function availableFilters(NovaRequest $request)
     {
         return $this->resolveFilters($request)
-            ->concat($this->resolveFiltersFromFields($request))
-            ->filter->authorizedToSee($request)
-            ->values();
+                    ->concat($this->resolveFiltersFromFields($request))
+                    ->filter->authorizedToSee($request)
+                    ->values();
     }
 
     /**
      * Get the filters for the given request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection<int, \Laravel\Nova\Filters\Filter>
      */
     public function resolveFilters(NovaRequest $request)
@@ -34,7 +34,7 @@ trait ResolvesFilters
     /**
      * Get the filters from filterable fields for the given request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Support\Collection
      */
     public function resolveFiltersFromFields(NovaRequest $request)
@@ -49,7 +49,7 @@ trait ResolvesFilters
     /**
      * Get the filters available on the entity.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)

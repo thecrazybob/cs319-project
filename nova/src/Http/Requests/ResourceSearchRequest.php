@@ -19,17 +19,17 @@ class ResourceSearchRequest extends NovaRequest
         $model = $this->model();
 
         $limit = $resource::usesScout()
-            ? $resource::$scoutSearchResults
-            : $resource::$relatableSearchResults;
+                    ? $resource::$scoutSearchResults
+                    : $resource::$relatableSearchResults;
 
         $query = app()->make(QueryBuilder::class, [$resource]);
 
         $this->first === 'true'
-            ? $query->whereKey($model->newQueryWithoutScopes(), $this->current)
-            : $query->search(
-            $this, $this->newQuery(), $this->search,
-            $this->filters()->all(), $this->orderings(), $this->trashed()
-        );
+                        ? $query->whereKey($model->newQueryWithoutScopes(), $this->current)
+                        : $query->search(
+                                $this, $this->newQuery(), $this->search,
+                                $this->filters()->all(), $this->orderings(), $this->trashed()
+                          );
 
         return $query->take($limit)->get();
     }

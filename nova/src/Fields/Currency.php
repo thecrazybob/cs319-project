@@ -62,8 +62,8 @@ class Currency extends Number
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|\Closure|callable|object|null $attribute
+     * @param  string  $name
+     * @param  string|\Closure|callable|object|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
@@ -78,7 +78,7 @@ class Currency extends Number
             ->fillUsing(function ($request, $model, $attribute) {
                 $value = $request->$attribute;
 
-                if ($this->minorUnits && !$this->isNullValue($value)) {
+                if ($this->minorUnits && ! $this->isNullValue($value)) {
                     $model->$attribute = $this->toMoneyInstance(
                         $value * (10 ** Currencies::getFractionDigits($this->currency)),
                         $this->currency
@@ -88,10 +88,10 @@ class Currency extends Number
                 }
             })
             ->displayUsing(function ($value) {
-                return !$this->isNullValue($value) ? $this->formatMoney($value) : null;
+                return ! $this->isNullValue($value) ? $this->formatMoney($value) : null;
             })
             ->resolveUsing(function ($value) {
-                if ($this->isNullValue($value) || !$this->minorUnits) {
+                if ($this->isNullValue($value) || ! $this->minorUnits) {
                     return $value;
                 }
 
@@ -102,8 +102,8 @@ class Currency extends Number
     /**
      * Convert the value to a Money instance.
      *
-     * @param mixed $value
-     * @param null|string $currency
+     * @param  mixed  $value
+     * @param  null|string  $currency
      * @return \Brick\Money\Money
      */
     public function toMoneyInstance($value, $currency = null)
@@ -119,9 +119,9 @@ class Currency extends Number
     /**
      * Format the field's value into Money format.
      *
-     * @param mixed $value
-     * @param null|string $currency
-     * @param null|string $locale
+     * @param  mixed  $value
+     * @param  null|string  $currency
+     * @param  null|string  $locale
      * @return string
      */
     public function formatMoney($value, $currency = null, $locale = null)
@@ -145,7 +145,7 @@ class Currency extends Number
     /**
      * Set the currency code for the field.
      *
-     * @param string $currency
+     * @param  string  $currency
      * @return $this
      */
     public function currency($currency)
@@ -160,7 +160,7 @@ class Currency extends Number
     /**
      * Set the field locale.
      *
-     * @param string $locale
+     * @param  string  $locale
      * @return $this
      */
     public function locale($locale)
@@ -173,7 +173,7 @@ class Currency extends Number
     /**
      * Set the symbol used by the field.
      *
-     * @param string $symbol
+     * @param  string  $symbol
      * @return $this
      */
     public function symbol($symbol)
@@ -224,7 +224,7 @@ class Currency extends Number
     /**
      * Set the context used to create the Money instance.
      *
-     * @param \Brick\Money\Context $context
+     * @param  \Brick\Money\Context  $context
      * @return $this
      */
     public function context(Context $context)
@@ -237,7 +237,7 @@ class Currency extends Number
     /**
      * Check value for null value.
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return bool
      */
     protected function isNullValue($value)
@@ -256,7 +256,7 @@ class Currency extends Number
      */
     protected function getStepValue()
     {
-        return (string)0.1 ** Currencies::getFractionDigits($this->currency);
+        return (string) 0.1 ** Currencies::getFractionDigits($this->currency);
     }
 
     /**

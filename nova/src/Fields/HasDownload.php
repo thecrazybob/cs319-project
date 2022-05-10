@@ -35,7 +35,7 @@ trait HasDownload
     /**
      * Specify the callback that should be used to create a download HTTP response.
      *
-     * @param callable(\Laravel\Nova\Http\Requests\NovaRequest, \Laravel\Nova\Resource, ?string, ?string):mixed $downloadResponseCallback
+     * @param  callable(\Laravel\Nova\Http\Requests\NovaRequest, \Laravel\Nova\Resource, ?string, ?string):mixed  $downloadResponseCallback
      * @return $this
      */
     public function download(callable $downloadResponseCallback)
@@ -48,8 +48,8 @@ trait HasDownload
     /**
      * Create an HTTP response to download the underlying field.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Laravel\Nova\Resource $resource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
      * @return \Illuminate\Http\Response
      */
     public function toDownloadResponse(NovaRequest $request, $resource)

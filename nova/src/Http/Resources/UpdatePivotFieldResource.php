@@ -9,7 +9,7 @@ class UpdatePivotFieldResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
      * @return array
      */
     public function toArray($request)
@@ -28,7 +28,7 @@ class UpdatePivotFieldResource extends Resource
     /**
      * Get current resource for the request.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
      * @return \Laravel\Nova\Resource
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -61,7 +61,7 @@ class UpdatePivotFieldResource extends Resource
     /**
      * Get resource for the request.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
      * @return \Laravel\Nova\Resource
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException

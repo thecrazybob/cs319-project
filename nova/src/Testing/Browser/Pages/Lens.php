@@ -11,8 +11,8 @@ class Lens extends Index
     /**
      * Create a new page instance.
      *
-     * @param string $resourceName
-     * @param string $lens
+     * @param  string  $resourceName
+     * @param  string  $lens
      * @return void
      */
     public function __construct($resourceName, $lens)
@@ -26,7 +26,7 @@ class Lens extends Index
     /**
      * Assert that the browser is on the page.
      *
-     * @param \Laravel\Dusk\Browser $browser
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
     public function assert(Browser $browser)
@@ -42,7 +42,7 @@ class Lens extends Index
     public function elements()
     {
         return [
-            '@nova-resource-lens' => '#app [data-testid="content"] [dusk="' . $this->lens . '-lens-component"]',
+            '@nova-resource-lens' => '#app [data-testid="content"] [dusk="'.$this->lens.'-lens-component"]',
         ];
     }
 }

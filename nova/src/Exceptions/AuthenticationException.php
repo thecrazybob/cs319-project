@@ -11,7 +11,7 @@ class AuthenticationException extends BaseAuthenticationException
     /**
      * Render the exception.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function render($request)
@@ -45,7 +45,7 @@ class AuthenticationException extends BaseAuthenticationException
     /**
      * Redirect request for Inertia.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function redirectForInertia($request)
@@ -53,9 +53,9 @@ class AuthenticationException extends BaseAuthenticationException
         tap(redirect(), function ($redirect) use ($request) {
             $url = $redirect->getUrlGenerator();
 
-            $intended = $request->method() === 'GET' && $request->route() && !$request->expectsJson()
-                ? $url->full()
-                : $url->previous();
+            $intended = $request->method() === 'GET' && $request->route() && ! $request->expectsJson()
+                    ? $url->full()
+                    : $url->previous();
 
             if ($intended) {
                 $redirect->setIntendedUrl($intended);

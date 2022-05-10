@@ -60,9 +60,9 @@ class MenuSection implements JsonSerializable
     /**
      * Construct a new Menu Section instance.
      *
-     * @param string $name
-     * @param array|iterable $items
-     * @param string $icon
+     * @param  string  $name
+     * @param  array|iterable  $items
+     * @param  string  $icon
      */
     public function __construct($name, $items = [], $icon = 'collection')
     {
@@ -74,7 +74,7 @@ class MenuSection implements JsonSerializable
     /**
      * Create a menu from dashboard class.
      *
-     * @param Dashboard $dashboard
+     * @param  Dashboard  $dashboard
      * @return static
      */
     public static function dashboard($dashboard)
@@ -82,14 +82,14 @@ class MenuSection implements JsonSerializable
         return with(new $dashboard(), function ($dashboard) {
             return static::make(
                 $dashboard->label()
-            )->path('/dashboards/' . $dashboard->uriKey());
+            )->path('/dashboards/'.$dashboard->uriKey());
         });
     }
 
     /**
      * * Set path to the menu. *.
      *
-     * @param string $path
+     * @param  string  $path
      * @return $this
      */
     public function path($path)
@@ -116,7 +116,7 @@ class MenuSection implements JsonSerializable
     /**
      * Set icon to the menu.
      *
-     * @param string $icon
+     * @param  string  $icon
      * @return $this
      */
     public function icon($icon)
@@ -133,16 +133,16 @@ class MenuSection implements JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        $url = !empty($this->path) ? URL::make($this->path) : null;
+        $url = ! empty($this->path) ? URL::make($this->path) : null;
 
         return [
-            'key' => md5($this->name . '-' . $this->path),
+            'key' => md5($this->name.'-'.$this->path),
             'name' => $this->name,
             'component' => 'menu-section',
             'items' => $this->items,
             'collapsable' => $this->collapsable,
             'icon' => $this->icon,
-            'path' => (string)$url,
+            'path' => (string) $url,
             'active' => optional($url)->active() ?? false,
         ];
     }

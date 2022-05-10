@@ -52,9 +52,9 @@ class DispatchAction
     /**
      * Create a new action dispatcher instance.
      *
-     * @param \Laravel\Nova\Http\Requests\ActionRequest $request
-     * @param \Laravel\Nova\Actions\Action $action
-     * @param \Laravel\Nova\Fields\ActionFields $fields
+     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
+     * @param  \Laravel\Nova\Actions\Action  $action
+     * @param  \Laravel\Nova\Fields\ActionFields  $fields
      * @return void
      */
     public function __construct(ActionRequest $request, Action $action, ActionFields $fields)
@@ -71,8 +71,8 @@ class DispatchAction
     /**
      * Configure the batch job for the action.
      *
-     * @param \Laravel\Nova\Actions\Action $action
-     * @param \Laravel\Nova\Fields\ActionFields $fields
+     * @param  \Laravel\Nova\Actions\Action  $action
+     * @param  \Laravel\Nova\Fields\ActionFields  $fields
      * @return void
      */
     protected function configureBatchJob(Action $action, ActionFields $fields)
@@ -80,11 +80,11 @@ class DispatchAction
         $this->batchJob = tap(Bus::batch([]), function (PendingBatch $batch) use ($action, $fields) {
             $batch->name($action->name());
 
-            if (!is_null($connection = $this->connection())) {
+            if (! is_null($connection = $this->connection())) {
                 $batch->onConnection($connection);
             }
 
-            if (!is_null($queue = $this->queue())) {
+            if (! is_null($queue = $this->queue())) {
                 $batch->onQueue($queue);
             }
 
@@ -105,7 +105,7 @@ class DispatchAction
             return tap(new Response(), function ($response) {
                 with($response, $this->dispatchableCallback);
 
-                if (!is_null($this->batchJob)) {
+                if (! is_null($this->batchJob)) {
                     $this->batchJob->dispatch();
                 }
 
@@ -119,7 +119,7 @@ class DispatchAction
     /**
      * Dispatch the given action.
      *
-     * @param string $method
+     * @param  string  $method
      * @return $this
      *
      * @throws \Throwable
@@ -144,9 +144,9 @@ class DispatchAction
     /**
      * Dispatch the given action.
      *
-     * @param \Laravel\Nova\Http\Requests\ActionRequest $request
-     * @param string $method
-     * @param int $chunkCount
+     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
+     * @param  string  $method
+     * @param  int  $chunkCount
      * @return $this
      *
      * @throws \Throwable
@@ -168,14 +168,14 @@ class DispatchAction
 
             $results = $request->chunks(
                 $chunkCount, function ($models) use ($request, $method, &$wasExecuted) {
-                $models = $models->filterForExecution($request);
+                    $models = $models->filterForExecution($request);
 
-                if (count($models) > 0) {
-                    $wasExecuted = true;
+                    if (count($models) > 0) {
+                        $wasExecuted = true;
+                    }
+
+                    return $this->forModels($method, $models);
                 }
-
-                return $this->forModels($method, $models);
-            }
             );
 
             return $wasExecuted ? $response->successful($results) : $response->failed();
@@ -187,8 +187,8 @@ class DispatchAction
     /**
      * Dispatch the given action using custom handler.
      *
-     * @param \Laravel\Nova\Http\Requests\ActionRequest $request
-     * @param \Closure(\Laravel\Nova\Http\Requests\ActionRequest, \Laravel\Nova\Actions\Response, \Laravel\Nova\Fields\ActionFields):\Laravel\Nova\Actions\Response  $callback
+     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
+     * @param  \Closure(\Laravel\Nova\Http\Requests\ActionRequest, \Laravel\Nova\Actions\Response, \Laravel\Nova\Fields\ActionFields):\Laravel\Nova\Actions\Response  $callback
      * @return $this
      */
     public function handleUsing(ActionRequest $request, $callback)
@@ -203,8 +203,8 @@ class DispatchAction
     /**
      * Dispatch the given action.
      *
-     * @param string $method
-     * @param \Illuminate\Support\Collection $models
+     * @param  string  $method
+     * @param  \Illuminate\Support\Collection  $models
      * @return mixed|void
      *
      * @throws \Throwable
@@ -227,8 +227,8 @@ class DispatchAction
     /**
      * Dispatch the given action synchronously for a model collection.
      *
-     * @param string $method
-     * @param \Illuminate\Support\Collection $models
+     * @param  string  $method
+     * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      *
      * @throws \Throwable
@@ -237,7 +237,7 @@ class DispatchAction
     {
         return Transaction::run(function ($batchId) use ($method, $models) {
             Nova::usingActionEvent(function ($actionEvent) use ($batchId, $models) {
-                if (!$this->action->withoutActionEvents) {
+                if (! $this->action->withoutActionEvents) {
                     $actionEvent->createForModels(
                         $this->request, $this->action, $batchId, $models
                     );
@@ -255,8 +255,8 @@ class DispatchAction
     /**
      * Dispatch the given action to the queue for a model collection.
      *
-     * @param string $method
-     * @param \Illuminate\Support\Collection $models
+     * @param  string  $method
+     * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      *
      * @throws \Throwable
@@ -265,7 +265,7 @@ class DispatchAction
     {
         return Transaction::run(function ($batchId) use ($method, $models) {
             Nova::usingActionEvent(function ($actionEvent) use ($batchId, $models) {
-                if (!$this->action->withoutActionEvents) {
+                if (! $this->action->withoutActionEvents) {
                     $actionEvent->createForModels(
                         $this->request, $this->action, $batchId, $models, 'waiting'
                     );

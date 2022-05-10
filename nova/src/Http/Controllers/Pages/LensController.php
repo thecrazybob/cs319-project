@@ -12,7 +12,7 @@ class LensController extends Controller
     /**
      * Show Resource Lens page using Inertia.
      *
-     * @param \Laravel\Nova\Http\Requests\LensRequest $request
+     * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
      * @return \Inertia\Response
      */
     public function __invoke(LensRequest $request)

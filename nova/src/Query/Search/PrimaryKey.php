@@ -14,8 +14,8 @@ class PrimaryKey extends Column
     /**
      * Construct a new search.
      *
-     * @param \Illuminate\Database\Query\Expression|string $column
-     * @param int $maxPrimaryKeySize
+     * @param  \Illuminate\Database\Query\Expression|string  $column
+     * @param  int  $maxPrimaryKeySize
      * @return void
      */
     public function __construct($column, $maxPrimaryKeySize = PHP_INT_MAX)
@@ -27,10 +27,10 @@ class PrimaryKey extends Column
     /**
      * Apply the search.
      *
-     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $query
-     * @param string|int $search
-     * @param string $connectionType
-     * @param string $whereOperator
+     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation  $query
+     * @param  string|int  $search
+     * @param  string  $connectionType
+     * @param  string  $whereOperator
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function __invoke($query, $search, string $connectionType, string $whereOperator = 'orWhere')
@@ -38,10 +38,10 @@ class PrimaryKey extends Column
         $model = $query->getModel();
 
         $canSearchPrimaryKey = ctype_digit($search) &&
-            in_array($model->getKeyType(), ['int', 'integer']) &&
-            ($connectionType != 'pgsql' || $search <= $this->maxPrimaryKeySize);
+                               in_array($model->getKeyType(), ['int', 'integer']) &&
+                               ($connectionType != 'pgsql' || $search <= $this->maxPrimaryKeySize);
 
-        if (!$canSearchPrimaryKey) {
+        if (! $canSearchPrimaryKey) {
             return parent::__invoke($query, $search, $connectionType, $whereOperator);
         }
 

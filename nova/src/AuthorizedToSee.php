@@ -17,7 +17,7 @@ trait AuthorizedToSee
     /**
      * Determine if the filter or action should be available for the given request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public function authorizedToSee(Request $request)
@@ -28,7 +28,7 @@ trait AuthorizedToSee
     /**
      * Set the callback to be run to authorize viewing the filter or action.
      *
-     * @param \Closure(\Illuminate\Http\Request):bool  $callback
+     * @param  \Closure(\Illuminate\Http\Request):bool  $callback
      * @return $this
      */
     public function canSee(Closure $callback)

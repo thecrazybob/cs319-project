@@ -29,12 +29,12 @@ trait InteractsWithActionEvent
     /**
      * Invoke the callback with an instance of the configured ActionEvent if it is available.
      *
-     * @param callable(\Laravel\Nova\Actions\ActionEvent):mixed $callback
+     * @param  callable(\Laravel\Nova\Actions\ActionEvent):mixed  $callback
      * @return mixed
      */
     public static function usingActionEvent(callable $callback)
     {
-        if (!is_null(config('nova.actions.resource'))) {
+        if (! is_null(config('nova.actions.resource'))) {
             return call_user_func($callback, static::actionEvent());
         }
     }

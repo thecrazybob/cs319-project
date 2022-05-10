@@ -30,26 +30,26 @@ class AssetCommand extends ComponentGeneratorCommand
      */
     public function handle()
     {
-        if (!$this->hasValidNameArgument()) {
+        if (! $this->hasValidNameArgument()) {
             return;
         }
 
         (new Filesystem)->copyDirectory(
-            __DIR__ . '/asset-stubs',
+            __DIR__.'/asset-stubs',
             $this->componentPath()
         );
 
         // AssetServiceProvider.php replacements...
-        $this->replace('{{ namespace }}', $this->componentNamespace(), $this->componentPath() . '/src/AssetServiceProvider.stub');
-        $this->replace('{{ component }}', $this->componentName(), $this->componentPath() . '/src/AssetServiceProvider.stub');
-        $this->replace('{{ name }}', $this->componentName(), $this->componentPath() . '/src/AssetServiceProvider.stub');
+        $this->replace('{{ namespace }}', $this->componentNamespace(), $this->componentPath().'/src/AssetServiceProvider.stub');
+        $this->replace('{{ component }}', $this->componentName(), $this->componentPath().'/src/AssetServiceProvider.stub');
+        $this->replace('{{ name }}', $this->componentName(), $this->componentPath().'/src/AssetServiceProvider.stub');
 
         // asset.js replacements...
-        $this->replace('{{ class }}', $this->componentClass(), $this->componentPath() . '/resources/js/asset.js');
-        $this->replace('{{ name }}', $this->componentName(), $this->componentPath() . '/resources/js/asset.js');
+        $this->replace('{{ class }}', $this->componentClass(), $this->componentPath().'/resources/js/asset.js');
+        $this->replace('{{ name }}', $this->componentName(), $this->componentPath().'/resources/js/asset.js');
 
         // webpack.mix.js replacements...
-        $this->replace('{{ name }}', $this->component(), $this->componentPath() . '/webpack.mix.js');
+        $this->replace('{{ name }}', $this->component(), $this->componentPath().'/webpack.mix.js');
 
         // Asset composer.json replacements...
         $this->prepareComposerReplacements();
@@ -69,7 +69,7 @@ class AssetCommand extends ComponentGeneratorCommand
     protected function stubsToRename()
     {
         return [
-            $this->componentPath() . '/src/AssetServiceProvider.stub',
+            $this->componentPath().'/src/AssetServiceProvider.stub',
         ];
     }
 

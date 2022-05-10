@@ -12,9 +12,9 @@ class Authenticate extends BaseAuthenticationMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure(\Illuminate\Http\Request):mixed  $next
-     * @param string[] ...$guards
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure(\Illuminate\Http\Request):mixed  $next
+     * @param  string[]  ...$guards
      * @return mixed
      *
      * @throws \Illuminate\Auth\AuthenticationException
@@ -24,7 +24,7 @@ class Authenticate extends BaseAuthenticationMiddleware
         try {
             $guard = config('nova.guard');
 
-            if (!empty($guard)) {
+            if (! empty($guard)) {
                 $guards[] = $guard;
             }
 

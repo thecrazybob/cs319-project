@@ -38,23 +38,23 @@ class NovaServiceProvider extends ServiceProvider
     protected function registerPublishing()
     {
         $this->publishes([
-            __DIR__ . '/Console/stubs/NovaServiceProvider.stub' => app_path('Providers/NovaServiceProvider.php'),
+            __DIR__.'/Console/stubs/NovaServiceProvider.stub' => app_path('Providers/NovaServiceProvider.php'),
         ], 'nova-provider');
 
         $this->publishes([
-            __DIR__ . '/../config/nova.php' => config_path('nova.php'),
+            __DIR__.'/../config/nova.php' => config_path('nova.php'),
         ], 'nova-config');
 
         $this->publishes([
-            __DIR__ . '/../public' => public_path('vendor/nova'),
+            __DIR__.'/../public' => public_path('vendor/nova'),
         ], ['nova-assets', 'laravel-assets']);
 
         $this->publishes([
-            __DIR__ . '/../resources/lang' => lang_path('vendor/nova'),
+            __DIR__.'/../resources/lang' => lang_path('vendor/nova'),
         ], 'nova-lang');
 
         $this->publishes([
-            __DIR__ . '/../database/migrations' => database_path('migrations'),
+            __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'nova-migrations');
     }
 
@@ -68,7 +68,7 @@ class NovaServiceProvider extends ServiceProvider
         $this->loadJsonTranslationsFrom(lang_path('vendor/nova'));
 
         if (Nova::runsMigrations()) {
-            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
     }
 
@@ -95,7 +95,7 @@ class NovaServiceProvider extends ServiceProvider
         Nova::serving(function (ServingNova $event) {
             // Load the default Nova translations.
             Nova::translations(
-                lang_path('vendor/nova/' . app()->getLocale() . '.json')
+                lang_path('vendor/nova/'.app()->getLocale().'.json')
             );
 
             Nova::provideToScript([

@@ -27,8 +27,8 @@ class ID extends Field
     /**
      * Create a new field.
      *
-     * @param string|null $name
-     * @param string|null $attribute
+     * @param  string|null  $name
+     * @param  string|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
@@ -40,7 +40,7 @@ class ID extends Field
     /**
      * Create a new, resolved ID field for the given resource.
      *
-     * @param \Laravel\Nova\Resource $resource
+     * @param  \Laravel\Nova\Resource  $resource
      * @return static
      */
     public static function forResource($resource)
@@ -49,13 +49,13 @@ class ID extends Field
 
         $field = transform(
             $resource->availableFieldsOnIndexOrDetail(app(NovaRequest::class))
-                ->whereInstanceOf(self::class)
-                ->first(),
+                    ->whereInstanceOf(self::class)
+                    ->first(),
             function ($field) use ($model) {
                 return tap($field)->resolve($model);
             },
             function () use ($model) {
-                return !is_null($model) && $model->exists ? static::forModel($model) : null;
+                return ! is_null($model) && $model->exists ? static::forModel($model) : null;
             }
         );
 
@@ -65,7 +65,7 @@ class ID extends Field
     /**
      * Create a new, resolved ID field for the given model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return static
      */
     public static function forModel($model)
@@ -84,13 +84,13 @@ class ID extends Field
     /**
      * Resolve the given attribute from the given resource.
      *
-     * @param mixed $resource
-     * @param string $attribute
+     * @param  mixed  $resource
+     * @param  string  $attribute
      * @return mixed
      */
     protected function resolveAttribute($resource, $attribute)
     {
-        if (!is_null($resource)) {
+        if (! is_null($resource)) {
             $pivotValue = isset($resource->pivot) ? optional($resource->pivot)->getKey() : null;
 
             if (is_int($pivotValue) || is_string($pivotValue)) {
@@ -111,7 +111,7 @@ class ID extends Field
     public function asBigInt()
     {
         $this->resolveCallback = function ($id) {
-            return (string)$id;
+            return (string) $id;
         };
 
         return $this;

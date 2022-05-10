@@ -11,8 +11,8 @@ class NovaChannel
     /**
      * Send channel notification.
      *
-     * @param mixed $notifiable
-     * @param \Illuminate\Notifications\Notification $notification
+     * @param  mixed  $notifiable
+     * @param  \Illuminate\Notifications\Notification  $notification
      * @return void
      */
     public function send($notifiable, LaravelNotification $notification)

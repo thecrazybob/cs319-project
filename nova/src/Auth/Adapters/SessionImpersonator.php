@@ -14,9 +14,9 @@ class SessionImpersonator implements ImpersonatesUsers
     /**
      * Start impersonating a user.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Auth\StatefulGuard $guard
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return bool
      */
     public function impersonate(Request $request, StatefulGuard $guard, Authenticatable $user)
@@ -29,8 +29,8 @@ class SessionImpersonator implements ImpersonatesUsers
             $novaGuard = config('nova.guard') ?? config('auth.defaults.guard');
 
             $authGuard = method_exists($guard, 'getName')
-                ? Str::between($guard->getName(), 'login_', '_' . sha1(get_class($guard)))
-                : null;
+                            ? Str::between($guard->getName(), 'login_', '_'.sha1(get_class($guard)))
+                            : null;
 
             if (is_null($authGuard)) {
                 return false;
@@ -51,9 +51,9 @@ class SessionImpersonator implements ImpersonatesUsers
     /**
      * Stop impersonating the currently impersonated user and revert to the original session.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Auth\StatefulGuard $guard
-     * @param string $userModel
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
+     * @param  string  $userModel
      * @return bool
      */
     public function stopImpersonating(Request $request, StatefulGuard $guard, string $userModel)
@@ -76,7 +76,7 @@ class SessionImpersonator implements ImpersonatesUsers
     /**
      * Determine if a user is currently being impersonated.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public function impersonating(Request $request)
@@ -87,7 +87,7 @@ class SessionImpersonator implements ImpersonatesUsers
     /**
      * Remove any impersonation data from the session.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return void
      */
     public function flushImpersonationData(Request $request)

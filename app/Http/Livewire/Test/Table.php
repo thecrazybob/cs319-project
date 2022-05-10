@@ -28,7 +28,7 @@ class Table extends Component implements HasTable
         return [
             TextColumn::make('id'),
             TextColumn::make('doctor_name')
-                ->getStateUsing(fn($record) => User::where('doctor_id', $record->doctor_id)->first()->name),
+                ->getStateUsing(fn ($record) => User::where('doctor_id', $record->doctor_id)->first()->name),
             TextColumn::make('department.name'),
             TextColumn::make('test_type'),
             TextColumn::make('test_date')->date(),
@@ -42,7 +42,7 @@ class Table extends Component implements HasTable
         return [
             IconButtonAction::make('show')
                 ->label('View test')
-                ->url(fn(Test $record): string => route('test.show', $record))
+                ->url(fn (Test $record): string => route('test.show', $record))
                 ->icon('heroicon-o-download'),
         ];
     }
@@ -56,7 +56,7 @@ class Table extends Component implements HasTable
     {
         return 'No tests yet';
     }
-
+    
     public function render()
     {
         return view('livewire.test.table');

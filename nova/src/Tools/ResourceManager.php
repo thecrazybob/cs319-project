@@ -24,7 +24,7 @@ class ResourceManager extends Tool
     /**
      * Build the menu that renders the navigation links for the tool.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function menu(Request $request)
@@ -45,7 +45,7 @@ class ResourceManager extends Tool
     /**
      * Return an ungrouped set of menu items.
      *
-     * @param \Illuminate\Support\Collection $resources
+     * @param  \Illuminate\Support\Collection  $resources
      * @return \Illuminate\Support\Collection
      */
     public function unGroupedMenu($resources)
@@ -58,7 +58,7 @@ class ResourceManager extends Tool
     /**
      * Return a grouped set of menu items.
      *
-     * @param \Illuminate\Support\Collection $resources
+     * @param  \Illuminate\Support\Collection  $resources
      * @return \Illuminate\Support\Collection
      */
     public function groupedMenu($resources)

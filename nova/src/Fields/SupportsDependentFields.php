@@ -16,7 +16,7 @@ trait SupportsDependentFields
     /**
      * Register depends on to a field.
      *
-     * @param string|array<int, string|\Laravel\Nova\Fields\Field> $attributes
+     * @param  string|array<int, string|\Laravel\Nova\Fields\Field>  $attributes
      * @param  (callable(self, \Laravel\Nova\Http\Requests\NovaRequest, \Laravel\Nova\Fields\FormData):void)|class-string  $mixin
      * @return $this
      */

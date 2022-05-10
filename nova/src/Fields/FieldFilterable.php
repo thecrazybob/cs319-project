@@ -33,7 +33,7 @@ trait FieldFilterable
     /**
      * Define filterable attribute.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return string
      */
     protected function filterableAttribute(NovaRequest $request)

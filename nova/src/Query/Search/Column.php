@@ -16,7 +16,7 @@ class Column
     /**
      * Construct a new search.
      *
-     * @param \Illuminate\Database\Query\Expression|string $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      * @return void
      */
     public function __construct($column)
@@ -27,7 +27,7 @@ class Column
     /**
      * Create Column Search.
      *
-     * @param \Illuminate\Database\Query\Expression|string $column
+     * @param  \Illuminate\Database\Query\Expression|string  $column
      * @return mixed
      */
     public static function from($column)
@@ -50,10 +50,10 @@ class Column
     /**
      * Apply the search.
      *
-     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $query
-     * @param string $search
-     * @param string $connectionType
-     * @param string $whereOperator
+     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation  $query
+     * @param  string  $search
+     * @param  string  $connectionType
+     * @param  string  $whereOperator
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function __invoke($query, $search, string $connectionType, string $whereOperator = 'orWhere')
@@ -68,7 +68,7 @@ class Column
     /**
      * Get the column name.
      *
-     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $query
+     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation  $query
      * @return string
      */
     protected function columnName($query)

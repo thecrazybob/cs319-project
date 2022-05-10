@@ -11,8 +11,8 @@ class NotificationReadAllController extends Controller
     /**
      * Mark the given notification as read.
      *
-     * @param \Laravel\Nova\Http\Requests\NotificationRequest $request
-     * @param \Laravel\Nova\Notifications\Notification $notification
+     * @param  \Laravel\Nova\Http\Requests\NotificationRequest  $request
+     * @param  \Laravel\Nova\Notifications\Notification  $notification
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(NotificationRequest $request, Notification $notification)

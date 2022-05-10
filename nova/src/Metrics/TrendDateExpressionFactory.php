@@ -13,10 +13,10 @@ class TrendDateExpressionFactory
     /**
      * Create a new trend expression instance.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $column
-     * @param string $unit
-     * @param string $timezone
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $column
+     * @param  string  $unit
+     * @param  string  $timezone
      * @return \Laravel\Nova\Metrics\TrendDateExpression
      *
      * @throws \InvalidArgumentException

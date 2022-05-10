@@ -11,7 +11,7 @@ class ResourceShowController extends Controller
     /**
      * Display the resource for administration.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceDetailRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceDetailRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(ResourceDetailRequest $request)

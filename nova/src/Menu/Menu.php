@@ -22,7 +22,7 @@ class Menu implements JsonSerializable
     /**
      * Create a new Menu instance.
      *
-     * @param array|iterable $items
+     * @param  array|iterable  $items
      */
     public function __construct($items = [])
     {
@@ -32,7 +32,7 @@ class Menu implements JsonSerializable
     /**
      * Wrap the given menu if not already wrapped.
      *
-     * @param \Laravel\Nova\Menu\Menu|array|iterable $menu
+     * @param  \Laravel\Nova\Menu\Menu|array|iterable  $menu
      * @return \Laravel\Nova\Menu\Menu
      */
     public static function wrap($menu)
@@ -45,7 +45,7 @@ class Menu implements JsonSerializable
     /**
      * Push items into the menu.
      *
-     * @param \Laravel\Nova\Menu\MenuItem|array|iterable $items
+     * @param  \Laravel\Nova\Menu\MenuItem|array|iterable  $items
      * @return $this
      */
     public function push($items = [])
@@ -56,7 +56,7 @@ class Menu implements JsonSerializable
     /**
      * Append items into the menu.
      *
-     * @param \Laravel\Nova\Menu\MenuItem|array|iterable $items
+     * @param  \Laravel\Nova\Menu\MenuItem|array|iterable  $items
      * @return $this
      */
     public function append($items = [])
@@ -69,7 +69,7 @@ class Menu implements JsonSerializable
     /**
      * Prepend items to the menu.
      *
-     * @param \Laravel\Nova\Menu\MenuItem|array|iterable $items
+     * @param  \Laravel\Nova\Menu\MenuItem|array|iterable  $items
      * @return $this
      */
     public function prepend($items = [])

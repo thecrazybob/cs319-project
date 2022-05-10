@@ -68,8 +68,8 @@ class MenuItem implements JsonSerializable
     /**
      * Construct a new Menu Item instance.
      *
-     * @param string $name
-     * @param string|null $path
+     * @param  string  $name
+     * @param  string|null  $path
      */
     public function __construct($name, $path = null)
     {
@@ -80,20 +80,20 @@ class MenuItem implements JsonSerializable
     /**
      * Create a menu from resource class.
      *
-     * @param class-string<resource> $resourceClass
+     * @param  class-string<resource>  $resourceClass
      * @return static
      */
     public static function resource($resourceClass)
     {
         return static::make(
             $resourceClass::label()
-        )->path('/resources/' . $resourceClass::uriKey());
+        )->path('/resources/'.$resourceClass::uriKey());
     }
 
     /**
      * Set menu's path.
      *
-     * @param string $href
+     * @param  string  $href
      * @return $this
      */
     public function path($href)
@@ -106,7 +106,7 @@ class MenuItem implements JsonSerializable
     /**
      * Create a menu from dashboard class.
      *
-     * @param Dashboard $dashboard
+     * @param  Dashboard  $dashboard
      * @return static
      */
     public static function dashboard($dashboard)
@@ -114,7 +114,7 @@ class MenuItem implements JsonSerializable
         return with(new $dashboard, function ($dashboard) {
             return static::make(
                 $dashboard->label(),
-                '/dashboards/' . $dashboard->uriKey()
+                '/dashboards/'.$dashboard->uriKey()
             );
         });
     }
@@ -122,8 +122,8 @@ class MenuItem implements JsonSerializable
     /**
      * Create menu to an internal Nova path.
      *
-     * @param string $name
-     * @param string $path
+     * @param  string  $name
+     * @param  string  $path
      * @return static
      */
     public static function link($name, $path)
@@ -134,8 +134,8 @@ class MenuItem implements JsonSerializable
     /**
      * Create menu to an external URL.
      *
-     * @param string $name
-     * @param string $path
+     * @param  string  $name
+     * @param  string  $path
      * @return static
      */
     public static function externalLink($name, $path)
@@ -158,14 +158,14 @@ class MenuItem implements JsonSerializable
     /**
      * Set menu's method, and optionally data or headers.
      *
-     * @param string $method
-     * @param array<string, string>|null $data
-     * @param array<string, string>|null $headers
+     * @param  string  $method
+     * @param  array<string, string>|null  $data
+     * @param  array<string, string>|null  $headers
      * @return $this
      */
     public function method($method, $data = null, $headers = null)
     {
-        if (!in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
+        if (! in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
             throw new InvalidArgumentException('Only supports GET, POST, PUT, PATCH or DELETE method');
         }
 
@@ -178,7 +178,7 @@ class MenuItem implements JsonSerializable
     /**
      * Set menu's headers.
      *
-     * @param array<string, string>|null $headers
+     * @param  array<string, string>|null  $headers
      * @return $this
      */
     public function headers($headers = null)
@@ -191,7 +191,7 @@ class MenuItem implements JsonSerializable
     /**
      * Set menu's data.
      *
-     * @param array<string, string>|null $data
+     * @param  array<string, string>|null  $data
      * @return $this
      */
     public function data($data = null)
@@ -204,7 +204,7 @@ class MenuItem implements JsonSerializable
     /**
      * Set menu's name.
      *
-     * @param string $name
+     * @param  string  $name
      * @return $this
      */
     public function name($name)
@@ -226,7 +226,7 @@ class MenuItem implements JsonSerializable
         return [
             'name' => $this->name,
             'component' => $this->component,
-            'path' => (string)$url,
+            'path' => (string) $url,
             'external' => $this->external,
             'method' => $this->method,
             'data' => $this->data,

@@ -41,7 +41,7 @@ trait DeterminesIfCreateRelationCanBeShown
     /**
      * Determine if Nova should show the edit pivot relation button.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return bool
      */
     public function createRelationShouldBeShown(NovaRequest $request)

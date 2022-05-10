@@ -33,7 +33,7 @@ class PartitionResult implements JsonSerializable
     /**
      * Create a new partition result instance.
      *
-     * @param array<string, int|float> $value
+     * @param  array<string, int|float>  $value
      * @return void
      */
     public function __construct(array $value)
@@ -45,7 +45,7 @@ class PartitionResult implements JsonSerializable
     /**
      * Format the labels for the partition result.
      *
-     * @param \Closure(string):string  $callback
+     * @param  \Closure(string):string  $callback
      * @return $this
      */
     public function label(Closure $callback)
@@ -60,7 +60,7 @@ class PartitionResult implements JsonSerializable
     /**
      * Set the custom label colors.
      *
-     * @param array<string, string> $colors
+     * @param  array<string, string>  $colors
      * @return $this
      */
     public function colors(array $colors)
@@ -90,7 +90,7 @@ class PartitionResult implements JsonSerializable
                     'value' => $value,
                     'percentage' => $total > 0 ? round(($value / $total) * 100, $this->roundingPrecision, $this->roundingMode) : 0,
                 ], function ($value) {
-                    return !is_null($value);
+                    return ! is_null($value);
                 });
             })->values()->all(),
         ];

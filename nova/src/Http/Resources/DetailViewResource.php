@@ -11,7 +11,7 @@ class DetailViewResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceDetailRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceDetailRequest  $request
      * @return array
      */
     public function toArray($request)
@@ -22,12 +22,12 @@ class DetailViewResource extends Resource
             $detail['fields'] = collect($detail['fields'])
                 ->when($request->viaResource, function ($fields) use ($request) {
                     return $fields->reject(function ($field) use ($request) {
-                        if (!$field instanceof RelatableField) {
+                        if (! $field instanceof RelatableField) {
                             return false;
                         }
 
                         return $request->viaResource === $field->resourceName
-                            || in_array($request->relationshipType, ['hasOne']);
+                                || in_array($request->relationshipType, ['hasOne']);
                     });
                 })
                 ->values()->all();
@@ -36,7 +36,7 @@ class DetailViewResource extends Resource
         });
 
         return [
-            'title' => (string)$resource->title(),
+            'title' => (string) $resource->title(),
             'panels' => $resource->availablePanelsForDetail($request, $resource, FieldCollection::make($payload['fields'])),
             'resource' => $payload,
         ];
@@ -45,7 +45,7 @@ class DetailViewResource extends Resource
     /**
      * Get authorized resource for the request.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceDetailRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceDetailRequest  $request
      * @return \Laravel\Nova\Resource
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException

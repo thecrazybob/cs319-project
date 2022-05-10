@@ -21,8 +21,8 @@ class URL extends Text
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|\Closure|callable|object|null $attribute
+     * @param  string  $name
+     * @param  string|\Closure|callable|object|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
@@ -36,7 +36,7 @@ class URL extends Text
     /**
      * Define the callback that should be used to display the field's value.
      *
-     * @param callable(mixed, mixed, string):mixed $displayCallback
+     * @param  callable(mixed, mixed, string):mixed  $displayCallback
      * @return $this
      */
     public function displayUsing(callable $displayCallback)
@@ -49,8 +49,8 @@ class URL extends Text
     /**
      * Resolve the field's value.
      *
-     * @param mixed $resource
-     * @param string|null $attribute
+     * @param  mixed  $resource
+     * @param  string|null  $attribute
      * @return void
      */
     public function resolve($resource, $attribute = null)
@@ -63,8 +63,8 @@ class URL extends Text
     /**
      * Resolve the field's value for display.
      *
-     * @param mixed $resource
-     * @param string|null $attribute
+     * @param  mixed  $resource
+     * @param  string|null  $attribute
      * @return void
      */
     public function resolveForDisplay($resource, $attribute = null)
@@ -73,7 +73,7 @@ class URL extends Text
 
         $attribute = $attribute ?? $this->attribute;
 
-        if (!$this->displayCallback) {
+        if (! $this->displayCallback) {
             $this->resolve($resource, $attribute);
         } elseif (is_callable($this->displayCallback)) {
             if ($attribute === 'ComputedField') {

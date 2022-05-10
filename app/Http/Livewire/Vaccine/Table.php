@@ -40,15 +40,15 @@ class Table extends Component implements HasTable
         return [
             IconButtonAction::make('edit')
                 ->label('Edit vaccine')
-                ->url(fn(Vaccine $record): string => route('vaccine.edit', $record))
+                ->url(fn (Vaccine $record): string => route('vaccine.edit', $record))
                 ->icon('heroicon-o-pencil'),
             IconButtonAction::make('show')
                 ->label('View vaccine')
-                ->url(fn(Vaccine $record): string => route('vaccine.show', $record))
+                ->url(fn (Vaccine $record): string => route('vaccine.show', $record))
                 ->icon('heroicon-o-download'),
             IconButtonAction::make('destroy')
                 ->label('Delete vaccine')
-                ->action(fn(Vaccine $record) => $record->delete() && $record->file->delete())
+                ->action(fn (Vaccine $record) => $record->delete() && $record->file->delete())
                 ->icon('heroicon-o-trash'),
         ];
     }

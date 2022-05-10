@@ -51,7 +51,7 @@ class Builder implements QueryBuilder
     /**
      * Construct a new query builder for a resource.
      *
-     * @param class-string<\Laravel\Nova\Resource> $resourceClass
+     * @param  class-string<\Laravel\Nova\Resource>  $resourceClass
      * @return void
      */
     public function __construct($resourceClass)
@@ -62,8 +62,8 @@ class Builder implements QueryBuilder
     /**
      * Build a "whereKey" query for the given resource.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $key
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $key
      * @return $this
      */
     public function whereKey($query, $key)
@@ -80,21 +80,21 @@ class Builder implements QueryBuilder
     /**
      * Build a "search" query for the given resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string|null $search
-     * @param array<int, \Laravel\Nova\Query\ApplyFilter> $filters
-     * @param array<string, string> $orderings
-     * @param string $withTrashed
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string|null  $search
+     * @param  array<int, \Laravel\Nova\Query\ApplyFilter>  $filters
+     * @param  array<string, string>  $orderings
+     * @param  string  $withTrashed
      * @return $this
      */
     public function search(NovaRequest $request, $query, $search = null,
-                           array       $filters = [], array $orderings = [],
-                                       $withTrashed = TrashedStatus::DEFAULT)
+                                      array $filters = [], array $orderings = [],
+                                      $withTrashed = TrashedStatus::DEFAULT)
     {
         $this->setOriginalQueryBuilder($query);
 
-        $hasSearchKeyword = !empty(trim($search ?? ''));
+        $hasSearchKeyword = ! empty(trim($search ?? ''));
         $hasOrderings = collect($orderings)->filter()->isNotEmpty();
 
         if ($this->resourceClass::usesScout()) {
@@ -103,14 +103,14 @@ class Builder implements QueryBuilder
                 $search = '';
             }
 
-            if (!$hasSearchKeyword && !$hasOrderings) {
+            if (! $hasSearchKeyword && ! $hasOrderings) {
                 $this->tap(function ($query) {
                     $query->latest($query->getModel()->getQualifiedKeyName());
                 });
             }
         }
 
-        if (!isset($this->queryBuilder)) {
+        if (! isset($this->queryBuilder)) {
             $this->queryBuilder = $query;
         }
 
@@ -126,7 +126,7 @@ class Builder implements QueryBuilder
     /**
      * Pass the query to a given callback.
      *
-     * @param callable(\Illuminate\Database\Eloquent\Builder):void $callback
+     * @param  callable(\Illuminate\Database\Eloquent\Builder):void  $callback
      * @return $this
      */
     public function tap($callback)
@@ -139,7 +139,7 @@ class Builder implements QueryBuilder
     /**
      * Set the "take" directly to Scout or Eloquent builder.
      *
-     * @param int $limit
+     * @param  int  $limit
      * @return $this
      */
     public function take($limit)
@@ -152,7 +152,7 @@ class Builder implements QueryBuilder
     /**
      * Defer setting a "limit" using query callback and only executed via Eloquent builder.
      *
-     * @param int $limit
+     * @param  int  $limit
      * @return $this
      */
     public function limit($limit)
@@ -175,17 +175,17 @@ class Builder implements QueryBuilder
     /**
      * Get a lazy collection for the given query by chunks of the given size.
      *
-     * @param int $chunkSize
+     * @param  int  $chunkSize
      * @return \Illuminate\Support\LazyCollection
      */
     public function lazy($chunkSize = 1000)
     {
-        if (!method_exists($this->queryBuilder, 'lazy')) {
+        if (! method_exists($this->queryBuilder, 'lazy')) {
             return $this->cursor();
         }
 
         return $this->applyQueryCallbacks($this->queryBuilder)
-            ->lazy($chunkSize);
+                    ->lazy($chunkSize);
     }
 
     /**
@@ -212,14 +212,14 @@ class Builder implements QueryBuilder
     /**
      * Get the paginated results of the query.
      *
-     * @param int $perPage
+     * @param  int  $perPage
      * @return array{0: \Illuminate\Contracts\Pagination\Paginator, 1: int|null, 2: bool}
      */
     public function paginate($perPage)
     {
         $queryBuilder = $this->applyQueryCallbacks($this->queryBuilder);
 
-        if (!$queryBuilder instanceof ScoutBuilder) {
+        if (! $queryBuilder instanceof ScoutBuilder) {
             return [
                 $queryBuilder->simplePaginate($perPage),
                 $this->getCountForPagination(),
@@ -278,13 +278,13 @@ class Builder implements QueryBuilder
     /**
      * Set original query builder instance.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $queryBuilder
+     * @param  \Illuminate\Database\Eloquent\Builder  $queryBuilder
      * @return void
      */
     protected function setOriginalQueryBuilder($queryBuilder)
     {
         if (isset($this->originalQueryBuilder)) {
-            throw new RuntimeException('Unable to override $originalQueryBuilder, please create a new ' . self::class);
+            throw new RuntimeException('Unable to override $originalQueryBuilder, please create a new '.self::class);
         }
 
         $this->originalQueryBuilder = $queryBuilder;
@@ -293,7 +293,7 @@ class Builder implements QueryBuilder
     /**
      * Apply any query callbacks to the query builder.
      *
-     * @param \Laravel\Scout\Builder|\Illuminate\Database\Eloquent\Builder $queryBuilder
+     * @param  \Laravel\Scout\Builder|\Illuminate\Database\Eloquent\Builder  $queryBuilder
      * @return \Laravel\Scout\Builder|\Illuminate\Database\Eloquent\Builder
      */
     protected function applyQueryCallbacks($queryBuilder)

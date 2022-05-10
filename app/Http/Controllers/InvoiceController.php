@@ -27,4 +27,13 @@ class InvoiceController extends Controller
     {
         return view('invoice.show', compact('invoice'));
     }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Request $request, Invoice $invoice)
+    {
+        return view('invoice.pay', compact('invoice'));
+    }
 }

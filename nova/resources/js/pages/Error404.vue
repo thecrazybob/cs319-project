@@ -1,13 +1,13 @@
 <template>
-    <CustomError404/>
+  <CustomError404 />
 </template>
 
 <script>
 import Guest from '@/layouts/Guest'
 
 export default {
-    name: 'Error404Page',
+  name: 'Error404Page',
 
-    layout: Guest,
+  layout: Guest,
 }
 </script>

@@ -16,7 +16,7 @@ class ReplicateViewResource extends CreateViewResource
     /**
      * Construct a new Create View Resource.
      *
-     * @param string|int|null $fromResourceId
+     * @param  string|int|null  $fromResourceId
      * @return void
      */
     public function __construct($fromResourceId = null)
@@ -27,7 +27,7 @@ class ReplicateViewResource extends CreateViewResource
     /**
      * Get current resource for the request.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
      * @return \Laravel\Nova\Resource
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -40,6 +40,6 @@ class ReplicateViewResource extends CreateViewResource
                 $resource::replicateQuery($request, $query);
             })->firstOrFail()
         ))->authorizeToReplicate($request)
-            ->replicate();
+        ->replicate();
     }
 }

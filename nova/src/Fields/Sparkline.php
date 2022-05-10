@@ -46,7 +46,7 @@ class Sparkline extends Field
     /**
      * Set the data for the Spark Line.
      *
-     * @param array|(\Closure(\Laravel\Nova\Http\Requests\NovaRequest):mixed)|\Laravel\Nova\Metrics\Trend  $data
+     * @param  array|(\Closure(\Laravel\Nova\Http\Requests\NovaRequest):mixed)|\Laravel\Nova\Metrics\Trend  $data
      * @return $this
      */
     public function data($data)
@@ -59,7 +59,7 @@ class Sparkline extends Field
     /**
      * Get field data.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array|mixed
      */
     public function getData(NovaRequest $request)
@@ -98,7 +98,7 @@ class Sparkline extends Field
     /**
      * Set the component height.
      *
-     * @param int $height
+     * @param  int  $height
      * @return $this
      */
     public function height($height)
@@ -111,7 +111,7 @@ class Sparkline extends Field
     /**
      * Set the component width.
      *
-     * @param int $width
+     * @param  int  $width
      * @return $this
      */
     public function width($width)

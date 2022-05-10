@@ -36,7 +36,7 @@ class Markdown extends Field implements FilterableField
     /**
      * Define the preset the field should use. Can be "commonmark", "zero", and "default".
      *
-     * @param string|array<string, mixed> $preset
+     * @param  string|array<string, mixed>  $preset
      * @return $this
      */
     public function preset($preset)
@@ -49,7 +49,7 @@ class Markdown extends Field implements FilterableField
     /**
      * Make the field filter.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Fields\Filters\Filter
      */
     protected function makeFilter(NovaRequest $request)

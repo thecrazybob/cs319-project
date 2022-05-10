@@ -17,8 +17,8 @@ class Place extends Text
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|\Closure|callable|object|null $attribute
+     * @param  string  $name
+     * @param  string|\Closure|callable|object|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
@@ -27,13 +27,13 @@ class Place extends Text
         parent::__construct($name, $attribute, $resolveCallback);
 
         $this->secondAddressLine('address_line_2')
-            ->city('city')
-            ->state('state')
-            ->postalCode('postal_code')
-            ->suburb('suburb')
-            ->country('country')
-            ->latitude('latitude')
-            ->longitude('longitude');
+             ->city('city')
+             ->state('state')
+             ->postalCode('postal_code')
+             ->suburb('suburb')
+             ->country('country')
+             ->latitude('latitude')
+             ->longitude('longitude');
     }
 
     /**
@@ -49,7 +49,7 @@ class Place extends Text
     /**
      * Set the place type.
      *
-     * @param string $type
+     * @param  string  $type
      * @return $this
      */
     public function type($type)
@@ -64,7 +64,7 @@ class Place extends Text
     /**
      * Set the countries to search within.
      *
-     * @param array $countries
+     * @param  array  $countries
      * @return $this
      */
     public function countries(array $countries)
@@ -75,7 +75,7 @@ class Place extends Text
     /**
      * Specify the field that contains the second address line.
      *
-     * @param string|null $field
+     * @param  string|null  $field
      * @return $this
      */
     public function secondAddressLine($field)
@@ -86,7 +86,7 @@ class Place extends Text
     /**
      * Specify the field that contains the city.
      *
-     * @param string|null $field
+     * @param  string|null  $field
      * @return $this
      */
     public function city($field)
@@ -97,7 +97,7 @@ class Place extends Text
     /**
      * Specify the field that contains the state.
      *
-     * @param string $field
+     * @param  string  $field
      * @return $this
      */
     public function state($field)
@@ -108,7 +108,7 @@ class Place extends Text
     /**
      * Specify the field that contains the postal code.
      *
-     * @param string|null $field
+     * @param  string|null  $field
      * @return $this
      */
     public function postalCode($field)
@@ -119,7 +119,7 @@ class Place extends Text
     /**
      * Specify the field that contains the suburb.
      *
-     * @param string $field
+     * @param  string  $field
      * @return $this
      */
     public function suburb($field)
@@ -130,7 +130,7 @@ class Place extends Text
     /**
      * Specify the field that contains the country.
      *
-     * @param string $field
+     * @param  string  $field
      * @return $this
      */
     public function country($field)
@@ -141,7 +141,7 @@ class Place extends Text
     /**
      * Specify the field that contains the latitude.
      *
-     * @param string $field
+     * @param  string  $field
      * @return $this
      */
     public function latitude($field)
@@ -152,7 +152,7 @@ class Place extends Text
     /**
      * Specify the language that places.js should use.
      *
-     * @param string $language
+     * @param  string  $language
      * @return $this
      */
     public function language($language)
@@ -163,7 +163,7 @@ class Place extends Text
     /**
      * Specify the field that contains the longitude.
      *
-     * @param string $field
+     * @param  string  $field
      * @return $this
      */
     public function longitude($field)
@@ -174,8 +174,8 @@ class Place extends Text
     /**
      * Register depends on to a field.
      *
-     * @param string|array $attributes
-     * @param callable|string $mixin
+     * @param  string|array  $attributes
+     * @param  callable|string  $mixin
      * @return $this
      */
     public function dependsOn($attributes, $mixin)

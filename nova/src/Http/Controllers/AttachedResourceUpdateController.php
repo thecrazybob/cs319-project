@@ -25,7 +25,7 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Update an attached resource pivot record.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function __invoke(NovaRequest $request)
@@ -73,9 +73,9 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Validate the attachment request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param class-string<\Laravel\Nova\Resource> $resourceClass
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  class-string<\Laravel\Nova\Resource>  $resourceClass
      * @return void
      */
     protected function validate(NovaRequest $request, $model, $resourceClass)
@@ -92,8 +92,8 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Get update rules for request from the resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param class-string<\Laravel\Nova\Resource> $resourceClass
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  class-string<\Laravel\Nova\Resource>  $resourceClass
      * @return array
      */
     protected function updateRulesFor(NovaRequest $request, $resourceClass)
@@ -111,8 +111,8 @@ class AttachedResourceUpdateController extends Controller
     /**
      * Find the pivot model for the operation.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Relations\Pivot
      */
     protected function findPivot(NovaRequest $request, $model)
@@ -128,28 +128,28 @@ class AttachedResourceUpdateController extends Controller
         $accessor = $relation->getPivotAccessor();
 
         return $relation
-            ->withoutGlobalScopes()
-            ->lockForUpdate()
-            ->findOrFail($request->relatedResourceId)->{$accessor};
+                    ->withoutGlobalScopes()
+                    ->lockForUpdate()
+                    ->findOrFail($request->relatedResourceId)->{$accessor};
     }
 
     /**
      * Determine if the model has been updated since it was retrieved.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return bool
      */
     protected function modelHasBeenUpdatedSinceRetrieval(NovaRequest $request, $model)
     {
         $column = $model->getUpdatedAtColumn();
 
-        if (!$model->{$column}) {
+        if (! $model->{$column}) {
             return false;
         }
 
         return $request->input('_retrieved_at') && $model->usesTimestamps() && $model->{$column}->gt(
-                Carbon::createFromTimestamp($request->input('_retrieved_at'))
-            );
+            Carbon::createFromTimestamp($request->input('_retrieved_at'))
+        );
     }
 }

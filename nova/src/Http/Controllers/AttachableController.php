@@ -11,15 +11,15 @@ class AttachableController extends Controller
     /**
      * List the available related resources for a given resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function __invoke(NovaRequest $request)
     {
         $field = $request->newResource()
-            ->availableFields($request)
-            ->filterForManyToManyRelations()
-            ->firstWhere('resourceName', $request->field);
+                    ->availableFields($request)
+                    ->filterForManyToManyRelations()
+                    ->firstWhere('resourceName', $request->field);
 
         $withTrashed = $this->shouldIncludeTrashed(
             $request, $associatedResource = $field->resourceClass
@@ -29,15 +29,15 @@ class AttachableController extends Controller
 
         return [
             'resources' => $field->buildAttachableQuery($request, $withTrashed)
-                ->tap($this->getAttachableQueryResolver($request, $field))
-                ->get()
-                ->mapInto($field->resourceClass)
-                ->filter(function ($resource) use ($request, $parentResource) {
-                    return $parentResource->authorizedToAttach($request, $resource->resource);
-                })
-                ->map(function ($resource) use ($request, $field) {
-                    return $field->formatAttachableResource($request, $resource);
-                })->sortBy('display', SORT_NATURAL | SORT_FLAG_CASE)->values(),
+                        ->tap($this->getAttachableQueryResolver($request, $field))
+                        ->get()
+                        ->mapInto($field->resourceClass)
+                        ->filter(function ($resource) use ($request, $parentResource) {
+                            return $parentResource->authorizedToAttach($request, $resource->resource);
+                        })
+                        ->map(function ($resource) use ($request, $field) {
+                            return $field->formatAttachableResource($request, $resource);
+                        })->sortBy('display', SORT_NATURAL | SORT_FLAG_CASE)->values(),
             'withTrashed' => $withTrashed,
             'softDeletes' => $associatedResource::softDeletes(),
         ];
@@ -46,8 +46,8 @@ class AttachableController extends Controller
     /**
      * Determine if the query should include trashed models.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param string $associatedResource
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  string  $associatedResource
      * @return bool
      */
     protected function shouldIncludeTrashed(NovaRequest $request, $associatedResource)
@@ -70,8 +70,8 @@ class AttachableController extends Controller
     /**
      * Get attachable query resolver.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Laravel\Nova\Contracts\PivotableField $field
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Contracts\PivotableField  $field
      * @return callable(\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder):void
      */
     protected function getAttachableQueryResolver(NovaRequest $request, PivotableField $field)
@@ -89,8 +89,8 @@ class AttachableController extends Controller
                 $relation = $relatedModel->{$field->manyToManyRelationship}();
 
                 return $relation->applyDefaultPivotQuery($query)
-                    ->select($relation->getRelatedPivotKeyName())
-                    ->whereColumn($relation->getQualifiedRelatedKeyName(), $relation->getQualifiedRelatedPivotKeyName());
+                        ->select($relation->getRelatedPivotKeyName())
+                        ->whereColumn($relation->getQualifiedRelatedKeyName(), $relation->getQualifiedRelatedPivotKeyName());
             });
         };
     }

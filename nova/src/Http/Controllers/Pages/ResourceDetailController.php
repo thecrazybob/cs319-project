@@ -11,7 +11,7 @@ class ResourceDetailController extends Controller
     /**
      * Show Resource Detail page using Inertia.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceDetailRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceDetailRequest  $request
      * @return \Inertia\Response
      */
     public function __invoke(ResourceDetailRequest $request)

@@ -9,7 +9,7 @@ class UpdateViewResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
      * @return array
      */
     public function toArray($request)
@@ -17,7 +17,7 @@ class UpdateViewResource extends Resource
         $resource = $this->newResourceWith($request);
 
         return [
-            'title' => (string)$resource->title(),
+            'title' => (string) $resource->title(),
             'fields' => $fields = $resource->updateFieldsWithinPanels($request, $resource)->applyDependsOn($request),
             'panels' => $resource->availablePanelsForUpdate($request, $resource, $fields),
         ];
@@ -26,7 +26,7 @@ class UpdateViewResource extends Resource
     /**
      * Get current resource for the request.
      *
-     * @param \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest $request
+     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
      * @return \Laravel\Nova\Resource
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException

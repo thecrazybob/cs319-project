@@ -47,8 +47,8 @@ class Line extends Text
     /**
      * Create a new field.
      *
-     * @param string $name
-     * @param string|callable|null $attribute
+     * @param  string  $name
+     * @param  string|callable|null  $attribute
      * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
@@ -110,7 +110,7 @@ class Line extends Text
     /**
      * Set the extra CSS classes to be applied to the line field.
      *
-     * @param mixed $classes
+     * @param  mixed  $classes
      * @return $this
      */
     public function extraClasses($classes)
