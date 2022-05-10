@@ -10,39 +10,51 @@ class DocumentPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Document  $document
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user, Document $document)
+    public function viewAny(User $user)
     {
-        return $document->patient_id == $user->patient->id;
+        if ($user->can('view_file')) {
+            return true;
+        }
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Document  $document
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function update(User $user, Document $document)
+    public function view(User $user, Document $document = null)
     {
-        return $document->patient_id == $user->patient->id;
+        if ($user->can('view_file')) {
+            return true;
+        }
+        if ($document?->patient_id == $user->patient?->id) {
+            return true;
+        }
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Document  $document
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function delete(User $user, Document $document)
+
+    public function create(User $user, Document $document = null)
     {
-        return $document->patient_id == $user->patient->id;
+        if ($user->can('create_file')) {
+            return true;
+        }
+        if ($document?->patient_id == $user->patient?->id) {
+            return true;
+        }
+    }
+
+    public function update(User $user, Document $document = null)
+    {
+        if ($user->can('modify_file')) {
+            return true;
+        }
+        if ($document?->patient_id == $user->patient?->id) {
+            return true;
+        }
+    }
+
+    public function delete(User $user, Document $document = null)
+    {
+        if ($user->can('modify_file')) {
+            return true;
+        }
+        if ($document?->patient_id == $user->patient?->id) {
+            return true;
+        }
     }
 }

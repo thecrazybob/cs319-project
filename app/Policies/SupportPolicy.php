@@ -10,20 +10,43 @@ class SupportPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
+
+
     public function viewAny(User $user)
     {
-        if ($user->hasRole('')) {
+        if ($user->can('view_ticket')) {
             return true;
         }
     }
 
-    public function view(User $user, Support $support)
+    public function view(User $user, Support $support = null)
     {
-        return $support->patient_id == $user->patient->id;
+        if ($user->can('view_ticket')) {
+            return true;
+        }
+        if ($support?->patient_id == $user->patient?->id) {
+            return true;
+        }
+    }
+
+    public function create(User $user)
+    {
+        if ($user->can('create_ticket')) {
+            return true;
+        }
+    }
+
+    public function update(User $user)
+    {
+        if ($user->can('modify_ticket')) {
+            return true;
+        }
+    }
+
+    public function delete(User $user)
+    {
+        if ($user->can('modify_ticket')) {
+            return true;
+        }
     }
 }

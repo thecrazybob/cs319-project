@@ -26,7 +26,7 @@ class DiagnosisPolicy
     {
         if ($user->can('view_diagnosis')) {
             return true;
-        } elseif ($diagnosis->patient_id == $user->patient->id) {
+        } elseif ($diagnosis->patient_id == $user->patient?->id) {
             return true;
         }
     }
