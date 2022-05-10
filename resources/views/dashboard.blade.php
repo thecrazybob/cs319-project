@@ -39,17 +39,17 @@
                                 <div
                                     class="border-t border-gray-200 bg-gray-50 grid grid-cols-1 divide-y divide-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
                                     <div class="px-6 py-5 text-sm font-medium text-center">
-                                        <span class="text-gray-900">{{$appointment_count}}</span>
+                                        <span class="text-gray-900">{{ $appointment_count ?? 0 }}</span>
                                         <span class="text-gray-600">Upcoming Appointment</span>
                                     </div>
 
                                     <div class="px-6 py-5 text-sm font-medium text-center">
-                                        <span class="text-gray-900">{{$dose_count}}</span>
+                                        <span class="text-gray-900">{{ $dose_count ?? 0 }}</span>
                                         <span class="text-gray-600">Vaccine Doses Registered</span>
                                     </div>
 
                                     <div class="px-6 py-5 text-sm font-medium text-center">
-                                        <span class="text-gray-900">{{$visit_count}}</span>
+                                        <span class="text-gray-900">{{ $visit_count ?? 0 }}</span>
                                         <span class="text-gray-600">Visits to Health Center</span>
                                     </div>
                                 </div>
@@ -301,15 +301,15 @@
                             </div>
                         </section>
 
-                        
+
                         <section aria-labelledby="recent-hires-title">
                             <div class="rounded-lg bg-white overflow-hidden shadow">
                                 <div class="p-6">
                                     <h2 class="text-base font-medium text-gray-900" id="recent-hires-title">Available
                                         Doctors</h2>
-                                   
+
                                     <div class="flow-root mt-6">
-                                        <ul role="list" class="-my-5 divide-y divide-gray-200"> 
+                                        <ul role="list" class="-my-5 divide-y divide-gray-200">
                                             @foreach ($users as $user)
                                                 <li class="py-4">
                                                 <div class="flex items-center space-x-4">
@@ -323,7 +323,7 @@
                                                         <p class="text-sm text-gray-500 truncate">{{ $user['email'] }}</p>
                                                     </div>
                                                     <div>
-                                                        <a href="#"
+                                                        <a href="{{ route('appointment.create') }}"
                                                             class="inline-flex items-center shadow-sm px-2.5 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50">
                                                             Appointment </a>
                                                     </div>
