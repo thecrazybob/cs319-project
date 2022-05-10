@@ -2,7 +2,10 @@
 ![Health Center Dark Logo](/public/img/logo-dark.png#gh-dark-mode-only)
 
 # About BilHeal
+
 BilHeal is a proposed web app for Bilkent University's Health Center that aims to ease the interaction between patients and the health center's staff.
+
+![Dashboard Screenshot](/public/img/dashboard.png)
 
 ## Table of contents
 
@@ -14,7 +17,6 @@ BilHeal is a proposed web app for Bilkent University's Health Center that aims t
 - [Features](#features)
 - [Team Members](#team-members)
 - [Reports](#reports)
-- [Collaboration](#collaboration)
 
 ## Demo
 
@@ -145,8 +147,8 @@ All of them are available on https://packagist.org/
 
 ## Reports
 
-* Requirement Analysis - Iteration 1
-* Requirement Analysis - Iteration 2
-* Design Report - Iteration 1
-* Design Report - Iteration 2
+* [Requirement Analysis - Iteration 1](reports/ChickenNuggets_RequirementAnalysis_Iteration1.pdf)
+* [Requirement Analysis - Iteration 2](reports/ChickenNuggets_RequirementAnalysis_Iteration2.pdf)
+* [Design Report - Iteration 1](reports/ChickenNuggets_DesignReport_Iteration1.pdf)
+* [Design Report - Iteration 2](reports/ChickenNuggets_DesignReport_Iteration2.pdf)
 * Final Report
