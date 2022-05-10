@@ -8,6 +8,7 @@ use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\IconButtonAction;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -26,7 +27,13 @@ class Table extends Component implements HasTable
         return [
             TextColumn::make('id'),
             TextColumn::make('amount')->formatStateUsing(fn ($state) => $state . ' ' . 'TRY'),
-            TextColumn::make('status')->formatStateUsing(fn ($state) => ucfirst($state)),
+            BadgeColumn::make('status')
+                ->colors([
+                    'primary',
+                    'danger' => 'unpaid',
+                    'warning' => 'partial',
+                    'success' => 'paid',
+                ])->formatStateUsing(fn ($state) => ucfirst($state)),
             TextColumn::make('description'),
             TextColumn::make('created_at')->date(),
             TextColumn::make('updated_at')->date(),
