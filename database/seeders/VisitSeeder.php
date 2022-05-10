@@ -14,6 +14,6 @@ class VisitSeeder extends Seeder
      */
     public function run()
     {
-        Visit::factory()->count(5)->create();
+        Visit::factory()->count(20)->create();
     }
 }
