@@ -20,8 +20,12 @@ class FormPay extends Component implements HasForms
     {
         $this->invoice_id = $id;
 
+        if ( Invoice::find($this->invoice_id)->status  == "paid" ) {
+            toast()->success('This invoice has already been paid.')->pushOnNextPage();
+            redirect(route('invoice.index'));
+        }
+
         $this->form->fill([
-            'id' => $this->invoice_id,
             'amount' => Invoice::find($this->invoice_id)->amount,
             'description' => Invoice::find($this->invoice_id)->description,
         ]);
@@ -30,9 +34,6 @@ class FormPay extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            TextInput::make('id')
-                ->label('Invoice id:')
-                ->disabled(),
             TextInput::make('amount')
                 ->label('Payment Amount:')
                 ->disabled(),
