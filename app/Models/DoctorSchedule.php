@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $doctor_id
+ * @property int            $id
+ * @property int            $doctor_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -30,7 +30,7 @@ class DoctorSchedule extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'        => 'integer',
         'doctor_id' => 'integer',
     ];
 

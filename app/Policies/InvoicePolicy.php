@@ -23,7 +23,6 @@ class InvoicePolicy
         }
     }
 
-
     public function create(User $user)
     {
         if ($user->can('create_invoice')) {

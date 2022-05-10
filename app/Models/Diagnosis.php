@@ -2,21 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\File;
-use App\Models\Doctor;
-use App\Models\Patient;
-use App\Models\Department;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $doctor_id
- * @property int $patient_id
- * @property int $department
- * @property int $file_id
+ * @property int            $id
+ * @property int            $doctor_id
+ * @property int            $patient_id
+ * @property int            $department
+ * @property int            $file_id
  * @property \Carbon\Carbon $diagnosis_date
- * @property string $diagnosis_type
+ * @property string         $diagnosis_type
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -44,11 +40,11 @@ class Diagnosis extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'doctor_id' => 'integer',
-        'patient_id' => 'integer',
-        'department_id' => 'integer',
-        'file_id' => 'integer',
+        'id'             => 'integer',
+        'doctor_id'      => 'integer',
+        'patient_id'     => 'integer',
+        'department_id'  => 'integer',
+        'file_id'        => 'integer',
         'diagnosis_date' => 'date',
     ];
 

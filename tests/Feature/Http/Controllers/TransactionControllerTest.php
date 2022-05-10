@@ -15,7 +15,9 @@ use Tests\TestCase;
  */
 class TransactionControllerTest extends TestCase
 {
-    use AdditionalAssertions, RefreshDatabase, WithFaker;
+    use AdditionalAssertions;
+    use RefreshDatabase;
+    use WithFaker;
 
     /**
      * @test
@@ -30,7 +32,6 @@ class TransactionControllerTest extends TestCase
         $response->assertViewIs('transaction.index');
         $response->assertViewHas('transactions');
     }
-
 
     /**
      * @test
@@ -53,7 +54,7 @@ class TransactionControllerTest extends TestCase
         $description = $this->faker->text;
 
         $response = $this->post(route('transaction.store'), [
-            'amount' => $amount,
+            'amount'      => $amount,
             'description' => $description,
         ]);
 
@@ -66,7 +67,6 @@ class TransactionControllerTest extends TestCase
 
         $response->assertRedirect(route('transaction.index'));
     }
-
 
     /**
      * @test
@@ -92,10 +92,10 @@ class TransactionControllerTest extends TestCase
         $description = $this->faker->text;
 
         $response = $this->put(route('transaction.update', $transaction), [
-            'invoice_id' => $invoice->id,
+            'invoice_id'         => $invoice->id,
             'payment_gateway_id' => $payment_gateway->id,
-            'amount' => $amount,
-            'description' => $description,
+            'amount'             => $amount,
+            'description'        => $description,
         ]);
 
         $transaction->refresh();
@@ -107,7 +107,6 @@ class TransactionControllerTest extends TestCase
         $this->assertEquals($amount, $transaction->amount);
         $this->assertEquals($description, $transaction->description);
     }
-
 
     /**
      * @test

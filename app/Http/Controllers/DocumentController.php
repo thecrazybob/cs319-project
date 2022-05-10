@@ -11,6 +11,7 @@ class DocumentController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -22,18 +23,21 @@ class DocumentController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Document $document
+     * @param \App\Models\Document     $document
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, Document $document)
     {
         $this->authorize('view', $document);
         $file_path = $document->file->file_path;
+
         return response()->download(storage_path('app/public/'.$file_path));
     }
 
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
@@ -43,16 +47,19 @@ class DocumentController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, Document $document)
     {
         $this->authorize('update', $document);
+
         return view('document.edit', compact('document'));
     }
 
     /**
      * @param \App\Http\Requests\DocumentStoreRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(DocumentStoreRequest $request)
@@ -64,7 +71,8 @@ class DocumentController extends Controller
 
     /**
      * @param \App\Http\Requests\DocumentUpdateRequest $request
-     * @param \App\Models\Document $document
+     * @param \App\Models\Document                     $document
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(DocumentUpdateRequest $request, Document $document)
@@ -76,7 +84,8 @@ class DocumentController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Document $document
+     * @param \App\Models\Document     $document
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, Document $document)

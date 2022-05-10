@@ -2,9 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Doctor;
 use App\Models\Patient;
-use App\Models\User;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 
@@ -13,7 +11,8 @@ class UsersPerDay extends Trend
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return mixed
      */
     public function calculate(NovaRequest $request)

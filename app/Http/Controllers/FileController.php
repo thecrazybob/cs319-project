@@ -9,7 +9,8 @@ class FileController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\File $file
+     * @param \App\Models\File         $file
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, File $file)
@@ -20,18 +21,21 @@ class FileController extends Controller
     public static function addFilePathToArray(array $data)
     {
         $data['type'] = pathinfo($data['file_path'], PATHINFO_EXTENSION);
+
         return $data;
     }
 
     public static function store(array $data)
     {
         $data = FileController::addFilePathToArray($data);
+
         return File::create($data);
     }
 
     public static function update(int $fileId, array $data)
     {
         $data = FileController::addFilePathToArray($data);
+
         return File::find($fileId)->update($data);
     }
 }

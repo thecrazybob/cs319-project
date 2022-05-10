@@ -9,6 +9,7 @@ class InvoiceController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -20,7 +21,8 @@ class InvoiceController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Invoice $invoice
+     * @param \App\Models\Invoice      $invoice
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, Invoice $invoice)
@@ -30,6 +32,7 @@ class InvoiceController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, Invoice $invoice)

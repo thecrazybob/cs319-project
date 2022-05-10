@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $patient_id
- * @property string $blood_type
- * @property string $urgency
- * @property bool $approved
+ * @property int            $id
+ * @property int            $patient_id
+ * @property string         $blood_type
+ * @property string         $urgency
+ * @property bool           $approved
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -36,9 +36,9 @@ class BloodDonationRequest extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'         => 'integer',
         'patient_id' => 'integer',
-        'approved' => 'boolean',
+        'approved'   => 'boolean',
     ];
 
     /**

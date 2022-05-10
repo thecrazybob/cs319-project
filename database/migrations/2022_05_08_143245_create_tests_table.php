@@ -21,7 +21,7 @@ class CreateTestsTable extends Migration
             $table->foreignId('doctor_id')->constrained();
             $table->foreignId('department_id')->constrained();
             $table->foreignId('file_id')->constrained();
-            $table->enum('test_type', ["pcr","regular"]);
+            $table->enum('test_type', ['pcr', 'regular']);
             $table->dateTime('test_date');
             $table->timestamps();
         });

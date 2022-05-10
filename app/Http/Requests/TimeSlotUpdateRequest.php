@@ -24,7 +24,7 @@ class TimeSlotUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => ['required', 'date'],
+            'date'     => ['required', 'date'],
             'duration' => ['required', 'integer'],
             'capacity' => ['required', 'integer'],
         ];

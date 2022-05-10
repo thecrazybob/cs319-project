@@ -15,7 +15,9 @@ use Tests\TestCase;
  */
 class SupportControllerTest extends TestCase
 {
-    use AdditionalAssertions, RefreshDatabase, WithFaker;
+    use AdditionalAssertions;
+    use RefreshDatabase;
+    use WithFaker;
 
     /**
      * @test
@@ -31,7 +33,6 @@ class SupportControllerTest extends TestCase
         $response->assertViewHas('patients');
     }
 
-
     /**
      * @test
      */
@@ -46,7 +47,6 @@ class SupportControllerTest extends TestCase
         $response->assertViewHas('support');
     }
 
-
     /**
      * @test
      */
@@ -57,7 +57,6 @@ class SupportControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('support.create');
     }
-
 
     /**
      * @test
@@ -91,7 +90,6 @@ class SupportControllerTest extends TestCase
         $response->assertRedirect(route('support.index'));
     }
 
-
     /**
      * @test
      */
@@ -118,10 +116,10 @@ class SupportControllerTest extends TestCase
 
         $response = $this->put(route('support.update', $support), [
             'department_id' => $department->id,
-            'patient_id' => $patient->id,
-            'subject' => $subject,
-            'status' => $status,
-            'priority' => $priority,
+            'patient_id'    => $patient->id,
+            'subject'       => $subject,
+            'status'        => $status,
+            'priority'      => $priority,
         ]);
 
         $support->refresh();

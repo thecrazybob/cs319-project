@@ -3,13 +3,12 @@
 namespace App\Http\Livewire\Support;
 
 use App\Models\Support;
-use Livewire\Component;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Livewire\Component;
 
 class FormCreate extends Component implements HasForms
 {
@@ -23,30 +22,30 @@ class FormCreate extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-                TextInput::make('subject')
-                ->required()
-                ->label('Subject:'),
+            TextInput::make('subject')
+            ->required()
+            ->label('Subject:'),
             BelongsToSelect::make('department_id')
                 ->relationship('department', 'name'),
             Select::make('priority')->options([
-                "low" => 'Low',
-                'medium' => 'Medium',
-                'high' => 'High',
+                'low'      => 'Low',
+                'medium'   => 'Medium',
+                'high'     => 'High',
                 'critical' => 'Critical',
             ])
             ->required()
-            ->label('Priority:'), 
+            ->label('Priority:'),
         ];
     }
 
     public function submit(): void
     {
         $array = array_merge([
-            'status' => 'new',
+            'status'     => 'new',
             'patient_id' => auth()->user()->patient->id,
-            ],$this->form->getState());
+        ], $this->form->getState());
 
-            $support = Support::create($array);
+        $support = Support::create($array);
 
         toast()->success('Successfully created a support ticket')->push();
 

@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Invoice;
 use App\Models\Patient;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvoiceFactory extends Factory
 {
@@ -24,9 +23,9 @@ class InvoiceFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::all()->random()->id,
-            'amount' => $this->faker->randomFloat(0, 0, 9999.99),
-            'status' => $this->faker->randomElement(["unpaid","paid","cancelled","refunded","partial"]),
+            'patient_id'  => Patient::all()->random()->id,
+            'amount'      => $this->faker->randomFloat(0, 0, 9999.99),
+            'status'      => $this->faker->randomElement(['unpaid', 'paid', 'cancelled', 'refunded', 'partial']),
             'description' => $this->faker->sentence(3),
         ];
     }

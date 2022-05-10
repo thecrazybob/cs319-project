@@ -3,14 +3,13 @@
 namespace App\Http\Livewire\Document;
 
 use App\Http\Controllers\FileController;
-use App\Models\File;
-use Livewire\Component;
 use App\Models\Document;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
-use Usernotnull\Toast\Concerns\WireToast;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Livewire\Component;
+use Usernotnull\Toast\Concerns\WireToast;
 
 class FormCreate extends Component implements HasForms
 {

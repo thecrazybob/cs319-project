@@ -24,12 +24,12 @@ class AppointmentUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'patient_id' => ['required', 'integer', 'exists:patients,id'],
-            'doctor_id' => ['integer', 'exists:doctors,id'],
-            'department_id' => ['required', 'integer', 'exists:departments,id'],
+            'patient_id'       => ['required', 'integer', 'exists:patients,id'],
+            'doctor_id'        => ['integer', 'exists:doctors,id'],
+            'department_id'    => ['required', 'integer', 'exists:departments,id'],
             'appointment_date' => ['required', 'date'],
-            'description' => ['required', 'string'],
-            'confirmed' => ['required'],
+            'description'      => ['required', 'string'],
+            'confirmed'        => ['required'],
         ];
     }
 }

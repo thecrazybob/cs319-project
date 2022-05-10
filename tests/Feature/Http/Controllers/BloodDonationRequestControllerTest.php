@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Models\BloodDonatioRequest;
 use App\Models\BloodDonationRequest;
 use App\Models\Patient;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +14,9 @@ use Tests\TestCase;
  */
 class BloodDonationRequestControllerTest extends TestCase
 {
-    use AdditionalAssertions, RefreshDatabase, WithFaker;
+    use AdditionalAssertions;
+    use RefreshDatabase;
+    use WithFaker;
 
     /**
      * @test
@@ -31,7 +32,6 @@ class BloodDonationRequestControllerTest extends TestCase
         $response->assertViewHas('requests');
     }
 
-
     /**
      * @test
      */
@@ -42,7 +42,6 @@ class BloodDonationRequestControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('blood-donation-request.create');
     }
-
 
     /**
      * @test
@@ -66,7 +65,7 @@ class BloodDonationRequestControllerTest extends TestCase
 
         $response = $this->post(route('blood-donation-request.store'), [
             'blood_type' => $blood_type,
-            'urgency' => $urgency,
+            'urgency'    => $urgency,
         ]);
 
         $bloodDonationRequests = BloodDonationRequest::query()
@@ -78,7 +77,6 @@ class BloodDonationRequestControllerTest extends TestCase
 
         $response->assertRedirect(route('blood-donation-request.index'));
     }
-
 
     /**
      * @test
@@ -106,8 +104,8 @@ class BloodDonationRequestControllerTest extends TestCase
         $response = $this->put(route('blood-donation-request.update', $bloodDonationRequest), [
             'patient_id' => $patient->id,
             'blood_type' => $blood_type,
-            'urgency' => $urgency,
-            'approved' => $approved,
+            'urgency'    => $urgency,
+            'approved'   => $approved,
         ]);
 
         $bloodDonationRequest->refresh();
@@ -119,7 +117,6 @@ class BloodDonationRequestControllerTest extends TestCase
         $this->assertEquals($urgency, $bloodDonationRequest->urgency);
         $this->assertEquals($approved, $bloodDonationRequest->approved);
     }
-
 
     /**
      * @test

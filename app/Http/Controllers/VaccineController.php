@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VaccineStoreRequest;
+use App\Http\Requests\VaccineUpdateRequest;
 use App\Models\Test;
 use App\Models\Vaccine;
 use Illuminate\Http\Request;
-use App\Http\Requests\VaccineStoreRequest;
-use App\Http\Requests\VaccineUpdateRequest;
 
 class VaccineController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -23,7 +24,7 @@ class VaccineController extends Controller
                         ->where('vaccine_type', 'covid')
                         ->max('dose_no') > 2 ? 'Fulfilling requirement' : 'Requirements not fullfilled';
 
-        $requirement_bool =  $vaccines
+        $requirement_bool = $vaccines
                             ->where('vaccine_type', 'covid')
                             ->max('dose_no') > 2 ? true : false;
         $dose_count = $vaccines->where('vaccine_type', 'covid')
@@ -45,18 +46,21 @@ class VaccineController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Vaccine $vaccine
+     * @param \App\Models\Vaccine      $vaccine
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Vaccine $vaccine)
     {
         $this->authorize('view', $vaccine);
         $file_path = $vaccine->file->file_path;
+
         return response()->download(storage_path('app/public/'.$file_path));
     }
 
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
@@ -67,11 +71,13 @@ class VaccineController extends Controller
     public function edit(Request $request, Vaccine $vaccine)
     {
         $this->authorize('update', $vaccine);
+
         return view('vaccine.edit', compact('vaccine'));
     }
 
     /**
      * @param \App\Http\Requests\VaccineStoreRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(VaccineStoreRequest $request)
@@ -83,7 +89,8 @@ class VaccineController extends Controller
 
     /**
      * @param \App\Http\Requests\VaccineUpdateRequest $request
-     * @param \App\Models\Vaccine $vaccine
+     * @param \App\Models\Vaccine                     $vaccine
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(VaccineUpdateRequest $request, Vaccine $vaccine)
@@ -96,13 +103,15 @@ class VaccineController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Vaccine $vaccine
+     * @param \App\Models\Vaccine      $vaccine
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, Vaccine $vaccine)
     {
         $this->authorize('delete', $vaccine);
         $vaccine->delete();
+
         return redirect()->route('vaccine.index');
     }
 }

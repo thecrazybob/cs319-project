@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Diagnosis;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class DiagnosisPolicy
@@ -30,7 +30,6 @@ class DiagnosisPolicy
             return true;
         }
     }
-
 
     public function create(User $user)
     {

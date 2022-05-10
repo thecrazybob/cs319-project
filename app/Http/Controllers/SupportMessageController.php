@@ -10,6 +10,7 @@ class SupportMessageController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -21,6 +22,7 @@ class SupportMessageController extends Controller
 
     /**
      * @param \App\Http\Requests\SupportMessageStoreRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(SupportMessageStoreRequest $request)

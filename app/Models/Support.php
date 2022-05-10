@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $department_id
- * @property int $patient_id
- * @property string $subject
- * @property string $status
- * @property string $priority
+ * @property int            $id
+ * @property int            $department_id
+ * @property int            $patient_id
+ * @property string         $subject
+ * @property string         $status
+ * @property string         $priority
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -38,9 +38,9 @@ class Support extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'            => 'integer',
         'department_id' => 'integer',
-        'patient_id' => 'integer',
+        'patient_id'    => 'integer',
     ];
 
     /**

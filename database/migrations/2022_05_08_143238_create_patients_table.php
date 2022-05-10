@@ -20,7 +20,7 @@ class CreatePatientsTable extends Migration
             $table->foreignId('user_id');
             $table->string('bilkent_id');
             $table->date('birth_date');
-            $table->enum('gender', ["female","male","other"]);
+            $table->enum('gender', ['female', 'male', 'other']);
             $table->unsignedInteger('height');
             $table->unsignedInteger('weight');
             $table->longText('allergies');

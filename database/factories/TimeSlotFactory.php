@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\TimeSlot;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TimeSlotFactory extends Factory
 {
@@ -24,8 +23,8 @@ class TimeSlotFactory extends Factory
     {
         return [
             'starting_time' => $this->faker->dateTimeThisYear(),
-            'duration' => $this->faker->randomElement([15, 30]),
-            'capacity' => $this->faker->numberBetween(0, 5),
+            'duration'      => $this->faker->randomElement([15, 30]),
+            'capacity'      => $this->faker->numberBetween(0, 5),
         ];
     }
 }

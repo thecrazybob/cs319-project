@@ -13,11 +13,11 @@ class TestPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Test  $test
+     * @param \App\Models\User $user
+     * @param \App\Models\Test $test
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-
     public function viewAny(User $user)
     {
         if ($user->can('view_test')) {
@@ -33,7 +33,6 @@ class TestPolicy
             return true;
         }
     }
-
 
     public function create(User $user)
     {

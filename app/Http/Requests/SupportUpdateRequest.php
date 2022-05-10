@@ -25,10 +25,10 @@ class SupportUpdateRequest extends FormRequest
     {
         return [
             'department_id' => ['required', 'integer', 'exists:departments,id'],
-            'patient_id' => ['required', 'integer', 'exists:patients,id'],
-            'subject' => ['required', 'string'],
-            'status' => ['required', 'in:new,answered,awaiting,hold,closed'],
-            'priority' => ['required', 'in:low,medium,high,critical'],
+            'patient_id'    => ['required', 'integer', 'exists:patients,id'],
+            'subject'       => ['required', 'string'],
+            'status'        => ['required', 'in:new,answered,awaiting,hold,closed'],
+            'priority'      => ['required', 'in:low,medium,high,critical'],
         ];
     }
 }

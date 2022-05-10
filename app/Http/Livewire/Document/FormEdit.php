@@ -1,17 +1,15 @@
 <?php
 
-
 namespace App\Http\Livewire\Document;
 
-use App\Models\File;
-use Livewire\Component;
-use App\Models\Document;
-use Filament\Forms\Contracts\HasForms;
 use App\Http\Controllers\FileController;
-use Filament\Forms\Components\TextInput;
+use App\Models\Document;
 use Filament\Forms\Components\FileUpload;
-use Usernotnull\Toast\Concerns\WireToast;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Livewire\Component;
+use Usernotnull\Toast\Concerns\WireToast;
 
 class FormEdit extends Component implements HasForms
 {
@@ -26,7 +24,7 @@ class FormEdit extends Component implements HasForms
         $this->document_id = $id;
 
         $this->form->fill([
-            'name' => Document::find($this->document_id)->name,
+            'name'      => Document::find($this->document_id)->name,
             'file_path' => Document::find($this->document_id)->file->file_path,
         ]);
     }

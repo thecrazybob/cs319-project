@@ -2,14 +2,14 @@
 
 namespace App\Nova;
 
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Vaccine extends Resource
@@ -40,7 +40,8 @@ class Vaccine extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -50,11 +51,12 @@ class Vaccine extends Resource
             BelongsTo::make('Patient')->sortable(),
             Text::make('Vaccine Type')->sortable()->displayUsing(function ($vaccine) {
                 $converted = Str::of($vaccine)->studly();
+
                 return  $converted;
             })->onlyOnIndex(),
             Select::make('Vaccine Type')->options([
                 'covid' => 'Covid',
-                'other' => 'Other'
+                'other' => 'Other',
             ])->sortable()->onlyOnForms()->required(),
             Number::make('Vaccine Dose', 'dose_no')->min(0)->max(6)->step(1)->sortable()->required(),
             Date::make('Vaccine Date')->sortable()->required(),
@@ -67,7 +69,8 @@ class Vaccine extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -78,7 +81,8 @@ class Vaccine extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -89,7 +93,8 @@ class Vaccine extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -100,7 +105,8 @@ class Vaccine extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function actions(NovaRequest $request)

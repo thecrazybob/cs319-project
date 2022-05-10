@@ -27,7 +27,6 @@ class InvoiceControllerTest extends TestCase
         $response->assertViewHas('invoices');
     }
 
-
     /**
      * @test
      */

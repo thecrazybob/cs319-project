@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\File;
 use App\Models\Patient;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FileFactory extends Factory
 {
@@ -27,9 +26,9 @@ class FileFactory extends Factory
 
         return [
             'patient_id' => Patient::all()->random()->id,
-            'name' => $this->faker->name,
-            'type' => pathinfo($filePath, PATHINFO_EXTENSION),
-            'file_path' => $filePath,
+            'name'       => $this->faker->name,
+            'type'       => pathinfo($filePath, PATHINFO_EXTENSION),
+            'file_path'  => $filePath,
         ];
     }
 }

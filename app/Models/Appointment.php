@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $patient_id
- * @property int $doctor_id
- * @property int $department_id
+ * @property int            $id
+ * @property int            $patient_id
+ * @property int            $doctor_id
+ * @property int            $department_id
  * @property \Carbon\Carbon $appointment_date
- * @property string $description
- * @property bool $confirmed
+ * @property string         $description
+ * @property bool           $confirmed
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -41,13 +41,13 @@ class Appointment extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'patient_id' => 'integer',
-        'doctor_id' => 'integer',
-        'department_id' => 'integer',
-        'timeslot_id' => 'integer',
+        'id'               => 'integer',
+        'patient_id'       => 'integer',
+        'doctor_id'        => 'integer',
+        'department_id'    => 'integer',
+        'timeslot_id'      => 'integer',
         'appointment_date' => 'date',
-        'confirmed' => 'boolean',
+        'confirmed'        => 'boolean',
     ];
 
     /**

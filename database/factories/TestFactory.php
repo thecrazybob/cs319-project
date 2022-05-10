@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Department;
 use App\Models\Doctor;
 use App\Models\File;
 use App\Models\Patient;
 use App\Models\Test;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TestFactory extends Factory
 {
@@ -27,12 +26,12 @@ class TestFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::all()->random()->id,
-            'doctor_id' => Doctor::all()->random()->id,
+            'patient_id'    => Patient::all()->random()->id,
+            'doctor_id'     => Doctor::all()->random()->id,
             'department_id' => Department::all()->random()->id,
-            'file_id' => File::factory(),
-            'test_type' => $this->faker->randomElement(["pcr","regular"]),
-            'test_date' => $this->faker->dateTimeThisYear(),
+            'file_id'       => File::factory(),
+            'test_type'     => $this->faker->randomElement(['pcr', 'regular']),
+            'test_date'     => $this->faker->dateTimeThisYear(),
         ];
     }
 }
