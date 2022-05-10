@@ -20,7 +20,8 @@ class CreateAppointmentsTable extends Migration
             $table->foreignId('patient_id')->constrained();
             $table->foreignId('doctor_id')->nullable()->constrained();
             $table->foreignId('department_id')->constrained();
-            $table->date('appointment_date');
+            $table->dateTime('appointment_date');
+            $table->foreignId('timeslot_id');
             $table->string('description');
             $table->boolean('confirmed')->default(false);
             $table->timestamps();

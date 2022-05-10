@@ -18,7 +18,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 class Table extends Component implements HasTable
 {
     use InteractsWithTable;
-    
+
     protected function getTableQuery(): Builder
     {
         return Appointment::where('patient_id', auth()->user()->patient->id);
@@ -29,8 +29,9 @@ class Table extends Component implements HasTable
         return [
             TextColumn::make('id'),
             TextColumn::make('doctor_name')
-                ->getStateUsing(fn ($record) => User::where('doctor_id', $record->doctor_id)->first()->name),
+                ->getStateUsing(fn ($record) => $record->doctor->user->name),
             TextColumn::make('department.name'),
+            TextColumn::make('timeslot.starting_time'),
             TextColumn::make('appointment_date')->date(),
             TextColumn::make('description')
                 ->wrap()
@@ -44,14 +45,6 @@ class Table extends Component implements HasTable
     protected function getTableActions(): array
     {
         return [
-            IconButtonAction::make('edit')
-                ->label('Edit appointment')
-                ->url(fn (Appointment $record): string => route('appointment.edit', $record))
-                ->icon('heroicon-o-pencil'),
-            IconButtonAction::make('show')
-                ->label('View appointment')
-                ->url(fn (Appointment $record): string => route('appointment.show', $record))
-                ->icon('heroicon-o-eye'),
             IconButtonAction::make('destroy')
                 ->label('Delete appointment')
                 ->action(fn (Appointment $record) => $record->delete())
