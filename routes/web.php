@@ -58,7 +58,7 @@ Route::middleware(['auth:sanctum', 'verified', 'onboarding.completed'])->group(f
 
     Route::resource('payment-gateway', App\Http\Controllers\PaymentGatewayController::class)->only('index');
 
-    Route::resource('invoice', App\Http\Controllers\InvoiceController::class)->only('index', 'show');
+    Route::resource('invoice', App\Http\Controllers\InvoiceController::class)->only('index', 'show', 'edit');
 
     Route::resource('transaction', App\Http\Controllers\TransactionController::class)->except('create', 'edit', 'show');
 
