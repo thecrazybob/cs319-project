@@ -19,7 +19,7 @@ class CreateVaccinesTable extends Migration
             $table->id();
             $table->foreignId('patient_id')->constrained();
             $table->foreignId('file_id')->constrained();
-            $table->enum('vaccine_type', ["covid","other"]);
+            $table->enum('vaccine_type', ['covid', 'other']);
             $table->date('vaccine_date');
             $table->unsignedInteger('dose_no');
             $table->timestamps();

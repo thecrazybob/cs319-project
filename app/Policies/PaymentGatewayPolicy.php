@@ -23,7 +23,6 @@ class PaymentGatewayPolicy
         }
     }
 
-
     public function create(User $user)
     {
         if ($user->hasRole('super-admin')) {

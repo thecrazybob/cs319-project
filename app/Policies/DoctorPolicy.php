@@ -23,7 +23,6 @@ class DoctorPolicy
         }
     }
 
-
     public function create(User $user)
     {
         if ($user->can('create_doctor')) {

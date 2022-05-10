@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $patient_id
- * @property int $doctor_id
- * @property int $department_id
- * @property int $file_id
- * @property string $test_type
+ * @property int            $id
+ * @property int            $patient_id
+ * @property int            $doctor_id
+ * @property int            $department_id
+ * @property int            $file_id
+ * @property string         $test_type
  * @property \Carbon\Carbon $test_date
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -40,12 +40,12 @@ class Test extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'patient_id' => 'integer',
-        'doctor_id' => 'integer',
+        'id'            => 'integer',
+        'patient_id'    => 'integer',
+        'doctor_id'     => 'integer',
         'department_id' => 'integer',
-        'file_id' => 'integer',
-        'test_date' => 'datetime',
+        'file_id'       => 'integer',
+        'test_date'     => 'datetime',
     ];
 
     /**

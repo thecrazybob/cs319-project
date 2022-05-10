@@ -10,7 +10,6 @@ class VaccinePolicy
 {
     use HandlesAuthorization;
 
-
     public function viewAny(User $user)
     {
         if ($user->can('view_test')) {
@@ -27,7 +26,6 @@ class VaccinePolicy
             return true;
         }
     }
-
 
     public function create(User $user)
     {

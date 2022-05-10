@@ -16,8 +16,8 @@ class AnnouncementSeeder extends Seeder
     {
         $announcements = [
             [
-                'private' => false,
-                'title' => 'Bilkent History Graduate Symposium 2022',
+                'private'     => false,
+                'title'       => 'Bilkent History Graduate Symposium 2022',
                 'description' => "
 Bilkent History Graduate Symposium 2022
 
@@ -93,8 +93,8 @@ Samuel Stevens, Koç University – “Tevarih-i Futuh-i Şirvan: A Portrait of 
 Concluding Remarks (Mehmet Kalpaklı, Chair, Department of History).",
             ],
             [
-                'private' => false,
-                'title' => 'COVID-19 Raporu / COVID-19 Report',
+                'private'     => false,
+                'title'       => 'COVID-19 Raporu / COVID-19 Report',
                 'description' => "Bilkent Üniversitesi COVID-19 Raporu (06 Mayıs 2022)
 
 Bilkent Üniversitesi'nde Sağlık Merkezi tarafından takip edilen COVID-19 vakalarının güncel dağılımı şöyledir:
@@ -119,11 +119,11 @@ Of these patients, 4 are academic staff, 1 is support staff, 1 is student, 1 is 
 
 All patients are being treated at home and in isolation. Their contacts in campus are thoroughly followed up by the Health Center.
 
-We wish speedy recovery to all COVID patients."
+We wish speedy recovery to all COVID patients.",
             ],
             [
-                'private' => false,
-                'title' => 'Psychology Department Senior Project Poster Presentations',
+                'private'     => false,
+                'title'       => 'Psychology Department Senior Project Poster Presentations',
                 'description' => "Title: Psychology Department Senior Project Poster Presentations / Psikoloji Bölümü Bitirme Tezi Poster Sunumları
 
 Dear colleagues and students,
@@ -140,12 +140,12 @@ Sizleri Psikoloji Bölümü'nün Bitirme Projeleri Poster Sunumları'na davet ed
 
 Tarih: 11 Mayıs 2022, Çarşamba
 Saat: 16:30-18:30
-Yer: İİSBF Binası Giriş Katı"
+Yer: İİSBF Binası Giriş Katı",
             ],
             [
-                'private' => false,
-                'title' => 'CTIS Senior Projects Poster Presentations',
-                'description' => "
+                'private'     => false,
+                'title'       => 'CTIS Senior Projects Poster Presentations',
+                'description' => '
 CTIS Senior Projects Poster Presentations: On Wednesday May 11th between 9:00am – 5:00pm,
 
 Department of Information Systems and Technologies (CTIS) will organize its annual Senior Projects Poster Day for 2022.
@@ -158,12 +158,12 @@ CTIS Bitirme Projeleri Poster Sunumları: 11 Mayıs Çarşamba 9:00am – 5:00pm
 
 Doğu Kampus, C-Binası, en üst katta, Bilişim Sistemleri ve Teknolojileri Bölümünde geleneksel 2022 Bitirme Projelerinin Poster Sunumlarını gerçekleştirilecektir.
 
-Bu etkinliğe herkes davetlidir."
+Bu etkinliğe herkes davetlidir.',
             ],
             [
-                'private' => false,
-                'title' => 'Registration Information for Summer School',
-                'description' => "Dear Students,
+                'private'     => false,
+                'title'       => 'Registration Information for Summer School',
+                'description' => 'Dear Students,
 
 Below please find a summary of the 2021-2022 Summer School registration procedures.
 
@@ -203,8 +203,8 @@ Summary of Registration Steps:
 3. Tuition fee payment to the bank (not applicable to students on comprehensive and full Bilkent scholarship)
 4. Course registrations via SRS (2-3 June 2022)
 5. Drop deadline: 3 June 2022, 23:59.
-6. Add deadline: 7 June 2022, 17:30."
-            ]
+6. Add deadline: 7 June 2022, 17:30.',
+            ],
         ];
 
         collect($announcements)->each(fn ($announcement) => Announcement::factory()->create($announcement));

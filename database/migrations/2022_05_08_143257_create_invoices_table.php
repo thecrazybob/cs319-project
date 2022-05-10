@@ -19,7 +19,7 @@ class CreateInvoicesTable extends Migration
             $table->id();
             $table->foreignId('patient_id')->constrained();
             $table->double('amount');
-            $table->enum('status', ["unpaid","paid","cancelled","refunded","partial"]);
+            $table->enum('status', ['unpaid', 'paid', 'cancelled', 'refunded', 'partial']);
             $table->string('description');
             $table->timestamps();
         });

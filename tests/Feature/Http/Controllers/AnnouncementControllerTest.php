@@ -27,7 +27,6 @@ class AnnouncementControllerTest extends TestCase
         $response->assertViewHas('announcements');
     }
 
-
     /**
      * @test
      */

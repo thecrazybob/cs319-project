@@ -25,7 +25,7 @@ class VaccineStoreRequest extends FormRequest
     {
         return [
             'vaccine_type' => ['required', 'in:covid,other'],
-            'dose_no' => ['required', 'integer'],
+            'dose_no'      => ['required', 'integer'],
             'vaccine_date' => ['required', 'date'],
         ];
     }

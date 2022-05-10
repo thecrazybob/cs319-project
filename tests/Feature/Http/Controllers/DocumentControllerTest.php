@@ -17,7 +17,9 @@ use Tests\TestCase;
  */
 class DocumentControllerTest extends TestCase
 {
-    use AdditionalAssertions, RefreshDatabase, WithFaker;
+    use AdditionalAssertions;
+    use RefreshDatabase;
+    use WithFaker;
 
     /**
      * @test
@@ -33,7 +35,6 @@ class DocumentControllerTest extends TestCase
         $response->assertViewHas('documents');
     }
 
-
     /**
      * @test
      */
@@ -48,7 +49,6 @@ class DocumentControllerTest extends TestCase
         $response->assertViewHas('document');
     }
 
-
     /**
      * @test
      */
@@ -59,7 +59,6 @@ class DocumentControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('document.create');
     }
-
 
     /**
      * @test
@@ -85,10 +84,10 @@ class DocumentControllerTest extends TestCase
         $upload_date = $this->faker->date();
 
         $response = $this->post(route('document.store'), [
-            'patient_id' => $patient->id,
-            'file_id' => $file->id,
-            'name' => $name,
-            'type' => $type,
+            'patient_id'  => $patient->id,
+            'file_id'     => $file->id,
+            'name'        => $name,
+            'type'        => $type,
             'upload_date' => $upload_date,
         ]);
 
@@ -104,7 +103,6 @@ class DocumentControllerTest extends TestCase
 
         $response->assertRedirect(route('post.index'));
     }
-
 
     /**
      * @test
@@ -131,10 +129,10 @@ class DocumentControllerTest extends TestCase
         $upload_date = $this->faker->date();
 
         $response = $this->put(route('document.update', $document), [
-            'patient_id' => $patient->id,
-            'file_id' => $file->id,
-            'name' => $name,
-            'type' => $type,
+            'patient_id'  => $patient->id,
+            'file_id'     => $file->id,
+            'name'        => $name,
+            'type'        => $type,
             'upload_date' => $upload_date,
         ]);
 
@@ -148,7 +146,6 @@ class DocumentControllerTest extends TestCase
         $this->assertEquals($type, $document->type);
         $this->assertEquals(Carbon::parse($upload_date), $document->upload_date);
     }
-
 
     /**
      * @test

@@ -18,8 +18,8 @@ class CreateBloodDonationRequestsTable extends Migration
         Schema::create('blood_donation_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained();
-            $table->enum('blood_type', ["AA","AO","BB","BO","AB","OO"]);
-            $table->enum('urgency', ["low","medium","high","critical"]);
+            $table->enum('blood_type', ['AA', 'AO', 'BB', 'BO', 'AB', 'OO']);
+            $table->enum('urgency', ['low', 'medium', 'high', 'critical']);
             $table->boolean('approved')->default(false);
             $table->timestamps();
         });

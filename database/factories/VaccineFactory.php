@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\File;
 use App\Models\Patient;
 use App\Models\Vaccine;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class VaccineFactory extends Factory
@@ -25,11 +24,11 @@ class VaccineFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => Patient::all()->random()->id,
-            'vaccine_type' => $this->faker->randomElement(["covid","other"]),
-            'file_id' => File::factory(),
+            'patient_id'   => Patient::all()->random()->id,
+            'vaccine_type' => $this->faker->randomElement(['covid', 'other']),
+            'file_id'      => File::factory(),
             'vaccine_date' => $this->faker->dateTimeThisYear(),
-            'dose_no' => $this->faker->numberBetween(1, 5),
+            'dose_no'      => $this->faker->numberBetween(1, 5),
         ];
     }
 }

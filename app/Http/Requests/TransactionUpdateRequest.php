@@ -24,10 +24,10 @@ class TransactionUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'invoice_id' => ['required', 'integer', 'exists:invoices,id'],
+            'invoice_id'         => ['required', 'integer', 'exists:invoices,id'],
             'payment_gateway_id' => ['required', 'integer', 'exists:payment_gateways,id'],
-            'amount' => ['required', 'numeric', 'between:-999999.99,999999.99'],
-            'description' => ['required', 'string'],
+            'amount'             => ['required', 'numeric', 'between:-999999.99,999999.99'],
+            'description'        => ['required', 'string'],
         ];
     }
 }

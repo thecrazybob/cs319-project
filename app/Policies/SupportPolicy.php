@@ -2,15 +2,13 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Support;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SupportPolicy
 {
     use HandlesAuthorization;
-
-
 
     public function viewAny(User $user)
     {

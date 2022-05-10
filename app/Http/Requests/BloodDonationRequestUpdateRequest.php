@@ -26,8 +26,8 @@ class BloodDonationRequestUpdateRequest extends FormRequest
         return [
             'patient_id' => ['required', 'integer', 'exists:patients,id'],
             'blood_type' => ['required', 'in:AA,AO,BB,BO,AB,OO'],
-            'urgency' => ['required', 'in:low,medium,high,critical'],
-            'approved' => ['required'],
+            'urgency'    => ['required', 'in:low,medium,high,critical'],
+            'approved'   => ['required'],
         ];
     }
 }

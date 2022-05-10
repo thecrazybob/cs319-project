@@ -14,7 +14,9 @@ use Tests\TestCase;
  */
 class TimeSlotControllerTest extends TestCase
 {
-    use AdditionalAssertions, RefreshDatabase, WithFaker;
+    use AdditionalAssertions;
+    use RefreshDatabase;
+    use WithFaker;
 
     /**
      * @test
@@ -25,7 +27,6 @@ class TimeSlotControllerTest extends TestCase
 
         $response = $this->get(route('time-slot.index'));
     }
-
 
     /**
      * @test
@@ -50,7 +51,7 @@ class TimeSlotControllerTest extends TestCase
         $capacity = $this->faker->numberBetween(-10000, 10000);
 
         $response = $this->put(route('time-slot.update', $timeSlot), [
-            'date' => $date,
+            'date'     => $date,
             'duration' => $duration,
             'capacity' => $capacity,
         ]);

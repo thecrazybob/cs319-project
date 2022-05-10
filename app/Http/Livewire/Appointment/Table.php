@@ -2,18 +2,15 @@
 
 namespace App\Http\Livewire\Appointment;
 
-use App\Models\User;
-use Livewire\Component;
-use App\Models\Department;
 use App\Models\Appointment;
-use Illuminate\Contracts\View\View;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Actions\ButtonAction;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Actions\IconButtonAction;
+use Filament\Tables\Columns\BooleanColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Illuminate\Database\Eloquent\Builder;
+use Livewire\Component;
 
 class Table extends Component implements HasTable
 {
@@ -61,7 +58,6 @@ class Table extends Component implements HasTable
                 ->icon('heroicon-o-plus'),
         ];
     }
-
 
     public function render()
     {

@@ -27,7 +27,6 @@ class DocumentPolicy
         }
     }
 
-
     public function create(User $user, Document $document = null)
     {
         if ($user->can('create_file')) {

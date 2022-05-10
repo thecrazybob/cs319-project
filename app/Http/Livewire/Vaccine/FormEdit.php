@@ -1,23 +1,22 @@
 <?php
 
-
 namespace App\Http\Livewire\Vaccine;
 
 use App\Http\Controllers\FileController;
-use App\Models\File;
 use App\Models\Vaccine;
-use Livewire\Component;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Usernotnull\Toast\Concerns\WireToast;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Livewire\Component;
+use Usernotnull\Toast\Concerns\WireToast;
 
 class FormEdit extends Component implements HasForms
 {
-    use InteractsWithForms, WireToast;
+    use InteractsWithForms;
+    use WireToast;
 
     public Vaccine $vaccine;
 
@@ -30,11 +29,11 @@ class FormEdit extends Component implements HasForms
     public function mount(): void
     {
         $this->form->fill([
-            'file' => $this->vaccine->file,
-            'file_path' => $this->vaccine->file->file_path,
+            'file'         => $this->vaccine->file,
+            'file_path'    => $this->vaccine->file->file_path,
             'vaccine_date' => $this->vaccine->vaccine_date,
             'vaccine_type' => $this->vaccine->vaccine_type,
-            'dose_no' => $this->vaccine->dose_no,
+            'dose_no'      => $this->vaccine->dose_no,
         ]);
     }
 
@@ -45,9 +44,9 @@ class FormEdit extends Component implements HasForms
                 ->required()
                 ->label('File Name:'),
             Select::make('vaccine_type')->options([
-                    'covid' => 'Covid',
-                    'other' => 'Other',
-                ])
+                'covid' => 'Covid',
+                'other' => 'Other',
+            ])
                 ->required()
                 ->label('Vaccine Type:'),
             DatePicker::make('vaccine_date')
@@ -74,7 +73,7 @@ class FormEdit extends Component implements HasForms
     {
         $array = array_merge([
             'patient_id' => auth()->user()->patient->id,
-            'name' => $this->file['name'],
+            'name'       => $this->file['name'],
         ], $this->form->getState());
 
         FileController::update($this->vaccine->file->id, $array);

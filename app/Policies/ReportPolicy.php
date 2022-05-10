@@ -27,7 +27,6 @@ class ReportPolicy
         }
     }
 
-
     public function create(User $user)
     {
         if ($user->can('create_report')) {

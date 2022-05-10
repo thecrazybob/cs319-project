@@ -27,7 +27,6 @@ class DiagnosisControllerTest extends TestCase
         $response->assertViewHas('diagnosis');
     }
 
-
     /**
      * @test
      */

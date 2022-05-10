@@ -20,8 +20,8 @@ class CreateSupportsTable extends Migration
             $table->foreignId('department_id')->constrained();
             $table->foreignId('patient_id')->constrained();
             $table->string('subject');
-            $table->enum('status', ["new","answered","awaiting","hold","closed", "reopened"]);
-            $table->enum('priority', ["low","medium","high","critical"]);
+            $table->enum('status', ['new', 'answered', 'awaiting', 'hold', 'closed', 'reopened']);
+            $table->enum('priority', ['low', 'medium', 'high', 'critical']);
             $table->timestamps();
         });
 

@@ -2,18 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\File;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $patient_id
- * @property int $doctor_id
- * @property string $subject
- * @property int $days
+ * @property int            $id
+ * @property int            $patient_id
+ * @property int            $doctor_id
+ * @property string         $subject
+ * @property int            $days
  * @property \Carbon\Carbon $report_date
- * @property string $report_type
+ * @property string         $report_type
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -42,10 +41,10 @@ class Report extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'patient_id' => 'integer',
-        'doctor_id' => 'integer',
-        'file_id' => 'integer',
+        'id'          => 'integer',
+        'patient_id'  => 'integer',
+        'doctor_id'   => 'integer',
+        'file_id'     => 'integer',
         'report_date' => 'date',
     ];
 

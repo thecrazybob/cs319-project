@@ -3,16 +3,15 @@
 namespace App\Http\Livewire\User;
 
 use App\Models\Patient;
-use Livewire\Component;
+use Filament\Forms\Components\BelongsToManyCheckboxList;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Components\BelongsToManyCheckboxList;
-use Usernotnull\Toast\Concerns\WireToast;
+use Filament\Forms\Contracts\HasForms;
+use Livewire\Component;
 
 class OnboardingForm extends Component implements HasForms
 {
@@ -35,17 +34,17 @@ class OnboardingForm extends Component implements HasForms
     public function mount(): void
     {
         $this->form->fill([
-            'bilkent_id' => $this->patient->bilkent_id,
-            'birth_date' => $this->patient->birth_date,
-            'gender' => $this->patient->gender,
-            'height' => $this->patient->height,
-            'weight' => $this->patient->weight,
-            'allergies'=> $this->patient->allergies,
-            'conditions' => $this->patient->conditions,
-            'other_illness'=> $this->patient->other_illness,
-            'operations'=> $this->patient->operations,
+            'bilkent_id'         => $this->patient->bilkent_id,
+            'birth_date'         => $this->patient->birth_date,
+            'gender'             => $this->patient->gender,
+            'height'             => $this->patient->height,
+            'weight'             => $this->patient->weight,
+            'allergies'          => $this->patient->allergies,
+            'conditions'         => $this->patient->conditions,
+            'other_illness'      => $this->patient->other_illness,
+            'operations'         => $this->patient->operations,
             'current_medications'=> $this->patient->current_medications,
-            'smoking'=> $this->patient->smoking,
+            'smoking'            => $this->patient->smoking,
         ]);
     }
 
@@ -78,9 +77,9 @@ class OnboardingForm extends Component implements HasForms
                         ->label('Weight (kg):'),
                     Radio::make('gender')
                         ->options([
-                            'male' => 'Male',
+                            'male'   => 'Male',
                             'female' => 'Female',
-                            'other' => 'Other'
+                            'other'  => 'Other',
                         ])
                         ->required()
                         ->label('Gender:')
@@ -113,7 +112,7 @@ class OnboardingForm extends Component implements HasForms
                         ->label('Do you smoke?')
                         ->boolean()
                         ->required(),
-                ])->columns(2)
+                ])->columns(2),
         ];
     }
 
@@ -127,6 +126,7 @@ class OnboardingForm extends Component implements HasForms
         $this->patient->update($this->form->getState());
         auth()->user()->update(['onboarding_completed' => true]);
         toast()->success('Thank you for the information. You may start using the website')->push();
+
         return redirect(route('dashboard'));
     }
 

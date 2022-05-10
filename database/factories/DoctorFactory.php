@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Department;
 use App\Models\Doctor;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DoctorFactory extends Factory
 {
@@ -29,7 +28,7 @@ class DoctorFactory extends Factory
                 'staff' => true,
             ]),
             'department_id' => Department::all()->random()->id,
-            'active' => $this->faker->boolean,
+            'active'        => $this->faker->boolean,
         ];
     }
 }

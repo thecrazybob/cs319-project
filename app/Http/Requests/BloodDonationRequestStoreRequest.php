@@ -25,7 +25,7 @@ class BloodDonationRequestStoreRequest extends FormRequest
     {
         return [
             'blood_type' => ['required', 'in:AA,AO,BB,BO,AB,OO'],
-            'urgency' => ['required', 'in:low,medium,high,critical'],
+            'urgency'    => ['required', 'in:low,medium,high,critical'],
         ];
     }
 }

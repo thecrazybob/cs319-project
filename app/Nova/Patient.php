@@ -2,15 +2,15 @@
 
 namespace App\Nova;
 
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -40,7 +40,8 @@ class Patient extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -52,6 +53,7 @@ class Patient extends Resource
             Date::make('Birth Date')->sortable()->required(),
             Text::make('Gender')->sortable()->displayUsing(function ($gender) {
                 $converted = Str::of($gender)->studly();
+
                 return  $converted;
             })->onlyOnIndex(),
             Select::make('Gender')->options(['female' => 'Female', 'male' => 'Male', 'other' => 'Other'])->onlyOnForms()->required(),
@@ -63,7 +65,7 @@ class Patient extends Resource
             Textarea::make('Current Medications')->required(),
             Boolean::make('Smoking'),
             Date::make('Created At')->sortable()->onlyOnDetail(),
-            Date::make('Updated At')->sortable()->onlyOnDetail()
+            Date::make('Updated At')->sortable()->onlyOnDetail(),
 
         ];
     }
@@ -71,7 +73,8 @@ class Patient extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -82,7 +85,8 @@ class Patient extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -93,7 +97,8 @@ class Patient extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -104,7 +109,8 @@ class Patient extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function actions(NovaRequest $request)

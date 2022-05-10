@@ -10,6 +10,7 @@ class TimeSlotController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -19,7 +20,8 @@ class TimeSlotController extends Controller
 
     /**
      * @param \App\Http\Requests\TimeSlotUpdateRequest $request
-     * @param \App\Models\TimeSlot $timeSlot
+     * @param \App\Models\TimeSlot                     $timeSlot
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(TimeSlotUpdateRequest $request, TimeSlot $timeSlot)

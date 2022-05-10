@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -50,8 +50,6 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'create_doctor']);
         Permission::create(['name' => 'modify_doctor']);
         Permission::create(['name' => 'view_doctor']);
-
-
 
         // create_roles and assign created permissions
         // by chaining

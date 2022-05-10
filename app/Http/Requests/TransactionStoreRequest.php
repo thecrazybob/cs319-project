@@ -24,7 +24,7 @@ class TransactionStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => ['required', 'numeric', 'between:-999999.99,999999.99'],
+            'amount'      => ['required', 'numeric', 'between:-999999.99,999999.99'],
             'description' => ['required', 'string'],
         ];
     }

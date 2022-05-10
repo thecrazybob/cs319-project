@@ -24,10 +24,10 @@ class DocumentUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'patient_id' => ['required', 'integer', 'exists:patients,id'],
-            'file_id' => ['required', 'integer', 'exists:files,id'],
-            'name' => ['required', 'string'],
-            'type' => ['required', 'string'],
+            'patient_id'  => ['required', 'integer', 'exists:patients,id'],
+            'file_id'     => ['required', 'integer', 'exists:files,id'],
+            'name'        => ['required', 'string'],
+            'type'        => ['required', 'string'],
             'upload_date' => ['required', 'date'],
         ];
     }

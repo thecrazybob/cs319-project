@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property string $gateway_name
- * @property bool $enabled
+ * @property int            $id
+ * @property string         $gateway_name
+ * @property bool           $enabled
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -32,7 +32,7 @@ class PaymentGateway extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'      => 'integer',
         'enabled' => 'boolean',
     ];
 }
