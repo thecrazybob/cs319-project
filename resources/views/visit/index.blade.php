@@ -40,7 +40,7 @@
                             <p class="ml-16 text-sm font-medium text-gray-500 truncate">Total Visits</p>
                         </dt>
                         <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-                            <p class="text-2xl font-semibold text-gray-900">{{$visit_count}}</p>
+                            <p class="text-2xl font-semibold text-gray-900">{{$visit_count ?? 0}}</p>
                             
                             <p class="ml-2 flex gap-x-1 items-baseline text-sm font-semibold">
                                 <span></span>
@@ -61,7 +61,7 @@
                         </dt>
                         <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
                             
-                            <p class="text-2xl font-semibold text-gray-900">{{$visit_date}}</p>
+                            <p class="text-2xl font-semibold text-gray-900">{{$visit_date ?? '0 Visits'}}</p>
                         </dd>
                     </div>
 
@@ -77,7 +77,7 @@
                             <p class="ml-16 text-sm font-medium text-gray-500 truncate">Upcoming Appointment</p>
                         </dt>
                         <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-                            <p class="text-2xl font-semibold text-gray-900">{{$appointment_date}}</p>
+                            <p class="text-2xl font-semibold text-gray-900">{{$appointment_date ?? 'No Upcoming Appointments'}}</p>
                             
                         </dd>
                     </div>
