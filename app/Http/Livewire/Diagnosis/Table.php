@@ -27,7 +27,7 @@ class Table extends Component implements HasTable
         return [
             TextColumn::make('id'),
             TextColumn::make('doctor_name')
-                ->getStateUsing(fn ($record) => User::where('doctor_id', $record->doctor_id)->first()->name),
+                ->getStateUsing(fn ($record) => $record->doctor->user->name),
             TextColumn::make('department.name'),
             TextColumn::make('diagnosis_type'),
             TextColumn::make('diagnosis_date')->date(),
