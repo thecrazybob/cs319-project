@@ -14,11 +14,11 @@ class DashboardController extends Controller
     {
         $users = User::where('staff', true)->take(5)->get();
         $announcements = Announcement::where('private', false)->take(3)->latest('announcement_date')->get();
-        $vaccines = Vaccine::where('patient_id', auth()->user()->patient_id);
+        $vaccines = Vaccine::where('patient_id', auth()->user()->patient->id);
         $dose_count = $vaccines->where('vaccine_type', 'covid')
                         ->max('dose_no');
-        $appointments = Appointment::where('patient_id', auth()->user()->patient_id);
-        $visits = Visit::where('patient_id', auth()->user()->patient_id);
+        $appointments = Appointment::where('patient_id', auth()->user()->patient->id);
+        $visits = Visit::where('patient_id', auth()->user()->patient->id);
         $visit_count = $visits->count();
         $appointment_count = $appointments->count();
 
