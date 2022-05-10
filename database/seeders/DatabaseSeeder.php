@@ -48,6 +48,9 @@ class DatabaseSeeder extends Seeder
             InvoiceSeeder::class,
             TransactionSeeder::class,
 
+            # Roles
+            RolesAndPermissionsSeeder::class,
+
         ]);
     }
 }
