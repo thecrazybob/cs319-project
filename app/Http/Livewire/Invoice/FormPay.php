@@ -21,7 +21,7 @@ class FormPay extends Component implements HasForms
         $this->invoice_id = $id;
 
         if ( Invoice::find($this->invoice_id)->status  == "paid" ) {
-            toast()->success('This invoice has already been paid.')->pushOnNextPage();
+            toast()->danger('This invoice has already been paid.')->pushOnNextPage();
             redirect(route('invoice.index'));
         }
 
