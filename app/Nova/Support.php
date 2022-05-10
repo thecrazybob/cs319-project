@@ -62,15 +62,17 @@ class Support extends Resource
                 'closed' => 'Closed',
                 'awaiting' => 'Awaiting',
                 'hold' => 'Hold',
+                'reopened' => 'Reopened',
             ])->onlyOnForms()->required(),
             Badge::make('Status')->addTypes([
-                'new' => 'whitespace-nowrap px-2 py-1 rounded-full uppercase text-xs font-bold',
+                'new' => 'whitespace-nowrap px-2 py-1 rounded-full uppercase text-xs font-bold text-dark dark:text-white',
             ])->map([
                 'new' => 'new',
                 'answered' => 'info',
                 'closed' => 'success',
                 'awaiting' => 'danger',
                 'hold' => 'warning',
+                'reopened' => 'warning',
             ])->sortable(),
             Text::make('Priority')->sortable()->displayUsing(function ($priortiy) {
                 $converted = Str::of($priortiy)->studly();
