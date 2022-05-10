@@ -18,6 +18,7 @@ class CreateDoctorsTable extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('department_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->boolean('active');
             $table->timestamps();
         });

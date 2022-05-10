@@ -25,6 +25,9 @@ class DoctorFactory extends Factory
     public function definition()
     {
         return [
+            'user_id' => User::factory()->state([
+                'staff' => true,
+            ]),
             'department_id' => Department::all()->random()->id,
             'active' => $this->faker->boolean,
         ];

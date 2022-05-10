@@ -27,6 +27,7 @@ class AnnouncementController extends Controller
     {
         $title = $announcement->title;
         $description = $announcement->description;
-        return view('announcement.show', compact( 'title','description'));
+        $announcement_date = $announcement->announcement_date;
+        return view('announcement.show', compact( 'title','description', 'announcement_date'));
     }
 }

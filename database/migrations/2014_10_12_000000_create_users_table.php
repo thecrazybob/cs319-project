@@ -22,8 +22,6 @@ return new class extends Migration {
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->boolean('staff')->default(false);
-            $table->foreignId('patient_id')->nullable();
-            $table->foreignId('doctor_id')->nullable();
             $table->boolean('onboarding_completed')->default(false);
             $table->timestamps();
         });

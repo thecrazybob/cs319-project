@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SupportStoreRequest;
 use App\Http\Requests\SupportUpdateRequest;
 use App\Models\Support;
+use App\Models\SupportMessage;
 use Illuminate\Http\Request;
 
 class SupportController extends Controller
@@ -15,9 +16,8 @@ class SupportController extends Controller
      */
     public function index(Request $request)
     {
-        $supports = Support::where('patient_id', $patient_id)->get();
-
-        return view('patient.index', compact('patients'));
+        $supportTickets = Support::where('patient_id', auth()->user()->patient->id)->get();
+        return view('support.index', compact('supportTickets'));
     }
 
     /**
@@ -27,7 +27,20 @@ class SupportController extends Controller
      */
     public function show(Request $request, Support $support)
     {
-        return view('support.show', compact('support'));
+        $messages = SupportMessage::where('support_id', $support->id)->latest()->get();
+        return view('support.show', compact('support', 'messages'));
+    }
+
+    public function open(Support $support)
+    {
+        $support->update(['status' => 'reopened']);
+        return redirect(route('support.index'));
+    }
+
+    public function close(Support $support)
+    {
+        $support->update(['status' => 'closed']);
+        return redirect(route('support.index'));
     }
 
     /**

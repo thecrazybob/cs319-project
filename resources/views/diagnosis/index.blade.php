@@ -5,7 +5,7 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ __('Diagnosis') }}
                 </h2>
-                <p class="mt-2 text-sm text-gray-700">A list of all the diagnosis provided by the health center.</p>
+                <p class="mt-2 text-sm text-gray-700">A list of all the diagnoses that your doctors provided to the health center.</p>
             </div>
         </div>
     </x-slot>

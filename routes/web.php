@@ -30,6 +30,10 @@ Route::middleware(['auth:sanctum', 'verified', 'onboarding.completed'])->group(f
 
     Route::resource('support', App\Http\Controllers\SupportController::class)->except('edit', 'destroy');
 
+    Route::get('support/open/{support}', [App\Http\Controllers\SupportController::class, 'open'])->name('support.open');
+
+    Route::get('support/close/{support}', [App\Http\Controllers\SupportController::class, 'close'])->name('support.close');
+
     Route::resource('support-message', App\Http\Controllers\SupportMessageController::class)->only('index', 'store');
 
     Route::resource('test', App\Http\Controllers\TestController::class)->only('index', 'show');
@@ -42,7 +46,7 @@ Route::middleware(['auth:sanctum', 'verified', 'onboarding.completed'])->group(f
 
     Route::resource('vaccine', App\Http\Controllers\VaccineController::class);
 
-    Route::resource('appointment', App\Http\Controllers\AppointmentController::class)->except('edit');
+    Route::resource('appointment', App\Http\Controllers\AppointmentController::class);
 
     Route::resource('time-slot', App\Http\Controllers\TimeSlotController::class)->only('index', 'update');
 

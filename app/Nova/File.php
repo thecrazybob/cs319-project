@@ -4,10 +4,11 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\File as FileField;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Hidden;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\File as FileField;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class File extends Resource
@@ -43,11 +44,16 @@ class File extends Resource
      */
     public function fields(NovaRequest $request)
     {
+
         return [
             ID::make()->sortable(),
             BelongsTo::make('Patient'),
-            Text::make('File Name','name')->required(),
-            FileField::make('File','file_path')->acceptedTypes(['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'])->required(),
+            Text::make('File Name', 'name')->required(),
+            FileField::make('File', 'file_path')->acceptedTypes(['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'])->required(),
+            Hidden::make('Type', 'type')->default(function () {
+                $def = "pdf";
+                return $def;
+            }),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];

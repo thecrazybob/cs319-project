@@ -5,7 +5,7 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ __('Documents') }}
                 </h2>
-                <p class="mt-2 text-sm text-gray-700">All of the documents provided to the health center.</p>
+                <p class="mt-2 text-sm text-gray-700">All of your documents that you or your doctors provided to the health center.</p>
             </div>
             <div>
                 <a href="{{ route('document.create') }}">

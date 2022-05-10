@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99bdd35437bd356e4f09836b095c290f",
+    "content-hash": "bf079a3eb0fc6fbe85523b6ad55abcd9",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -2173,6 +2173,57 @@
                 }
             ],
             "time": "2020-06-13T08:05:20+00:00"
+        },
+        {
+            "name": "kiritokatklian/nova-permission",
+            "version": "v4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kiritokatklian/nova-permission.git",
+                "reference": "7379c38827933ff1b4a63d8ce8e64ec899c8fb2d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kiritokatklian/nova-permission/zipball/7379c38827933ff1b4a63d8ce8e64ec899c8fb2d",
+                "reference": "7379c38827933ff1b4a63d8ce8e64ec899c8fb2d",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.0",
+                "php": "^7.4|^8.0|^8.1",
+                "spatie/laravel-permission": "^3.0|^4.0|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Vyuldashev\\NovaPermission\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vyuldashev\\NovaPermission\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool for Spatie's Permission library.",
+            "keywords": [
+                "laravel",
+                "nova",
+                "spatie-permission"
+            ],
+            "support": {
+                "issues": "https://github.com/kiritokatklian/nova-permission/issues",
+                "source": "https://github.com/kiritokatklian/nova-permission/tree/v4.0.0"
+            },
+            "time": "2022-04-08T09:40:09+00:00"
         },
         {
             "name": "laravel/fortify",
@@ -10435,5 +10486,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

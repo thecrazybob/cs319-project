@@ -3,15 +3,15 @@
         <div class="flex justify-between items-center">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('Vaccines') }}
+                    {{ __('Register Vaccine') }}
                 </h2>
-                <p class="mt-2 text-sm text-gray-700">All of the your registered vaccines in the health center.
+                <p class="mt-2 text-sm text-gray-700">Click the Save button to register your vaccine to the health center.
                 </p>
             </div>
             <div>
-                <a href="{{ route('vaccine.create') }}">                
+                <a href="{{ route('vaccine.index') }}">                
                     <x-jet-button wire:loading.attr="disabled" wire:target="photo">
-                        {{ __('Register a vaccine') }}
+                        {{ __('View all vaccines') }}
                     </x-jet-button>
                 </a>
             </div>

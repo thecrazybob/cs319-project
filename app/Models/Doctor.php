@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int $id
@@ -24,6 +24,7 @@ class Doctor extends Model
      */
     protected $fillable = [
         'department_id',
+        'user_id',
         'active',
     ];
 
@@ -34,6 +35,7 @@ class Doctor extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'user_id' => 'integer',
         'department_id' => 'integer',
         'active' => 'boolean',
     ];
@@ -44,5 +46,13 @@ class Doctor extends Model
     public function department()
     {
         return $this->belongsTo(Department::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -29,6 +29,7 @@ class Appointment extends Model
         'patient_id',
         'doctor_id',
         'department_id',
+        'timeslot_id',
         'appointment_date',
         'description',
         'confirmed',
@@ -44,6 +45,7 @@ class Appointment extends Model
         'patient_id' => 'integer',
         'doctor_id' => 'integer',
         'department_id' => 'integer',
+        'timeslot_id' => 'integer',
         'appointment_date' => 'date',
         'confirmed' => 'boolean',
     ];
@@ -70,5 +72,10 @@ class Appointment extends Model
     public function department()
     {
         return $this->belongsTo(Department::class);
+    }
+
+    public function timeslot()
+    {
+        return $this->belongsTo(TimeSlot::class);
     }
 }
