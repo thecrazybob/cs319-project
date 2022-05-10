@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Test;
 use App\Models\Vaccine;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use App\Http\Requests\VaccineStoreRequest;
 use App\Http\Requests\VaccineUpdateRequest;
 
@@ -49,9 +48,9 @@ class VaccineController extends Controller
      * @param \App\Models\Vaccine $vaccine
      * @return \Illuminate\Http\Response
      */
-    public function show($vaccine)
+    public function show(Vaccine $vaccine)
     {
-        $vaccine = Vaccine::find($vaccine);
+        $this->authorize('view', $vaccine);
         $file_path = $vaccine->file->file_path;
         return response()->download(storage_path('app/public/'.$file_path));
     }
@@ -67,6 +66,7 @@ class VaccineController extends Controller
 
     public function edit(Request $request, Vaccine $vaccine)
     {
+        $this->authorize('update', $vaccine);
         return view('vaccine.edit', compact('vaccine'));
     }
 
@@ -88,6 +88,7 @@ class VaccineController extends Controller
      */
     public function update(VaccineUpdateRequest $request, Vaccine $vaccine)
     {
+        $this->authorize('update', $vaccine);
         $vaccine->update($request->validated());
 
         return redirect()->route('vaccine.index');
@@ -100,6 +101,7 @@ class VaccineController extends Controller
      */
     public function destroy(Request $request, Vaccine $vaccine)
     {
+        $this->authorize('delete', $vaccine);
         $vaccine->delete();
         return redirect()->route('vaccine.index');
     }

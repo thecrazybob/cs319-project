@@ -23,6 +23,7 @@ class TestController extends Controller
      */
     public function show(Request $request, Test $test)
     {
+        $this->authorize('view', $test);
         $file_path = $test->file->file_path;
         return response()->download(storage_path('app/public/'.$file_path));
     }

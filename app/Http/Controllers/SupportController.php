@@ -27,6 +27,7 @@ class SupportController extends Controller
      */
     public function show(Request $request, Support $support)
     {
+        $this->authorize('view', $support);
         $messages = SupportMessage::where('support_id', $support->id)->latest()->get();
         return view('support.show', compact('support', 'messages'));
     }

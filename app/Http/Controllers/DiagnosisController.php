@@ -18,10 +18,10 @@ class DiagnosisController extends Controller
      * @param \App\Models\Diagnosis $diagnosis
      * @return \Illuminate\Http\Response
      */
-    public function show($diagnosis)
+    public function show(Diagnosis $diagnosi)
     {
-        $diagnosis = Diagnosis::find($diagnosis);
-        $file_path = $diagnosis->file->file_path;
+        $this->authorize('view', $diagnosi);
+        $file_path = $diagnosi->file->file_path;
         return response()->download(storage_path('app/public/'.$file_path));
     }
 }

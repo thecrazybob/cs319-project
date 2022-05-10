@@ -3,9 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Diagnosis;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DiagnosesPolicy
+class DiagnosisPolicy
 {
     use HandlesAuthorization;
 
@@ -21,9 +22,11 @@ class DiagnosesPolicy
         }
     }
 
-    public function view(User $user)
+    public function view(User $user, Diagnosis $diagnosis = null)
     {
         if ($user->can('view_diagnosis')) {
+            return true;
+        } elseif ($diagnosis->patient_id == $user->patient->id) {
             return true;
         }
     }
