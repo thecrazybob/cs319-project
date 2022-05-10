@@ -5,6 +5,7 @@ namespace App\Nova;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
@@ -17,7 +18,7 @@ class Patient extends Resource
 {
     public function title()
     {
-        return \App\Models\User::where('patient_id', $this->id)->first()->name;
+        return \App\Models\User::where('id', $this->user_id)->first()->name;
     }
 
     /**
@@ -47,6 +48,7 @@ class Patient extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Bilkent Id')->sortable()->required(),
+            BelongsTo::make('User')->sortable()->showCreateRelationButton(),
             Date::make('Birth Date')->sortable()->required(),
             Text::make('Gender')->sortable()->displayUsing(function ($gender) {
                 $converted = Str::of($gender)->studly();
@@ -56,7 +58,8 @@ class Patient extends Resource
             Number::make('Height')->min(50)->max(300)->step(0.1)->sortable()->required(),
             Number::make('Weight')->min(1)->max(1000)->step(0.1)->sortable()->required(),
             Textarea::make('Allergies')->required(),
-            Textarea::make('Other Illnesses')->required(),
+            Textarea::make('Operations')->required(),
+            Textarea::make('Other Illness')->required(),
             Textarea::make('Current Medications')->required(),
             Boolean::make('Smoking'),
             Date::make('Created At')->sortable()->onlyOnDetail(),

@@ -44,7 +44,7 @@ class Visit extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Patient')->sortable(),
-            Date::make('Visit Date')->sortable(),
+            Date::make('Visit Date')->sortable()->required(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];

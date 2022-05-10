@@ -48,10 +48,10 @@ class Report extends Resource
             Text::make('Subject')->sortable()->required(),
             Text::make('Report Type')->sortable()->required(),
             Date::make('Report Date')->required(),
-            Number::make('Days')->min(1)->max(365)->step(1),
+            Number::make('Days')->min(0)->max(365)->step(1)->required(),
             BelongsTo::make('Patient'),
             BelongsTo::make('Doctor'),
-            BelongsTo::make('File'),
+            BelongsTo::make('File')->showCreateRelationButton(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
 

@@ -45,9 +45,8 @@ class Document extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Patient')->sortable(),
-            BelongsTo::make('File')->sortable()->searchable(),
-            Text::make('Document Name', 'name')->sortable(),
-            Text::make('Document Description', 'type')->sortable(),
+            BelongsTo::make('File')->sortable()->showCreateRelationButton(),
+            Text::make('Document Name', 'name')->sortable()->required(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];
