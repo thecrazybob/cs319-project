@@ -47,7 +47,7 @@
                             <p class="ml-16 text-sm font-medium text-gray-500 truncate">Total Doses</p>
                         </dt>
                         <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-                            <p class="text-2xl font-semibold text-gray-900">{{$dose_count}}</p>
+                            <p class="text-2xl font-semibold text-gray-900">{{$dose_count ?? 0}}</p>
                             
                             <p class="ml-2 flex gap-x-1 items-baseline text-sm font-semibold @if($requirement_bool) text-green-600 @else text-red-600 @endif">
                             @if($requirement_bool)
@@ -80,7 +80,7 @@
                         </dt>
                         <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
                             
-                            <p class="text-2xl font-semibold text-gray-900">{{$next_dose}}</p>
+                            <p class="text-2xl font-semibold text-gray-900">{{$next_dose ?? now()->format('d M Y')}}</p>
                         </dd>
                     </div>
 
@@ -96,7 +96,7 @@
                             <p class="ml-16 text-sm font-medium text-gray-500 truncate">Last PCR Test</p>
                         </dt>
                         <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-                            <p class="text-2xl font-semibold text-gray-900">{{$last_test}}</p>
+                            <p class="text-2xl font-semibold text-gray-900">{{$last_test ?? '0 PCR Tests'}}</p>
                             
                         </dd>
                     </div>

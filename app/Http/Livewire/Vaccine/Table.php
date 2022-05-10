@@ -11,12 +11,13 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Actions\ButtonAction;
 use Illuminate\Database\Eloquent\Builder;
+use Usernotnull\Toast\Concerns\WireToast;
 use Filament\Tables\Actions\IconButtonAction;
 use Filament\Tables\Concerns\InteractsWithTable;
 
 class Table extends Component implements HasTable
 {
-    use InteractsWithTable;
+    use InteractsWithTable, WireToast;
 
     protected function getTableQuery(): Builder
     {
@@ -51,7 +52,7 @@ class Table extends Component implements HasTable
                 ->icon('heroicon-o-download'),
             IconButtonAction::make('destroy')
                 ->label('Delete vaccine')
-                ->action(fn (Vaccine $record) => $record->delete() && $record->file->delete())
+                ->action(fn (Vaccine $record) => $record->delete() && $record->file->delete() && toast()->success('Vaccine deleted')->push())
                 ->icon('heroicon-o-trash'),
         ];
     }
