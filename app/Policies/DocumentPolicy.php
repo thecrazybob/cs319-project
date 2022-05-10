@@ -22,7 +22,7 @@ class DocumentPolicy
         if ($user->can('view_file')) {
             return true;
         }
-        if ($document->patient_id == $user->patient?->id) {
+        if ($document?->patient_id == $user->patient?->id) {
             return true;
         }
     }
@@ -33,7 +33,7 @@ class DocumentPolicy
         if ($user->can('create_file')) {
             return true;
         }
-        if ($document->patient_id == $user->patient?->id) {
+        if ($document?->patient_id == $user->patient?->id) {
             return true;
         }
     }
@@ -43,7 +43,7 @@ class DocumentPolicy
         if ($user->can('modify_file')) {
             return true;
         }
-        if ($document->patient_id == $user->patient?->id) {
+        if ($document?->patient_id == $user->patient?->id) {
             return true;
         }
     }
@@ -53,7 +53,7 @@ class DocumentPolicy
         if ($user->can('modify_file')) {
             return true;
         }
-        if ($document->patient_id == $user->patient?->id) {
+        if ($document?->patient_id == $user->patient?->id) {
             return true;
         }
     }

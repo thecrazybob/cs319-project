@@ -24,7 +24,7 @@ class SupportPolicy
         if ($user->can('view_ticket')) {
             return true;
         }
-        if ($support->patient_id == $user->patient?->id) {
+        if ($support?->patient_id == $user->patient?->id) {
             return true;
         }
     }
