@@ -20,7 +20,7 @@ class FormPay extends Component implements HasForms
     {
         $this->invoice_id = $id;
 
-        if ( Invoice::find($this->invoice_id)->status  == "paid" ) {
+        if (Invoice::find($this->invoice_id)->status  == "paid") {
             toast()->danger('This invoice has already been paid.')->pushOnNextPage();
             redirect(route('invoice.index'));
         }
@@ -47,7 +47,7 @@ class FormPay extends Component implements HasForms
     {
         DB::select('update invoices set status = \'paid\' where id = ?', [$this->invoice_id]);
 
-        toast()->success('Payment completed successfully.')->push();
+        toast()->success('Payment completed successfully.')->pushOnNextPage();
 
         redirect(route('invoice.index'));
     }

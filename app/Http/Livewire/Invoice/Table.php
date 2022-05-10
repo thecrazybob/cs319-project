@@ -39,6 +39,7 @@ class Table extends Component implements HasTable
             IconButtonAction::make('pay')
                 ->icon('heroicon-o-credit-card')
                 ->label('Pay Invoice')
+                ->hidden(fn (Invoice $record): bool => $record->status == 'paid')
                 ->url(fn (Invoice $record): string => route('invoice.edit', $record)),
         ];
     }
