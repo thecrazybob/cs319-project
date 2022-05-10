@@ -11,7 +11,8 @@ use Laravel\Nova\Nova;
 
 abstract class Metric extends Card
 {
-    use HasHelpText;
+    use HasHelpText,
+        ResolvesFilters;
 
     /**
      * The displayable name of the metric.
@@ -26,6 +27,13 @@ abstract class Metric extends Card
      * @var bool
      */
     public $refreshWhenActionRuns = false;
+
+    /**
+     * Indicates whether the metric should be refreshed when filter changed.
+     *
+     * @var bool
+     */
+    public $refreshWhenFiltersChange = false;
 
     /**
      * Calculate the metric's value.
@@ -63,12 +71,13 @@ abstract class Metric extends Card
     protected function getCacheKey(NovaRequest $request)
     {
         return sprintf(
-            'nova.metric.%s.%s.%s.%s.%s',
+            'nova.metric.%s.%s.%s.%s.%s.%s',
             $this->uriKey(),
             $request->input('range', 'no-range'),
             $request->input('timezone', 'no-timezone'),
             $request->input('twelveHourTime', 'no-12-hour-time'),
-            $this->onlyOnDetail ? $request->findModelOrFail()->getKey() : 'no-resource-id'
+            $this->onlyOnDetail ? $request->findModelOrFail()->getKey() : 'no-resource-id',
+            md5($request->input('filter', 'no-filter'))
         );
     }
 
@@ -85,7 +94,7 @@ abstract class Metric extends Card
     /**
      * Determine for how many minutes the metric should be cached.
      *
-     * @return \DateTimeInterface|\DateInterval|float|int
+     * @return \DateTimeInterface|\DateInterval|float|int|null
      */
     public function cacheFor()
     {
@@ -106,6 +115,20 @@ abstract class Metric extends Card
      * Set whether the metric should refresh when actions are run.
      *
      * @param  bool  $value
+     * @return $this
+     */
+    public function refreshWhenActionsRun($value = true)
+    {
+        return $this->refreshWhenActionsRun($value);
+    }
+
+    /**
+     * Set whether the metric should refresh when actions are run.
+     *
+     * @param  bool  $value
+     * @return $this
+     *
+     * @deprecated Use "refreshWhenActionsRun"
      */
     public function refreshWhenActionRuns($value = true)
     {
@@ -115,12 +138,24 @@ abstract class Metric extends Card
     }
 
     /**
+     * Set whether the metric should refresh when filter changed.
+     *
+     * @param  bool  $value
+     * @return $this
+     */
+    public function refreshWhenFiltersChange($value = true)
+    {
+        $this->refreshWhenFiltersChange = $value;
+
+        return $this;
+    }
+
+    /**
      * Prepare the metric for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge(parent::jsonSerialize(), [
             'class' => get_class($this),
@@ -129,14 +164,15 @@ abstract class Metric extends Card
             'helpWidth' => $this->getHelpWidth(),
             'helpText' => $this->getHelpText(),
             'refreshWhenActionRuns' => $this->refreshWhenActionRuns,
+            'refreshWhenFiltersChange' => $this->refreshWhenFiltersChange,
         ]);
     }
 
     /**
      * Convert datetime to application timezone.
      *
-     * @param  \Cake\Chronos\ChronosInterface|\Carbon\CarbonInterface  $datetime
-     * @return \Cake\Chronos\ChronosInterface|\Carbon\CarbonInterface
+     * @param  \Carbon\CarbonInterface  $datetime
+     * @return \Carbon\CarbonInterface
      */
     protected function asQueryDatetime($datetime)
     {
@@ -145,5 +181,18 @@ abstract class Metric extends Card
         }
 
         return $datetime->timezone(config('app.timezone'));
+    }
+
+    /**
+     * Format date between.
+     *
+     * @param  array  $ranges
+     * @return array
+     */
+    protected function formatQueryDateBetween(array $ranges)
+    {
+        return array_map(function ($datetime) {
+            return $this->asQueryDatetime($datetime);
+        }, $ranges);
     }
 }

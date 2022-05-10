@@ -9,6 +9,9 @@ module.exports = {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/**/*.blade.php',
+        './resources/views/*.blade.php',
+        './vendor/usernotnull/tall-toasts/config//*.php',
+        './vendor/usernotnull/tall-toasts/resources/views//*.blade.php'
     ],
 
     theme: {
@@ -21,9 +24,13 @@ module.exports = {
                 primary: colors.blue,
                 success: colors.green,
                 warning: colors.yellow,
+                sky: colors.sky,
+                teal: colors.teal,
+                cyan: colors.cyan,
+                rose: colors.rose,
             },
         },
     },
 
-    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), require('@tailwindcss/line-clamp')],
 };

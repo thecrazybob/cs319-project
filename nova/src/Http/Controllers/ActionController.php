@@ -12,14 +12,16 @@ class ActionController extends Controller
      * List the actions for the given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(NovaRequest $request)
     {
+        $resourceId = with($request->input('resources'), function ($resourceIds) {
+            return is_array($resourceIds) && count($resourceIds) === 1 ? $resourceIds[0] : null;
+        });
+
         $resource = $request->newResourceWith(
-            ($request->resourceId
-                ? $request->findModelQuery()->first()
-                : null) ?? $request->model()
+            $request->findModel($resourceId) ?? $request->model()
         );
 
         return response()->json([
@@ -49,7 +51,7 @@ class ActionController extends Controller
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
-     * @return \Illuminate\Support\Collection
+     * @return \Laravel\Nova\Actions\ActionCollection<int, \Laravel\Nova\Actions\Action>
      */
     protected function availableActions(NovaRequest $request, $resource)
     {

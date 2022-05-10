@@ -11,7 +11,7 @@ trait FillsFields
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return array
+     * @return array{\Illuminate\Database\Eloquent\Model, array<int, callable>}
      */
     public static function fill(NovaRequest $request, $model)
     {
@@ -26,7 +26,7 @@ trait FillsFields
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return array
+     * @return array{\Illuminate\Database\Eloquent\Model, array<int, callable>}
      */
     public static function fillForUpdate(NovaRequest $request, $model)
     {
@@ -42,7 +42,7 @@ trait FillsFields
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  \Illuminate\Database\Eloquent\Relations\Pivot  $pivot
-     * @return array
+     * @return array{\Illuminate\Database\Eloquent\Model, array<int, callable>}
      */
     public static function fillPivot(NovaRequest $request, $model, $pivot)
     {
@@ -60,7 +60,7 @@ trait FillsFields
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  \Illuminate\Database\Eloquent\Relations\Pivot  $pivot
-     * @return array
+     * @return array{\Illuminate\Database\Eloquent\Model, array<int, callable>}
      */
     public static function fillPivotForUpdate(NovaRequest $request, $model, $pivot)
     {
@@ -77,8 +77,8 @@ trait FillsFields
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  \Illuminate\Support\Collection  $fields
-     * @return array
+     * @param  \Illuminate\Support\Collection<int, \Laravel\Nova\Fields\Field>  $fields
+     * @return array{\Illuminate\Database\Eloquent\Model, array<int, callable>}
      */
     protected static function fillFields(NovaRequest $request, $model, $fields)
     {

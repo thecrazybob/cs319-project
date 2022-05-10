@@ -2,10 +2,15 @@
 
 namespace Laravel\Nova\Fields;
 
+use Illuminate\Support\Arr;
+use Laravel\Nova\Contracts\FilterableField;
+use Laravel\Nova\Fields\Filters\TextFilter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Text extends Field
+class Text extends Field implements FilterableField
 {
+    use FieldFilterable, SupportsDependentFields;
+
     /**
      * The field's component.
      *
@@ -59,12 +64,48 @@ class Text extends Field
     }
 
     /**
-     * Prepare the element for JSON serialization.
+     * Make the field filter.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Laravel\Nova\Fields\Filters\Filter
+     */
+    protected function makeFilter(NovaRequest $request)
+    {
+        return new TextFilter($this);
+    }
+
+    /**
+     * Prepare the field for JSON serialization.
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function serializeForFilter()
+    {
+        return transform($this->jsonSerialize(), function ($field) {
+            $field['suggestions'] = $field['suggestions'] ?? $this->resolveSuggestions(app(NovaRequest::class));
+
+            return Arr::only($field, [
+                'uniqueKey',
+                'name',
+                'attribute',
+                'suggestions',
+                'type',
+                'min',
+                'max',
+                'step',
+                'pattern',
+                'placeholder',
+                'extraAttributes',
+            ]);
+        });
+    }
+
+    /**
+     * Prepare the element for JSON serialization.
+     *
+     * @return array<string, mixed>
+     */
+    public function jsonSerialize(): array
     {
         $request = app(NovaRequest::class);
 

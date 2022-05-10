@@ -1,6 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
+import nova from './nova'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store()
+export function registerStore(app) {
+  app.use(
+    createStore({
+      ...nova,
+    })
+  )
+}

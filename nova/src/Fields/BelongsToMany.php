@@ -5,18 +5,26 @@ namespace Laravel\Nova\Fields;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Contracts\Deletable as DeletableContract;
+use Laravel\Nova\Contracts\FilterableField;
 use Laravel\Nova\Contracts\ListableField;
 use Laravel\Nova\Contracts\PivotableField;
 use Laravel\Nova\Contracts\QueryBuilder;
 use Laravel\Nova\Contracts\RelatableField;
+use Laravel\Nova\Fields\Filters\EloquentFilter;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 use Laravel\Nova\Rules\RelatableAttachment;
 use Laravel\Nova\TrashedStatus;
 
-class BelongsToMany extends Field implements DeletableContract, ListableField, PivotableField, RelatableField
+/**
+ * @method static static make(mixed $name, string|null $attribute = null, string|null $resource = null)
+ */
+class BelongsToMany extends Field implements DeletableContract, FilterableField, ListableField, PivotableField, RelatableField
 {
     use Deletable,
+        DeterminesIfCreateRelationCanBeShown,
         DetachesPivotModels,
+        EloquentFilterable,
         FormatsRelatableDisplayValues,
         ManyToManyCreationRules,
         Searchable;
@@ -31,7 +39,7 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
     /**
      * The class name of the related resource.
      *
-     * @var string
+     * @var class-string<\Laravel\Nova\Resource>
      */
     public $resourceClass;
 
@@ -52,23 +60,16 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
     /**
      * The callback that should be used to resolve the pivot fields.
      *
-     * @var callable
+     * @var callable(\Laravel\Nova\Http\Requests\NovaRequest, \Illuminate\Database\Eloquent\Model):array<int, \Laravel\Nova\Fields\Field>
      */
     public $fieldsCallback;
 
     /**
      * The callback that should be used to resolve the pivot actions.
      *
-     * @var callable
+     * @var callable(\Laravel\Nova\Http\Requests\NovaRequest):array<int, \Laravel\Nova\Actions\Action>
      */
     public $actionsCallback;
-
-    /**
-     * The column that should be displayed for the field.
-     *
-     * @var \Closure
-     */
-    public $display;
 
     /**
      * The displayable name that should be used to refer to the pivot class.
@@ -80,7 +81,7 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
     /**
      * The displayable singular label of the relation.
      *
-     * @var string
+     * @var string|null
      */
     public $singularLabel;
 
@@ -89,7 +90,7 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
      *
      * @param  string  $name
      * @param  string|null  $attribute
-     * @param  string|null  $resource
+     * @param  class-string<\Laravel\Nova\Resource>|null  $resource
      * @return void
      */
     public function __construct($name, $attribute = null, $resource = null)
@@ -100,7 +101,7 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
 
         $this->resourceClass = $resource;
         $this->resourceName = $resource::uriKey();
-        $this->manyToManyRelationship = $this->attribute;
+        $this->manyToManyRelationship = $this->attribute = $attribute ?? ResourceRelationshipGuesser::guessRelation($name);
         $this->deleteCallback = $this->detachmentCallback();
 
         $this->fieldsCallback = function () {
@@ -112,6 +113,26 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
         };
 
         $this->noDuplicateRelations();
+    }
+
+    /**
+     * Get the relationship name.
+     *
+     * @return string
+     */
+    public function relationshipName()
+    {
+        return $this->manyToManyRelationship;
+    }
+
+    /**
+     * Get the relationship type.
+     *
+     * @return string
+     */
+    public function relationshipType()
+    {
+        return 'belongsToMany';
     }
 
     /**
@@ -213,7 +234,7 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return string
+     * @return string|null
      */
     protected function attachableQueryMethod(NovaRequest $request, $model)
     {
@@ -244,7 +265,7 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
     /**
      * Specify the callback to be executed to retrieve the pivot fields.
      *
-     * @param  callable  $callback
+     * @param  callable(\Laravel\Nova\Http\Requests\NovaRequest, \Illuminate\Database\Eloquent\Model):array<int, \Laravel\Nova\Fields\Field>  $callback
      * @return $this
      */
     public function fields($callback)
@@ -257,7 +278,7 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
     /**
      * Specify the callback to be executed to retrieve the pivot actions.
      *
-     * @param  callable  $callback
+     * @param  callable(\Laravel\Nova\Http\Requests\NovaRequest):array<int, \Laravel\Nova\Actions\Action>  $callback
      * @return $this
      */
     public function actions($callback)
@@ -283,6 +304,7 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
     /**
      * Set the displayable singular label of the resource.
      *
+     * @param  string  $singularLabel
      * @return $this
      */
     public function singularLabel($singularLabel)
@@ -305,23 +327,101 @@ class BelongsToMany extends Field implements DeletableContract, ListableField, P
     }
 
     /**
+     * Make the field filter.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Laravel\Nova\Fields\Filters\Filter|null
+     */
+    protected function makeFilter(NovaRequest $request)
+    {
+        if ($request->viaRelationship()
+            && ($request->relationshipType ?? null) === 'belongsToMany'
+            && $this->resourceClass::uriKey() === $request->viaResource
+        ) {
+            return null;
+        }
+
+        return new EloquentFilter($this);
+    }
+
+    /**
+     * Define filterable attribute.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return string
+     */
+    protected function filterableAttribute(NovaRequest $request)
+    {
+        return $request->newResource()->resource->getQualifiedKeyName();
+    }
+
+    /**
+     * Define the default filterable callback.
+     *
+     * @return callable(\Laravel\Nova\Http\Requests\NovaRequest, \Illuminate\Database\Eloquent\Builder, mixed, string):void
+     */
+    protected function defaultFilterableCallback()
+    {
+        return function (NovaRequest $request, $query, $value, $attribute) {
+            $query->whereKey($value);
+        };
+    }
+
+    /**
      * Prepare the field for JSON serialization.
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function serializeForFilter()
     {
-        return array_merge([
-            'belongsToManyRelationship' => $this->manyToManyRelationship,
-            'debounce' => $this->debounce,
-            'listable' => true,
-            'perPage'=> $this->resourceClass::$perPageViaRelationship,
-            'validationKey' => $this->validationKey(),
-            'resourceName' => $this->resourceName,
-            'searchable' => $this->searchable,
-            'withSubtitles' => $this->withSubtitles,
-            'singularLabel' => $this->singularLabel ?? $this->resourceClass::singularLabel(),
-        ], parent::jsonSerialize());
+        return transform($this->jsonSerialize(), function ($field) {
+            return [
+                'debounce' => $field['debounce'],
+                'displaysWithTrashed' => false,
+                'label' => $this->resourceClass::label(),
+                'resourceName' => $field['resourceName'],
+                'searchable' => $field['searchable'],
+                'withSubtitles' => $field['withSubtitles'],
+                'uniqueKey' => $field['uniqueKey'],
+            ];
+        });
+    }
+
+    /**
+     * Make current field behaves as panel.
+     *
+     * @return \Laravel\Nova\Panel
+     */
+    public function asPanel()
+    {
+        return Panel::make($this->name)
+                    ->withMeta([
+                        'fields' => [$this],
+                        'prefixComponent' => true,
+                    ])->withComponent('relationship-panel');
+    }
+
+    /**
+     * Prepare the field for JSON serialization.
+     *
+     * @return array<string, mixed>
+     */
+    public function jsonSerialize(): array
+    {
+        return with(app(NovaRequest::class), function ($request) {
+            return array_merge([
+                'belongsToManyRelationship' => $this->manyToManyRelationship,
+                'relationshipType' => $this->relationshipType(),
+                'debounce' => $this->debounce,
+                'relatable' => true,
+                'perPage'=> $this->resourceClass::$perPageViaRelationship,
+                'validationKey' => $this->validationKey(),
+                'resourceName' => $this->resourceName,
+                'searchable' => $this->searchable,
+                'withSubtitles' => $this->withSubtitles,
+                'singularLabel' => $this->singularLabel ?? $this->resourceClass::singularLabel(),
+                'showCreateRelationButton' => $this->createRelationShouldBeShown($request),
+            ], parent::jsonSerialize());
+        });
     }
 }

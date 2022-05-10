@@ -1,49 +1,72 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html class="h-full bg-gray-100" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Styles -->
-        <style>[x-cloak] { display: none !important; }</style>
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-        @livewireStyles
+    <!-- Styles -->
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
 
-        <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
+    </style>
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-    </head>
-    <body class="font-sans antialiased">
-        <x-jet-banner />
+    @livewireStyles
 
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
+    <!-- Scripts -->
+    <script src="{{ mix('js/app.js') }}" defer></script>
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+</head>
+
+<body class="font-sans antialiased h-full">
+    <livewire:toasts />
+    <x-jet-banner />
+
+    <div class="min-h-screen bg-gray-100">
+
+        <header class="@if (request()->routeIs('dashboard') || request()->routeIs('staff.dashboard')) pb-24 @else pb-8 @endif bg-gradient-to-r from-sky-800 to-cyan-600">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+                <div class="relative flex flex-wrap items-center justify-center lg:justify-between">
+                    <!-- Logo -->
+                    <div class="absolute left-0 py-5 flex-shrink-0 lg:static">
+                        <a href="{{ route('dashboard') }}">
+                            <x-jet-application-logo class="block h-9 w-auto" />
+                        </a>
                     </div>
-                </header>
-            @endif
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
+                    @livewire('navigation-menu')
+                </div>
+            </div>
+        </header>
 
-        @stack('modals')
+        <!-- Page Heading -->
+        @if (isset($header))
+        <header class="bg-white shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
+        @endif
 
-        @livewireScripts
-        @stack('scripts')
-    </body>
+        <!-- Page Content -->
+        <main>
+            {{ $slot }}
+        </main>
+    </div>
+
+    @stack('modals')
+
+    @livewireScripts
+    @stack('scripts')
+</body>
+
 </html>

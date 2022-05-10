@@ -1,65 +1,60 @@
 <template>
-  <modal @modal-close="handleClose">
+  <Modal data-testid="restore-resource-modal" :show="show" maxWidth="sm">
     <form
-      @submit.prevent="handleConfirm"
-      slot-scope="props"
-      class="bg-white rounded-lg shadow-lg overflow-hidden"
+      @submit.prevent="$emit('confirm')"
+      class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
       style="width: 460px"
     >
       <slot>
-        <div class="p-8">
-          <heading :level="2" class="mb-6">{{
-            __('Restore Resource')
-          }}</heading>
-          <p class="text-80 leading-normal">
+        <ModalHeader v-text="__('Restore Resource')" />
+        <ModalContent>
+          <p class="leading-normal">
             {{ __('Are you sure you want to restore the selected resources?') }}
           </p>
-        </div>
+        </ModalContent>
       </slot>
 
-      <div class="bg-30 px-6 py-3 flex">
+      <ModalFooter>
         <div class="ml-auto">
-          <button
+          <LinkButton
             type="button"
             data-testid="cancel-button"
-            @click.prevent="handleClose"
-            class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
+            dusk="cancel-restore-button"
+            @click.prevent="$emit('close')"
+            class="mr-3"
           >
             {{ __('Cancel') }}
-          </button>
+          </LinkButton>
 
-          <button
+          <DefaultButton
             ref="confirmButton"
-            id="confirm-restore-button"
             data-testid="confirm-button"
+            dusk="confirm-restore-button"
             type="submit"
-            class="btn btn-default btn-primary"
           >
             {{ __('Restore') }}
-          </button>
+          </DefaultButton>
         </div>
-      </div>
+      </ModalFooter>
     </form>
-  </modal>
+  </Modal>
 </template>
 
 <script>
 export default {
-  methods: {
-    handleClose() {
-      this.$emit('close')
-    },
+  emits: ['confirm', 'close'],
 
-    handleConfirm() {
-      this.$emit('confirm')
-    },
+  props: {
+    show: { type: Boolean, default: false },
   },
 
   /**
    * Mount the component.
    */
   mounted() {
-    this.$refs.confirmButton.focus()
+    this.$nextTick(() => {
+      // this.$refs.confirmButton.focus()
+    })
   },
 }
 </script>

@@ -2,123 +2,46 @@
 
 namespace Laravel\Nova\Fields;
 
+use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Exception;
+use Illuminate\Support\Arr;
+use Laravel\Nova\Contracts\FilterableField;
+use Laravel\Nova\Fields\Filters\DateFilter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class DateTime extends Field
+class DateTime extends Field implements FilterableField
 {
+    use FieldFilterable, SupportsDependentFields;
+
     /**
      * The field's component.
      *
      * @var string
      */
-    public $component = 'date-time';
-
-    /**
-     * Cast format from DateTime instance.
-     *
-     * @var string
-     */
-    protected $dateFormat = 'Y-m-d H:i:s.u';
+    public $component = 'date-time-field';
 
     /**
      * Create a new field.
      *
      * @param  string  $name
-     * @param  string|null  $attribute
-     * @param  mixed|null  $resolveCallback
+     * @param  string|\Closure|callable|object|null  $attribute
+     * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
      * @return void
      */
-    public function __construct($name, $attribute = null, $resolveCallback = null)
+    public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
-        parent::__construct($name, $attribute, $resolveCallback ?? function ($value) {
+        parent::__construct($name, $attribute, $resolveCallback ?? function ($value, $request) {
             if (! is_null($value)) {
                 if ($value instanceof DateTimeInterface) {
-                    return $value->format($this->dateFormat);
+                    return $value instanceof CarbonInterface
+                                ? $value->toIso8601String()
+                                : $value->format(DateTimeInterface::ATOM);
                 }
 
                 throw new Exception("DateTime field must cast to 'datetime' in Eloquent model.");
             }
         });
-    }
-
-    /**
-     * Set the first day of the week.
-     *
-     * @param  int  $day
-     * @return $this
-     */
-    public function firstDayOfWeek($day)
-    {
-        return $this->withMeta([__FUNCTION__ => $day]);
-    }
-
-    /**
-     * Set the date format (Moment.js) that should be used to display the date.
-     *
-     * @param  string  $format
-     * @return $this
-     */
-    public function format($format)
-    {
-        return $this->withMeta([__FUNCTION__ => $format]);
-    }
-
-    /**
-     * Set the date format (flatpickr.js) that should be used in the input field (picker).
-     *
-     * @param  string  $format
-     * @return $this
-     */
-    public function pickerFormat($format)
-    {
-        return $this->withMeta([__FUNCTION__ => $format]);
-    }
-
-    /**
-     * Set a readable date format, that should be used to display the date to the user.
-     *
-     * @param  string  $format
-     * @return $this
-     */
-    public function pickerDisplayFormat($format)
-    {
-        return $this->withMeta([__FUNCTION__ => $format]);
-    }
-
-    /**
-     * Set picker hour increment.
-     *
-     * @param  int  $increment
-     * @return $this
-     */
-    public function incrementPickerHourBy($increment)
-    {
-        $increment = intval($increment);
-
-        if ($increment > 0 && $increment < 24) {
-            return $this->withMeta(['pickerHourIncrement' => $increment]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set picker minute increment.
-     *
-     * @param  int  $increment
-     * @return $this
-     */
-    public function incrementPickerMinuteBy($increment)
-    {
-        $increment = intval($increment);
-
-        if ($increment > 0 && $increment < 60) {
-            return $this->withMeta(['pickerMinuteIncrement' => $increment]);
-        }
-
-        return $this;
     }
 
     /**
@@ -132,9 +55,62 @@ class DateTime extends Field
         $value = parent::resolveDefaultValue($request);
 
         if ($value instanceof DateTimeInterface) {
-            return $value->format($this->dateFormat);
+            return $value instanceof CarbonInterface
+                        ? $value->toIso8601String()
+                        : $value->format(DateTimeInterface::ATOM);
         }
 
         return $value;
+    }
+
+    /**
+     * Make the field filter.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Laravel\Nova\Fields\Filters\Filter
+     */
+    protected function makeFilter(NovaRequest $request)
+    {
+        return new DateFilter($this);
+    }
+
+    /**
+     * Define the default filterable callback.
+     *
+     * @return callable(\Laravel\Nova\Http\Requests\NovaRequest, \Illuminate\Database\Eloquent\Builder, mixed, string):\Illuminate\Database\Eloquent\Builder
+     */
+    protected function defaultFilterableCallback()
+    {
+        return function (NovaRequest $request, $query, $value, $attribute) {
+            [$min, $max] = $value;
+
+            if (! is_null($min) && ! is_null($max)) {
+                return $query->whereDate($attribute, '>=', $min)
+                             ->whereDate($attribute, '<=', $max);
+            } elseif (! is_null($min)) {
+                return $query->whereDate($attribute, '>=', $min);
+            }
+
+            return $query->whereDate($attribute, '<=', $max);
+        };
+    }
+
+    /**
+     * Prepare the field for JSON serialization.
+     *
+     * @return array
+     */
+    public function serializeForFilter()
+    {
+        return transform($this->jsonSerialize(), function ($field) {
+            return Arr::only($field, [
+                'uniqueKey',
+                'name',
+                'attribute',
+                'type',
+                'placeholder',
+                'extraAttributes',
+            ]);
+        });
     }
 }
