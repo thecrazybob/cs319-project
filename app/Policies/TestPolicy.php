@@ -17,8 +17,45 @@ class TestPolicy
      * @param  \App\Models\Test  $test
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Test $test)
+
+    public function viewAny(User $user)
     {
-        return $test->patient_id == $user->patient->id;
+        if ($user->can('view_test')) {
+            return true;
+        }
     }
+
+    public function view(User $user, Test $test = null)
+    {
+        if ($user->can('view_test')) {
+            return true;
+        } elseif ($test->patient_id == $user->patient->id) {
+            return true;
+        }
+    }
+
+
+    public function create(User $user)
+    {
+        if ($user->can('create_test')) {
+            return true;
+        }
+    }
+
+    public function update(User $user)
+    {
+        if ($user->can('modify_test')) {
+            return true;
+        }
+    }
+
+    public function delete(User $user)
+    {
+        if ($user->can('modify_test')) {
+            return true;
+        }
+    }
+
+
+
 }
