@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Support;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SupportPolicy
@@ -21,7 +22,8 @@ class SupportPolicy
         }
     }
 
-
-
-
+    public function view(User $user, Support $support)
+    {
+        return $support->patient_id == $user->patient->id;
+    }
 }

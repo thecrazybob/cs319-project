@@ -27,6 +27,7 @@ class DocumentController extends Controller
      */
     public function show(Request $request, Document $document)
     {
+        $this->authorize('view', $document);
         $file_path = $document->file->file_path;
         return response()->download(storage_path('app/public/'.$file_path));
     }
@@ -46,6 +47,7 @@ class DocumentController extends Controller
      */
     public function edit(Request $request, Document $document)
     {
+        $this->authorize('update', $document);
         return view('document.edit', compact('document'));
     }
 
@@ -79,6 +81,7 @@ class DocumentController extends Controller
      */
     public function destroy(Request $request, Document $document)
     {
+        $this->authorize('delete', $document);
         $document->delete();
 
         return redirect()->route('document.index');
