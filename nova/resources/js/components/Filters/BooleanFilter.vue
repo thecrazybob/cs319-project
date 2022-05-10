@@ -1,27 +1,25 @@
 <template>
-  <FilterContainer>
-    <span>{{ filter.name }}</span>
+  <div>
+    <h3 class="text-sm uppercase tracking-wide text-80 bg-30 p-3">
+      {{ filter.name }}
+    </h3>
 
-    <template #filter>
-      <div class="space-y-2 mt-2">
-        <BooleanOption
-          :dusk="`${filter.name}-boolean-filter-${option.value}-option`"
-          :resource-name="resourceName"
-          :key="option.value"
-          v-for="option in options"
-          :filter="filter"
-          :option="option"
-          @change="handleChange"
-          label="label"
-        />
-      </div>
-    </template>
-  </FilterContainer>
+    <BooleanOption
+      :resource-name="resourceName"
+      :key="option.value"
+      v-for="option in options"
+      :filter="filter"
+      :option="option"
+      @change="handleChange"
+    />
+  </div>
 </template>
 
 <script>
+import BooleanOption from '@/components/BooleanOption.vue'
+
 export default {
-  emits: ['change'],
+  components: { BooleanOption },
 
   props: {
     resourceName: {

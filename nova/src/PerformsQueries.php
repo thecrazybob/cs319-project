@@ -4,8 +4,6 @@ namespace Laravel\Nova;
 
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Query\ApplySoftDeleteConstraint;
-use Laravel\Nova\Query\Search;
-use Laravel\Nova\Query\Search\PrimaryKey;
 
 trait PerformsQueries
 {
@@ -15,8 +13,8 @@ trait PerformsQueries
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  string|null  $search
-     * @param  array<int, \Laravel\Nova\Query\ApplyFilter>  $filters
-     * @param  array<string, string>  $orderings
+     * @param  array  $filters
+     * @param  array  $orderings
      * @param  string  $withTrashed
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -60,34 +58,30 @@ trait PerformsQueries
      */
     protected static function applySearch($query, $search)
     {
-        $modelKeyName = $query->getModel()->getKeyName();
+        return $query->where(function ($query) use ($search) {
+            $model = $query->getModel();
 
-        $searchColumns = collect(static::searchableColumns() ?? [])
-                            ->transform(function ($column) use ($modelKeyName) {
-                                if ($column === $modelKeyName) {
-                                    return new PrimaryKey($column, static::maxPrimaryKeySize());
-                                }
+            $connectionType = $model->getConnection()->getDriverName();
 
-                                return $column;
-                            })->all();
+            $canSearchPrimaryKey = ctype_digit($search) &&
+                                   in_array($model->getKeyType(), ['int', 'integer']) &&
+                                   ($connectionType != 'pgsql' || $search <= static::maxPrimaryKeySize()) &&
+                                   in_array($model->getKeyName(), static::$search);
 
-        return static::initializeSearch($query, $search, $searchColumns);
-    }
+            if ($canSearchPrimaryKey) {
+                $query->orWhere($model->getQualifiedKeyName(), $search);
+            }
 
-    /**
-     * Initialize the search configuration.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $search
-     * @param  array  $searchColumns
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected static function initializeSearch($query, $search, $searchColumns)
-    {
-        return app(Search::class, [
-            'queryBuilder' => $query,
-            'searchKeyword' => $search,
-        ])->handle(__CLASS__, $searchColumns);
+            $likeOperator = $connectionType == 'pgsql' ? 'ilike' : 'like';
+
+            foreach (static::searchableColumns() as $column) {
+                $query->orWhere(
+                    $model->qualifyColumn($column),
+                    $likeOperator,
+                    static::searchableKeyword($column, $search)
+                );
+            }
+        });
     }
 
     /**
@@ -145,7 +139,7 @@ trait PerformsQueries
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  array<int, \Laravel\Nova\Query\ApplyFilter>  $filters
+     * @param  array  $filters
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected static function applyFilters(NovaRequest $request, $query, array $filters)
@@ -159,7 +153,7 @@ trait PerformsQueries
      * Apply any applicable orderings to the query.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  array<string, string>  $orderings
+     * @param  array  $orderings
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected static function applyOrderings($query, array $orderings)
@@ -211,30 +205,6 @@ trait PerformsQueries
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function detailQuery(NovaRequest $request, $query)
-    {
-        return $query;
-    }
-
-    /**
-     * Build an "edit" query for the given resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function editQuery(NovaRequest $request, $query)
-    {
-        return $query;
-    }
-
-    /**
-     * Build a "replicate" query for the given resource.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function replicateQuery(NovaRequest $request, $query)
     {
         return $query;
     }

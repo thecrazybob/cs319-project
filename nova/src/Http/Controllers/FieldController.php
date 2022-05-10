@@ -12,9 +12,9 @@ class FieldController extends Controller
      * Retrieve the given field for the given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function __invoke(NovaRequest $request)
+    public function show(NovaRequest $request)
     {
         return response()->json(
             $request->newResource()

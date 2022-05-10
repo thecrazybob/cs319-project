@@ -15,7 +15,7 @@ class PivotFieldDestroyController extends Controller
      * @param  \Laravel\Nova\Http\Requests\PivotFieldDestroyRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(PivotFieldDestroyRequest $request)
+    public function handle(PivotFieldDestroyRequest $request)
     {
         $request->authorizeForAttachment();
 
@@ -24,12 +24,8 @@ class PivotFieldDestroyController extends Controller
             $pivot = $request->findPivotModel()
         )->save();
 
-        Nova::usingActionEvent(function ($actionEvent) use ($request, $pivot) {
-            $actionEvent->forAttachedResourceUpdate(
-                $request, $request->findModelOrFail(), $pivot
-            )->save();
-        });
-
-        return response()->noContent(200);
+        Nova::actionEvent()->forAttachedResourceUpdate(
+            $request, $request->findModelOrFail(), $pivot
+        )->save();
     }
 }

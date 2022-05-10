@@ -4,11 +4,7 @@ namespace Laravel\Nova\Fields;
 
 use Laravel\Nova\Contracts\ListableField;
 use Laravel\Nova\Contracts\RelatableField;
-use Laravel\Nova\Panel;
 
-/**
- * @method static static make(mixed $name, string|null $attribute = null, string|null $resource = null)
- */
 class HasManyThrough extends HasMany implements ListableField, RelatableField
 {
     /**
@@ -30,60 +26,27 @@ class HasManyThrough extends HasMany implements ListableField, RelatableField
      *
      * @param  string  $name
      * @param  string|null  $attribute
-     * @param  class-string<\Laravel\Nova\Resource>|null  $resource
+     * @param  string|null  $resource
      * @return void
      */
     public function __construct($name, $attribute = null, $resource = null)
     {
         parent::__construct($name, $attribute, $resource);
 
-        $this->hasManyThroughRelationship = $this->attribute = $attribute ?? ResourceRelationshipGuesser::guessRelation($name);
-    }
-
-    /**
-     * Get the relationship name.
-     *
-     * @return string
-     */
-    public function relationshipName()
-    {
-        return $this->hasManyThroughRelationship;
-    }
-
-    /**
-     * Get the relationship type.
-     *
-     * @return string
-     */
-    public function relationshipType()
-    {
-        return 'hasManyThrough';
-    }
-
-    /**
-     * Make current field behaves as panel.
-     *
-     * @return \Laravel\Nova\Panel
-     */
-    public function asPanel()
-    {
-        return Panel::make($this->name)
-                    ->withMeta([
-                        'fields' => [$this],
-                        'prefixComponent' => true,
-                    ])->withComponent('relationship-panel');
+        $this->hasManyThroughRelationship = $this->attribute;
     }
 
     /**
      * Prepare the field for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return array_merge([
             'hasManyThroughRelationship' => $this->hasManyThroughRelationship,
-            'relatable' => true,
+            'listable' => true,
             'perPage'=> $this->resourceClass::$perPageViaRelationship,
             'resourceName' => $this->resourceName,
             'singularLabel' => $this->singularLabel ?? $this->resourceClass::singularLabel(),

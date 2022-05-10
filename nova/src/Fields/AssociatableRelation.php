@@ -9,7 +9,7 @@ trait AssociatableRelation
     /**
      * Determines if the display values should be automatically sorted.
      *
-     * @var (callable(\Laravel\Nova\Http\Requests\NovaRequest):bool)|bool
+     * @var callable|bool
      */
     public $reordersOnAssociatableCallback = true;
 
@@ -31,6 +31,7 @@ trait AssociatableRelation
     /**
      * Determine reordering on associatables.
      *
+     * @param  callable|bool  $callback
      * @return $this
      */
     public function dontReorderAssociatables()
@@ -43,7 +44,7 @@ trait AssociatableRelation
     /**
      * Determine reordering on associatables.
      *
-     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest):bool)|bool  $value
+     * @param  callable|bool  $callback
      * @return $this
      */
     public function reorderAssociatables($value = true)

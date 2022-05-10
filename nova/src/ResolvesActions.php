@@ -2,7 +2,7 @@
 
 namespace Laravel\Nova;
 
-use Laravel\Nova\Actions\ActionCollection;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -13,110 +13,38 @@ trait ResolvesActions
      * Get the actions that are available for the given request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Laravel\Nova\Actions\ActionCollection<int, \Laravel\Nova\Actions\Action>
+     * @return \Illuminate\Support\Collection
      */
     public function availableActions(NovaRequest $request)
     {
-        $resource = $this->resource;
-
-        $request->mergeIfMissing(array_filter([
-            'resourceId' => optional($resource)->getKey(),
-        ]));
-
-        $actions = $this->resolveActions($request)
-                    ->filter->authorizedToSee($request);
-
-        if (optional($resource)->exists === true) {
-            return $actions->filter->authorizedToRun($request, $resource)->values();
-        }
-
-        if (! is_null($resources = $request->selectedResources())) {
-            $rejectedActions = collect();
-
-            $resources->each(function ($resource) use ($request, $actions, $rejectedActions) {
-                $actions->each(function ($action) use ($request, $resource, $rejectedActions) {
-                    if (! $action->authorizedToRun($request, $resource)) {
-                        $rejectedActions->push($action->uriKey());
-                    }
-                });
-            });
-
-            return $actions->reject(function ($action) use ($rejectedActions) {
-                return $rejectedActions->contains(function ($value) use ($action) {
-                    return $action->uriKey() === $value;
-                });
-            })->values();
-        }
-
-        return $actions->values();
+        return $this->resolveActions($request)->filter->authorizedToSee($request)->values();
     }
 
     /**
      * Get the actions that are available for the given index request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Laravel\Nova\Actions\ActionCollection<int, \Laravel\Nova\Actions\Action>
+     * @return \Illuminate\Support\Collection
      */
     public function availableActionsOnIndex(NovaRequest $request)
     {
-        $resource = $this->resource;
-
-        $actions = $this->resolveActions($request)
+        return $this->resolveActions($request)
                     ->filter->shownOnIndex()
-                    ->filter->authorizedToSee($request);
-
-        if (optional($resource)->exists === true) {
-            return $actions->filter->authorizedToRun($request, $resource)->values();
-        }
-
-        if (! is_null($resources = $request->selectedResources())) {
-            $rejectedActions = collect();
-
-            $resources->each(function ($resource) use ($request, $actions, $rejectedActions) {
-                $actions->each(function ($action) use ($request, $resource, $rejectedActions) {
-                    if (! $action->authorizedToRun($request, $resource)) {
-                        $rejectedActions->push($action->uriKey());
-                    }
-                });
-            });
-
-            return $actions->reject(function ($action) use ($rejectedActions) {
-                return $rejectedActions->contains(function ($value) use ($action) {
-                    return $action->uriKey() === $value;
-                });
-            })->values();
-        }
-
-        return $actions->values();
+                    ->filter->authorizedToSee($request)
+                    ->values();
     }
 
     /**
      * Get the actions that are available for the given detail request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Laravel\Nova\Actions\ActionCollection<int, \Laravel\Nova\Actions\Action>
+     * @return \Illuminate\Support\Collection
      */
     public function availableActionsOnDetail(NovaRequest $request)
     {
         return $this->resolveActions($request)
                     ->filter->shownOnDetail()
                     ->filter->authorizedToSee($request)
-                    ->filter->authorizedToRun($request, $this->resource)
-                    ->values();
-    }
-
-    /**
-     * Get the resource table row actions that are available for the given index request.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Laravel\Nova\Actions\ActionCollection<int, \Laravel\Nova\Actions\Action>
-     */
-    public function availableActionsOnTableRow(NovaRequest $request)
-    {
-        return $this->resolveActions($request)
-                    ->filter->shownOnTableRow()
-                    ->filter->authorizedToSee($request)
-                    ->filter->authorizedToRun($request, $this->resource)
                     ->values();
     }
 
@@ -124,20 +52,18 @@ trait ResolvesActions
      * Get the actions for the given request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Laravel\Nova\Actions\ActionCollection<int, \Laravel\Nova\Actions\Action>
+     * @return \Illuminate\Support\Collection
      */
     public function resolveActions(NovaRequest $request)
     {
-        return ActionCollection::make(
-            $this->filter($this->actions($request))
-        );
+        return collect(array_values($this->filter($this->actions($request))));
     }
 
     /**
      * Get the "pivot" actions that are available for the given request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Support\Collection<int, \Laravel\Nova\Actions\Action>
+     * @return \Illuminate\Support\Collection
      */
     public function availablePivotActions(NovaRequest $request)
     {
@@ -148,7 +74,7 @@ trait ResolvesActions
      * Get the "pivot" actions for the given request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Support\Collection<int, \Laravel\Nova\Actions\Action>
+     * @return \Illuminate\Support\Collection
      */
     public function resolvePivotActions(NovaRequest $request)
     {
@@ -163,7 +89,7 @@ trait ResolvesActions
      * Get the "pivot" actions for the given request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array<int, \Laravel\Nova\Actions\Action>
+     * @return array
      */
     protected function getPivotActions(NovaRequest $request)
     {
@@ -181,38 +107,13 @@ trait ResolvesActions
     }
 
     /**
-     * Merge the default actions with the given actions.
-     *
-     * @param  array  $actions
-     * @return array<int, \Laravel\Nova\Actions\Action>
-     */
-    public static function defaultsWith(array $actions)
-    {
-        return array_merge(static::defaultActions(), $actions);
-    }
-
-    /**
-     * Return the default actions.
-     *
-     * @return array<int, \Laravel\Nova\Actions\Action>
-     */
-    public static function defaultActions()
-    {
-        return [
-            //
-        ];
-    }
-
-    /**
      * Get the actions available on the entity.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function actions(NovaRequest $request)
+    public function actions(Request $request)
     {
-        return static::defaultsWith([
-            //
-        ]);
+        return [];
     }
 }

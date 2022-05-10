@@ -2,7 +2,7 @@
 
 namespace Laravel\Nova\Query;
 
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Http\Request;
 
 class ApplyFilter
 {
@@ -36,11 +36,11 @@ class ApplyFilter
     /**
      * Apply the filter to the given query.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function __invoke(NovaRequest $request, $query)
+    public function __invoke(Request $request, $query)
     {
         $this->filter->apply(
             $request, $query, $this->value

@@ -3,39 +3,26 @@
 namespace Laravel\Nova\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest;
-use Laravel\Nova\Http\Resources\UpdateViewResource;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UpdateFieldController extends Controller
 {
     /**
      * List the update fields for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Illuminate\Http\Response
      */
-    public function __invoke(ResourceUpdateOrUpdateAttachedRequest $request)
+    public function index(NovaRequest $request)
     {
-        return UpdateViewResource::make()->toResponse($request);
-    }
+        $resource = $request->newResourceWith($request->findModelOrFail());
 
-    /**
-     * Synchronize the field for updating.
-     *
-     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function sync(ResourceUpdateOrUpdateAttachedRequest $request)
-    {
-        UpdateViewResource::make()->newResourceWith($request);
+        $resource->authorizeToUpdate($request);
 
-        return response()->json(
-            $request->newResource()
-                ->updateFields($request)
-                ->filter(function ($field) use ($request) {
-                    return $request->query('field') === $field->attribute;
-                })->each->syncDependsOn($request)
-                ->first()
-        );
+        return response()->json([
+            'title' => (string) $resource->title(),
+            'fields' => $resource->updateFieldsWithinPanels($request, $resource),
+            'panels' => $resource->availablePanelsForUpdate($request, $resource),
+        ]);
     }
 }

@@ -1,11 +1,6 @@
-<template>
-  <div v-bind="defaultAttributes">
-    <slot></slot>
-  </div>
-</template>
-
 <script>
-const defaultClasses = 'px-3 py-2 text-sm leading-normal'
+const defaultClasses =
+  'bg-white px-3 py-2 rounded border border-50 shadow text-sm leading-normal'
 
 export default {
   props: {
@@ -14,16 +9,15 @@ export default {
     },
   },
 
-  computed: {
-    defaultAttributes() {
-      return {
-        class: this.$attrs.class || defaultClasses,
-        style: {
-          maxWidth:
-            this.maxWidth === 'auto' ? this.maxWidth : `${this.maxWidth}px`,
-        },
-      }
-    },
+  render(h) {
+    return (
+      <div
+        class={this.$props.class || defaultClasses}
+        style={`max-width: ${this.maxWidth}px`}
+      >
+        {this.$slots.default}
+      </div>
+    )
   },
 }
 </script>

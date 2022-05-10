@@ -10,14 +10,7 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
-use Laravel\Nova\Util;
 
-/**
- * @property \Illuminate\Database\Eloquent\Model $target
- * @property \Illuminate\Foundation\Auth\User $user
- * @property array|null $changes
- * @property array|null $original
- */
 class ActionEvent extends Model
 {
     /**
@@ -30,11 +23,11 @@ class ActionEvent extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
-        'changes' => 'array',
         'original' => 'array',
+        'changes' => 'array',
     ];
 
     /**
@@ -46,18 +39,18 @@ class ActionEvent extends Model
 
     /**
      * Get the user that initiated the action.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo(Util::userModel(), 'user_id');
+        $provider = config('auth.guards.'.(config('nova.guard') ?? 'web').'.provider');
+
+        return $this->belongsTo(
+            config('auth.providers.'.$provider.'.model'), 'user_id'
+        );
     }
 
     /**
      * Get the target of the action for user interface linking.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function target()
     {
@@ -305,7 +298,7 @@ class ActionEvent extends Model
      * @param  \Laravel\Nova\Actions\Action  $action
      * @param  string  $batchId
      * @param  string  $status
-     * @return array<string, mixed>
+     * @return array
      */
     public static function defaultAttributes(ActionRequest $request, Action $action,
                                              $batchId, $status = 'running')
@@ -313,7 +306,7 @@ class ActionEvent extends Model
         if ($request->isPivotAction()) {
             $pivotClass = $request->pivotRelation()->getPivotClass();
 
-            $modelType = collect(Relation::$morphMap)->filter(function ($model) use ($pivotClass) {
+            $modelType = collect(Relation::$morphMap)->filter(function ($model, $alias) use ($pivotClass) {
                 return $model === $pivotClass;
             })->keys()->first() ?? $pivotClass;
         } else {
@@ -342,7 +335,6 @@ class ActionEvent extends Model
      *
      * @param  \Illuminate\Support\Collection  $models
      * @param  int  $limit
-     * @return void
      */
     public static function prune($models, $limit = 25)
     {

@@ -3,10 +3,11 @@
 namespace Laravel\Nova\Testing\Browser\Pages;
 
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Nova;
 
 class Update extends Page
 {
-    use InteractsWithRelations;
+    use HasSearchableRelations;
 
     public $resourceName;
     public $resourceId;
@@ -25,23 +26,22 @@ class Update extends Page
         $this->resourceName = $resourceName;
         $this->resourceId = $resourceId;
         $this->queryParams = $queryParams;
-
-        $this->setNovaPage("/resources/{$this->resourceName}/{$this->resourceId}/edit");
     }
 
     /**
      * Get the URL for the page.
      *
-     * @param  bool  $withQueryString
      * @return string
      */
     public function url()
     {
+        $url = Nova::path().'/resources/'.$this->resourceName.'/'.$this->resourceId.'/edit';
+
         if ($this->queryParams) {
-            return $this->novaPageUrl.'?'.http_build_query($this->queryParams);
+            $url .= '?'.http_build_query($this->queryParams);
         }
 
-        return $this->novaPageUrl;
+        return $url;
     }
 
     /**
@@ -58,10 +58,12 @@ class Update extends Page
     {
         $browser->whenAvailable("@{$uriKey}-inline-create", function ($browser) use ($fieldCallback) {
             $browser->click('')
-                ->elsewhereWhenAvailable('.modal[data-modal-open=true]', function ($browser) use ($fieldCallback) {
-                    $fieldCallback($browser);
+                ->elsewhere('', function ($browser) use ($fieldCallback) {
+                    $browser->whenAvailable('.modal', function ($browser) use ($fieldCallback) {
+                        $fieldCallback($browser);
 
-                    $browser->create()->pause(250);
+                        $browser->create()->pause(250);
+                    });
                 });
         });
     }
@@ -104,6 +106,16 @@ class Update extends Page
      */
     public function assert(Browser $browser)
     {
-        $browser->assertOk()->waitFor('@nova-form');
+        $browser->pause(500);
+    }
+
+    /**
+     * Get the element shortcuts for the page.
+     *
+     * @return array
+     */
+    public function elements()
+    {
+        return [];
     }
 }

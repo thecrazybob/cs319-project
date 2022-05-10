@@ -17,7 +17,7 @@ trait DeletesFields
      */
     protected function forceDeleteFields(NovaRequest $request, $model)
     {
-        $this->deleteFields($request, $model, false);
+        return $this->deleteFields($request, $model, false);
     }
 
     /**

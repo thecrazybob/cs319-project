@@ -5,12 +5,6 @@ namespace Laravel\Nova\Actions;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Laravel\Nova\Http\Requests\ActionRequest;
 
-/**
- * @template TKey of array-key
- * @template TModel of \Illuminate\Database\Eloquent\Model
- *
- * @extends \Illuminate\Database\Eloquent\Collection<TKey, TModel>
- */
 class ActionModelCollection extends EloquentCollection
 {
     /**
@@ -22,14 +16,15 @@ class ActionModelCollection extends EloquentCollection
     public function filterForExecution(ActionRequest $request)
     {
         $action = $request->action();
-        $isPivotAction = $request->isPivotAction();
 
-        return new static($this->filter(function ($model) use ($request, $action, $isPivotAction) {
-            if ($isPivotAction || $action->runCallback) {
-                return $action->authorizedToRun($request, $model);
-            }
+        if (! $request->isPivotAction()) {
+            $models = $this->filterByResourceAuthorization($request);
+        } else {
+            $models = $this;
+        }
 
-            return $action->authorizedToRun($request, $model) && $this->filterByResourceAuthorization($request, $request->newResourceWith($model), $action);
+        return static::make($models->filter(function ($model) use ($request, $action) {
+            return $action->authorizedToRun($request, $model);
         }));
     }
 
@@ -37,12 +32,24 @@ class ActionModelCollection extends EloquentCollection
      * Remove models the user does not have permission to execute the action against.
      *
      * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
-     * @param  \Laravel\Nova\Resource  $resource
-     * @param  \Laravel\Nova\Actions\Action|\Laravel\Nova\Actions\DestructiveAction  $action
-     * @return bool
+     * @return \Illuminate\Support\Collection
      */
-    protected function filterByResourceAuthorization(ActionRequest $request, $resource, $action)
+    protected function filterByResourceAuthorization(ActionRequest $request)
     {
-        return $resource->authorizedToRunAction($request, $action);
+        if ($request->action()->runCallback) {
+            $models = $this->mapInto($request->resource())->map->resource;
+        } else {
+            $models = $this->mapInto($request->resource())
+                           ->filter->authorizedToUpdate($request)->map->resource;
+        }
+
+        $action = $request->action();
+
+        if ($action instanceof DestructiveAction) {
+            $models = $this->mapInto($request->resource())
+                           ->filter->authorizedToDelete($request)->map->resource;
+        }
+
+        return $models;
     }
 }

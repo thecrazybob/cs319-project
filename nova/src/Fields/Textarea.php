@@ -2,13 +2,9 @@
 
 namespace Laravel\Nova\Fields;
 
-use Laravel\Nova\Contracts\FilterableField;
-use Laravel\Nova\Fields\Filters\TextFilter;
-use Laravel\Nova\Http\Requests\NovaRequest;
-
-class Textarea extends Field implements FilterableField
+class Textarea extends Field
 {
-    use Expandable, FieldFilterable, SupportsDependentFields;
+    use Expandable;
 
     /**
      * The field's component.
@@ -55,26 +51,16 @@ class Textarea extends Field implements FilterableField
     {
         parent::resolveForDisplay($resource, $attribute);
 
-        $this->value = e($this->value);
-    }
-
-    /**
-     * Make the field filter.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Laravel\Nova\Fields\Filters\Filter
-     */
-    protected function makeFilter(NovaRequest $request)
-    {
-        return new TextFilter($this);
+        return $this->value = e($this->value);
     }
 
     /**
      * Prepare the element for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
             'rows' => $this->rows,

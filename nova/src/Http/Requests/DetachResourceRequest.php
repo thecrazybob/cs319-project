@@ -11,7 +11,7 @@ class DetachResourceRequest extends DeletionRequest
      * Get the selected models for the action in chunks.
      *
      * @param  int  $count
-     * @param  \Closure(\Illuminate\Support\Collection):void  $callback
+     * @param  \Closure  $callback
      * @return mixed
      */
     public function chunks($count, Closure $callback)
@@ -19,7 +19,7 @@ class DetachResourceRequest extends DeletionRequest
         $parentResource = $this->findParentResourceOrFail();
         $model = $this->model();
 
-        $this->toSelectedResourceQuery()->when(! $this->allResourcesSelected(), function ($query) {
+        $this->toSelectedResourceQuery()->when(! $this->forAllMatchingResources(), function ($query) {
             $query->whereKey($this->resources);
         })->chunkById($count, function ($models) use ($callback, $parentResource) {
             $models = $this->detachableModels($models, $parentResource);

@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 trait ResolvesFilters
@@ -10,21 +11,18 @@ trait ResolvesFilters
      * Get the filters that are available for the given request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Support\Collection<int, \Laravel\Nova\Filters\Filter>
+     * @return \Illuminate\Support\Collection
      */
     public function availableFilters(NovaRequest $request)
     {
-        return $this->resolveFilters($request)
-                    ->concat($this->resolveFiltersFromFields($request))
-                    ->filter->authorizedToSee($request)
-                    ->values();
+        return $this->resolveFilters($request)->filter->authorizedToSee($request)->values();
     }
 
     /**
      * Get the filters for the given request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Support\Collection<int, \Laravel\Nova\Filters\Filter>
+     * @return \Illuminate\Support\Collection
      */
     public function resolveFilters(NovaRequest $request)
     {
@@ -32,27 +30,12 @@ trait ResolvesFilters
     }
 
     /**
-     * Get the filters from filterable fields for the given request.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Support\Collection
-     */
-    public function resolveFiltersFromFields(NovaRequest $request)
-    {
-        return collect(array_values($this->filter(
-            $this->filterableFields($request)->transform(function ($field) use ($request) {
-                return $field->resolveFilter($request);
-            })->filter()->all()
-        )));
-    }
-
-    /**
      * Get the filters available on the entity.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function filters(NovaRequest $request)
+    public function filters(Request $request)
     {
         return [];
     }

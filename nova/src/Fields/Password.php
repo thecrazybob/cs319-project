@@ -7,8 +7,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Password extends Field
 {
-    use SupportsDependentFields;
-
     /**
      * The field's component.
      *
@@ -35,9 +33,10 @@ class Password extends Field
     /**
      * Prepare the field for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return array_merge(
             parent::jsonSerialize(),

@@ -1,5 +1,3 @@
 *
 !public/
-!sample-files/
-!sample-files/*
 !.gitignore

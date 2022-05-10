@@ -37,7 +37,7 @@ class GlobalSearch
     /**
      * Get the matching resources.
      *
-     * @return array<int, array<string, mixed>>
+     * @return array
      */
     public function get()
     {
@@ -69,11 +69,9 @@ class GlobalSearch
     /**
      * Transform the result from resource.
      *
-     * @template TResource of \Laravel\Nova\Resource
-     *
-     * @param  class-string<TResource>  $resourceClass
-     * @param  TResource  $resource
-     * @return array<string, mixed>
+     * @param  string  $resourceClass
+     * @param  \Laravel\Nova\Resource  $resource
+     * @return array
      */
     protected function transformResult($resourceClass, Resource $resource)
     {
@@ -87,7 +85,7 @@ class GlobalSearch
                 return (string) $subtitle;
             }),
             'resourceId' => $model->getKey(),
-            'url' => url(Nova::url('/resources/'.$resourceClass::uriKey().'/'.$model->getKey())),
+            'url' => url(Nova::path().'/resources/'.$resourceClass::uriKey().'/'.$model->getKey()),
             'avatar' => $resource->resolveAvatarUrl($this->request),
             'rounded' => $resource->resolveIfAvatarShouldBeRounded($this->request),
             'linksTo' => $resource->globalSearchLink($this->request),

@@ -37,13 +37,11 @@ class ActionCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $extension = $this->option('queued') ? 'queued.stub' : 'stub';
-
         if ($this->option('destructive')) {
-            return $this->resolveStubPath("/stubs/nova/destructive-action.{$extension}");
+            return $this->resolveStubPath('/stubs/nova/destructive-action.stub');
         }
 
-        return $this->resolveStubPath("/stubs/nova/action.{$extension}");
+        return $this->resolveStubPath('/stubs/nova/action.stub');
     }
 
     /**
@@ -66,7 +64,6 @@ class ActionCommand extends GeneratorCommand
     {
         return [
             ['destructive', null, InputOption::VALUE_NONE, 'Indicate that the action deletes / destroys resources'],
-            ['queued', null, InputOption::VALUE_NONE, 'Indicates the action should be queued'],
         ];
     }
 }

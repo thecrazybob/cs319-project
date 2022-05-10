@@ -1,12 +1,6 @@
-import { Errors } from 'form-backend-validation'
+import { Errors } from 'laravel-nova'
 
 export default {
-  props: {
-    formUniqueId: {
-      type: String,
-    },
-  },
-
   data: () => ({
     validationErrors: new Errors(),
   }),

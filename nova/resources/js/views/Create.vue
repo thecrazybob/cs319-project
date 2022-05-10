@@ -1,30 +1,22 @@
 <template>
-  <CreateForm
+  <create-form
     @resource-created="handleResourceCreated"
-    @create-cancelled="handleCreateCancelled"
+    @cancelled-create="handleCancelledCreate"
     :mode="mode"
     :resource-name="resourceName"
     :via-resource="viaResource"
     :via-resource-id="viaResourceId"
     :via-relationship="viaRelationship"
-    @update-form-status="onUpdateFormStatus"
+    :update-form-status="updateFormStatus"
     :should-override-meta="mode == 'form' ? true : false"
-    :form-unique-id="formUniqueId"
   />
 </template>
 
 <script>
-import {
-  mapProps,
-  PreventsFormAbandonment,
-  PreventsModalAbandonment,
-} from '@/mixins'
-import { uid } from 'uid/single'
+import { mapProps, PreventsFormAbandonment } from 'laravel-nova'
 
 export default {
-  emits: ['refresh', 'create-cancelled'],
-
-  mixins: [PreventsFormAbandonment, PreventsModalAbandonment],
+  mixins: [PreventsFormAbandonment],
 
   props: {
     mode: {
@@ -41,42 +33,23 @@ export default {
     ]),
   },
 
-  data: () => ({
-    formUniqueId: uid(),
-  }),
-
   methods: {
     handleResourceCreated({ redirect, id }) {
-      this.mode === 'form' ? this.allowLeavingForm() : this.allowLeavingModal()
-
-      Nova.$emit('resource-created', {
-        resourceName: this.resourceName,
-        resourceId: id,
-      })
+      this.canLeave = true
 
       if (this.mode == 'form') {
-        return Nova.visit(redirect)
+        return this.$router.push({ path: redirect })
       }
 
       return this.$emit('refresh', { redirect, id })
     },
 
-    handleCreateCancelled() {
+    handleCancelledCreate() {
       if (this.mode == 'form') {
-        this.handleProceedingToPreviousPage()
-        this.allowLeavingForm()
-        return window.history.back()
+        return this.$router.back()
       }
 
-      this.allowLeavingModal()
-      return this.$emit('create-cancelled')
-    },
-
-    /**
-     * Prevent accidental abandonment only if form was changed.
-     */
-    onUpdateFormStatus() {
-      this.mode == 'form' ? this.updateFormStatus() : this.updateModalStatus()
+      return this.$emit('cancelled-create')
     },
   },
 }

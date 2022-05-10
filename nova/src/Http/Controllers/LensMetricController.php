@@ -24,7 +24,7 @@ class LensMetricController extends Controller
      * Get the specified metric's value.
      *
      * @param  \Laravel\Nova\Http\Requests\LensMetricRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function show(LensMetricRequest $request)
     {

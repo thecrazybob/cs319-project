@@ -4,7 +4,6 @@
     :title="card.name"
     :help-text="card.helpText"
     :help-width="card.helpWidth"
-    :icon="card.icon"
     :previous="previous"
     :value="value"
     :ranges="card.ranges"
@@ -19,13 +18,18 @@
 </template>
 
 <script>
-import { minimum } from '@/util'
-import { InteractsWithDates, MetricBehavior } from '@/mixins'
+import { InteractsWithDates, Minimum } from 'laravel-nova'
+import BaseValueMetric from './Base/ValueMetric'
+import MetricBehavior from './MetricBehavior'
 
 export default {
   name: 'ValueMetric',
 
   mixins: [InteractsWithDates, MetricBehavior],
+
+  components: {
+    BaseValueMetric,
+  },
 
   props: {
     card: {
@@ -72,20 +76,10 @@ export default {
       this.selectedRangeKey =
         this.card.selectedRangeKey || this.card.ranges[0].value
     }
-
-    this.fetch()
   },
 
   mounted() {
-    if (this.card && this.card.refreshWhenFiltersChange === true) {
-      Nova.$on('filter-changed', this.fetch)
-    }
-  },
-
-  beforeUnmount() {
-    if (this.card && this.card.refreshWhenFiltersChange === true) {
-      Nova.$off('filter-changed', this.fetch)
-    }
+    this.fetch(this.selectedRangeKey)
   },
 
   methods: {
@@ -97,7 +91,7 @@ export default {
     fetch() {
       this.loading = true
 
-      minimum(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(
+      Minimum(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(
         ({
           data: {
             value: {
@@ -134,15 +128,6 @@ export default {
         params: {
           timezone: this.userTimezone,
         },
-      }
-
-      if (
-        !Nova.missingResource(this.resourceName) &&
-        this.card &&
-        this.card.refreshWhenFiltersChange === true
-      ) {
-        payload.params.filter =
-          this.$store.getters[`${this.resourceName}/currentEncodedFilters`]
       }
 
       if (this.hasRanges) {

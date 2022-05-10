@@ -3,8 +3,9 @@
 namespace Laravel\Nova\Testing\Browser\Components;
 
 use Laravel\Dusk\Browser;
+use Laravel\Dusk\Component as BaseComponent;
 
-class DetailComponent extends Component
+class DetailComponent extends BaseComponent
 {
     public $resourceName;
     public $resourceId;

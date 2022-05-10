@@ -1,16 +1,14 @@
-import forEach from 'lodash/forEach'
-
 export default {
   methods: {
     /**
      * Translate the given key.
      */
     __(key, replace) {
-      let translation = Nova.config('translations')[key]
-        ? Nova.config('translations')[key]
+      var translation = window.config.translations[key]
+        ? window.config.translations[key]
         : key
 
-      forEach(replace, (value, key) => {
+      _.forEach(replace, (value, key) => {
         key = new String(key)
 
         if (value === null) {
@@ -35,7 +33,7 @@ export default {
           value.charAt(0).toUpperCase() + value.slice(1),
         ]
 
-        for (let i = searches.length - 1; i >= 0; i--) {
+        for (var i = searches.length - 1; i >= 0; i--) {
           translation = translation.replace(searches[i], replacements[i])
         }
       })

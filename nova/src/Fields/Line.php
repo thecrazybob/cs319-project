@@ -3,9 +3,12 @@
 namespace Laravel\Nova\Fields;
 
 use Illuminate\Support\Arr;
+use Laravel\Nova\Makeable;
 
 class Line extends Text
 {
+    use Makeable;
+
     const HEADING = 'extra-large';
     const BASE = 'large';
     const SUBTITLE = 'medium';
@@ -35,7 +38,7 @@ class Line extends Text
     /**
      * CSS class lookup table for lines.
      *
-     * @var array<string, string>
+     * @var array
      */
     public static $classes = [
         self::HEADING => 'text-base font-semibold',
@@ -49,7 +52,7 @@ class Line extends Text
      *
      * @param  string  $name
      * @param  string|callable|null  $attribute
-     * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
+     * @param  callable|null  $resolveCallback
      * @return void
      */
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
@@ -123,7 +126,7 @@ class Line extends Text
     /**
      * Get the display classes for the line.
      *
-     * @return array<string, string>
+     * @return array
      */
     public function getClasses()
     {
@@ -136,9 +139,10 @@ class Line extends Text
     /**
      * Prepare the line for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
             'classes' => $this->getClasses(),

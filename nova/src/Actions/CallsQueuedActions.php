@@ -2,15 +2,13 @@
 
 namespace Laravel\Nova\Actions;
 
-use Illuminate\Bus\Batchable;
-use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Laravel\Nova\Nova;
 
 trait CallsQueuedActions
 {
-    use Batchable, InteractsWithQueue, Queueable, SerializesModels;
+    use InteractsWithQueue, SerializesModels;
 
     /**
      * The action class name.
@@ -38,28 +36,24 @@ trait CallsQueuedActions
      *
      * @var string
      */
-    public $actionBatchId;
+    public $batchId;
 
     /**
      * Call the action using the given callback.
      *
-     * @param  callable(\Laravel\Nova\Actions\Action):void  $callback
+     * @param  callable  $callback
      * @return void
      */
     protected function callAction($callback)
     {
-        Nova::usingActionEvent(function ($actionEvent) {
-            $actionEvent->markBatchAsRunning($this->actionBatchId);
-        });
+        Nova::actionEvent()->markBatchAsRunning($this->batchId);
 
         $action = $this->setJobInstanceIfNecessary($this->action);
 
         $callback($action);
 
         if (! $this->job->hasFailed() && ! $this->job->isReleased()) {
-            Nova::usingActionEvent(function ($actionEvent) {
-                $actionEvent->markBatchAsFinished($this->actionBatchId);
-            });
+            Nova::actionEvent()->markBatchAsFinished($this->batchId);
         }
     }
 

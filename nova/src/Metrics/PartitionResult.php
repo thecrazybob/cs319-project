@@ -7,33 +7,31 @@ use JsonSerializable;
 
 class PartitionResult implements JsonSerializable
 {
-    use RoundingPrecision;
-
     /**
      * The value of the result.
      *
-     * @var array<string, int|float>
+     * @var array
      */
     public $value;
 
     /**
      * The custom label name.
      *
-     * @var array<string, string>
+     * @var array
      */
     public $labels = [];
 
     /**
      * The custom label colors.
      *
-     * @var \Laravel\Nova\Metrics\PartitionColors
+     * @var array
      */
-    public $colors;
+    public $colors = [];
 
     /**
      * Create a new partition result instance.
      *
-     * @param  array<string, int|float>  $value
+     * @param  array  $value
      * @return void
      */
     public function __construct(array $value)
@@ -45,7 +43,7 @@ class PartitionResult implements JsonSerializable
     /**
      * Format the labels for the partition result.
      *
-     * @param  \Closure(string):string  $callback
+     * @param  \Closure  $callback
      * @return $this
      */
     public function label(Closure $callback)
@@ -60,7 +58,7 @@ class PartitionResult implements JsonSerializable
     /**
      * Set the custom label colors.
      *
-     * @param  array<string, string>  $colors
+     * @param  array  $colors
      * @return $this
      */
     public function colors(array $colors)
@@ -73,22 +71,19 @@ class PartitionResult implements JsonSerializable
     /**
      * Prepare the metric result for JSON serialization.
      *
-     * @return array<string, array<array-key, array<string, mixed>>>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
-        $values = collect($this->value);
-        $total = $values->sum();
-
         return [
-            'value' => $values->map(function ($value, $label) use ($total) {
+            'value' => collect($this->value ?? [])->map(function ($value, $label) {
                 $resolvedLabel = $this->labels[$label] ?? $label;
 
                 return array_filter([
                     'color' => data_get($this->colors->colors, $label, $this->colors->get($resolvedLabel)),
                     'label' => $resolvedLabel,
                     'value' => $value,
-                    'percentage' => $total > 0 ? round(($value / $total) * 100, $this->roundingPrecision, $this->roundingMode) : 0,
                 ], function ($value) {
                     return ! is_null($value);
                 });

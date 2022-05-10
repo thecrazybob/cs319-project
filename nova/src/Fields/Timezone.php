@@ -10,11 +10,11 @@ class Timezone extends Select
      * Create a new field.
      *
      * @param  string  $name
-     * @param  string|callable|null  $attribute
-     * @param  callable|null  $resolveCallback
+     * @param  string|null  $attribute
+     * @param  mixed|null  $resolveCallback
      * @return void
      */
-    public function __construct($name, $attribute = null, callable $resolveCallback = null)
+    public function __construct($name, $attribute = null, $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
 

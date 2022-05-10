@@ -1,9 +1,4 @@
-import cloneDeep from 'lodash/cloneDeep'
-import each from 'lodash/each'
-import find from 'lodash/find'
-import filter from 'lodash/filter'
-import map from 'lodash/map'
-import reduce from 'lodash/reduce'
+import _ from 'lodash'
 import { escapeUnicode } from '@/util/escapeUnicode'
 
 export default {
@@ -34,9 +29,10 @@ export default {
      * The current unencoded filter value payload
      */
     currentFilters: (state, getters) => {
-      return map(filter(state.filters), f => {
+      return _.map(state.filters, f => {
         return {
-          [f.class]: f.currentValue,
+          class: f.class,
+          value: f.currentValue,
         }
       })
     },
@@ -56,7 +52,7 @@ export default {
      * Return the number of filters that are non-default
      */
     activeFilterCount: (state, getters) => {
-      return reduce(
+      return _.reduce(
         state.filters,
         (result, f) => {
           const originalFilter = getters.getOriginalFilter(f.class)
@@ -76,13 +72,13 @@ export default {
      * Get a single filter from the list of filters.
      */
     getFilter: state => filterKey => {
-      return find(state.filters, filter => {
+      return _.find(state.filters, filter => {
         return filter.class == filterKey
       })
     },
 
     getOriginalFilter: state => filterKey => {
-      return find(state.originalFilters, filter => {
+      return _.find(state.originalFilters, filter => {
         return filter.class == filterKey
       })
     },
@@ -101,7 +97,7 @@ export default {
     filterOptionValue: (state, getters) => (filterKey, optionKey) => {
       const filter = getters.getFilter(filterKey)
 
-      return find(filter.currentValue, (value, key) => key == optionKey)
+      return _.find(filter.currentValue, (value, key) => key == optionKey)
     },
   },
 
@@ -111,14 +107,12 @@ export default {
      */
     async fetchFilters({ commit, state }, options) {
       let { resourceName, lens = false } = options
-      let { viaResource, viaResourceId, viaRelationship, relationshipType } =
-        options
+      let { viaResource, viaResourceId, viaRelationship } = options
       let params = {
         params: {
           viaResource,
           viaResourceId,
           viaRelationship,
-          relationshipType,
         },
       }
 
@@ -139,7 +133,7 @@ export default {
      * Reset the default filter state to the original filter settings.
      */
     async resetFilterState({ commit, getters }) {
-      each(getters.originalFilters, filter => {
+      _.each(getters.originalFilters, filter => {
         commit('updateFilterState', {
           filterClass: filter.class,
           value: filter.currentValue,
@@ -156,23 +150,11 @@ export default {
     ) {
       if (encodedFilters) {
         const initialFilters = JSON.parse(atob(encodedFilters))
-        each(initialFilters, filter => {
-          if (
-            filter.hasOwnProperty('class') &&
-            filter.hasOwnProperty('value')
-          ) {
-            commit('updateFilterState', {
-              filterClass: filter.class,
-              value: filter.value,
-            })
-          } else {
-            for (let key in filter) {
-              commit('updateFilterState', {
-                filterClass: key,
-                value: filter[key],
-              })
-            }
-          }
+        _.each(initialFilters, f => {
+          commit('updateFilterState', {
+            filterClass: f.class,
+            value: f.value,
+          })
         })
       }
     },
@@ -180,11 +162,9 @@ export default {
 
   mutations: {
     updateFilterState(state, { filterClass, value }) {
-      const filter = find(state.filters, f => f.class == filterClass)
+      const filter = _(state.filters).find(f => f.class == filterClass)
 
-      if (filter !== undefined && filter !== null) {
-        filter.currentValue = value
-      }
+      filter.currentValue = value
     },
 
     /**
@@ -192,7 +172,7 @@ export default {
      */
     storeFilters(state, data) {
       state.filters = data
-      state.originalFilters = cloneDeep(data)
+      state.originalFilters = _.cloneDeep(data)
     },
 
     /**

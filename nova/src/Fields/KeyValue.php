@@ -6,8 +6,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class KeyValue extends Field
 {
-    use SupportsDependentFields;
-
     /**
      * The field's component.
      *
@@ -25,28 +23,28 @@ class KeyValue extends Field
     /**
      * The label that should be used for the key heading.
      *
-     * @var string|null
+     * @var string
      */
     public $keyLabel;
 
     /**
      * The label that should be used for the value heading.
      *
-     * @var string|null
+     * @var string
      */
     public $valueLabel;
 
     /**
      * The label that should be used for the "add row" button.
      *
-     * @var string|null
+     * @var string
      */
     public $actionText;
 
     /**
      * The callback used to determine if the keys are readonly.
      *
-     * @var (callable(\Laravel\Nova\Http\Requests\NovaRequest):bool)|bool|null
+     * @var \Closure
      */
     public $readonlyKeysCallback;
 
@@ -122,7 +120,7 @@ class KeyValue extends Field
     /**
      * Set the callback used to determine if the keys are readonly.
      *
-     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest):bool)|bool  $callback
+     * @param  \Closure|bool  $callback
      * @return $this
      */
     public function disableEditingKeys($callback = true)
@@ -172,9 +170,10 @@ class KeyValue extends Field
     /**
      * Prepare the field element for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
             'keyLabel' => $this->keyLabel ?? __('Key'),

@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Http\Requests\DeleteLensResourceRequest;
 use Laravel\Nova\Nova;
@@ -17,7 +18,7 @@ class LensResourceDestroyController extends Controller
      * @param  \Laravel\Nova\Http\Requests\DeleteLensResourceRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(DeleteLensResourceRequest $request)
+    public function handle(DeleteLensResourceRequest $request)
     {
         $request->chunks(150, function ($models) use ($request) {
             $models->each(function ($model) use ($request) {
@@ -29,15 +30,13 @@ class LensResourceDestroyController extends Controller
 
                 $model->delete();
 
-                Nova::usingActionEvent(function ($actionEvent) use ($model, $request) {
-                    $actionEvent->insert(
+                tap(Nova::actionEvent(), function ($actionEvent) use ($model, $request) {
+                    DB::connection($actionEvent->getConnectionName())->table('action_events')->insert(
                         $actionEvent->forResourceDelete($request->user(), collect([$model]))
                             ->map->getAttributes()->all()
                     );
                 });
             });
         });
-
-        return response()->noContent(200);
     }
 }

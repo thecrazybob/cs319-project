@@ -2,9 +2,6 @@
 
 namespace Laravel\Nova\Fields;
 
-/**
- * @method static static make(mixed $name = 'Avatar', string|null $attribute = 'email')
- */
 class Gravatar extends Avatar
 {
     /**
@@ -12,15 +9,18 @@ class Gravatar extends Avatar
      *
      * @param  string  $name
      * @param  string|null  $attribute
+     * @param  mixed|null  $resolveCallback
      * @return void
      */
-    public function __construct($name = 'Avatar', $attribute = 'email')
+    public function __construct($name = 'Avatar', $attribute = 'email', $resolveCallback = null)
     {
-        parent::__construct($name, $attribute ?? 'email');
+        parent::__construct($name, $attribute ?? 'email', $resolveCallback);
 
         $this->exceptOnForms();
 
         $this->maxWidth(50);
+
+        $this->withMeta(['indexName' => '']);
     }
 
     /**
@@ -37,17 +37,5 @@ class Gravatar extends Avatar
         };
 
         $this->preview($callback)->thumbnail($callback);
-    }
-
-    /**
-     * Prepare the field for JSON serialization.
-     *
-     * @return array<string, mixed>
-     */
-    public function jsonSerialize(): array
-    {
-        return array_merge([
-            'indexName' => '',
-        ], parent::jsonSerialize());
     }
 }

@@ -3,10 +3,11 @@
 namespace Laravel\Nova\Testing\Browser\Pages;
 
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Nova;
 
 class Create extends Page
 {
-    use InteractsWithRelations;
+    use HasSearchableRelations;
 
     public $resourceName;
     public $queryParams;
@@ -22,8 +23,6 @@ class Create extends Page
     {
         $this->resourceName = $resourceName;
         $this->queryParams = $queryParams;
-
-        $this->setNovaPage("/resources/{$this->resourceName}/new");
     }
 
     /**
@@ -33,11 +32,37 @@ class Create extends Page
      */
     public function url()
     {
+        $url = Nova::path().'/resources/'.$this->resourceName.'/new';
+
         if ($this->queryParams) {
-            return $this->novaPageUrl.'?'.http_build_query($this->queryParams);
+            $url .= '?'.http_build_query($this->queryParams);
         }
 
-        return $this->novaPageUrl;
+        return $url;
+    }
+
+    /**
+     * Run the inline create relation.
+     *
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @param  string  $uriKey
+     * @param  callable  $fieldCallback
+     * @return void
+     *
+     * @throws \Facebook\WebDriver\Exception\TimeOutException
+     */
+    public function runInlineCreate(Browser $browser, $uriKey, callable $fieldCallback)
+    {
+        $browser->whenAvailable("@{$uriKey}-inline-create", function ($browser) use ($fieldCallback) {
+            $browser->click('')
+                ->elsewhere('', function ($browser) use ($fieldCallback) {
+                    $browser->whenAvailable('.modal', function ($browser) use ($fieldCallback) {
+                        $fieldCallback($browser);
+
+                        $browser->create()->pause(250);
+                    });
+                });
+        });
     }
 
     /**
@@ -70,7 +95,7 @@ class Create extends Page
      */
     public function assert(Browser $browser)
     {
-        $browser->assertOk()->waitFor('@nova-form');
+        $browser->pause(500);
     }
 
     /**
@@ -83,5 +108,15 @@ class Create extends Page
     public function assertNoRelationSearchResults(Browser $browser, $resourceName)
     {
         $browser->assertMissing('@'.$resourceName.'-search-input-result-0');
+    }
+
+    /**
+     * Get the element shortcuts for the page.
+     *
+     * @return array
+     */
+    public function elements()
+    {
+        return [];
     }
 }

@@ -14,6 +14,14 @@ class DashboardRequest extends NovaRequest
      */
     public function availableCards($dashboard)
     {
+        if ($dashboard === 'main') {
+            return collect(Nova::$defaultDashboardCards)
+                ->unique()
+                ->filter
+                ->authorize($this)
+                ->values();
+        }
+
         return Nova::availableDashboardCardsForDashboard($dashboard, $this);
     }
 }

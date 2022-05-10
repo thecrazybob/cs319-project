@@ -1,14 +1,6 @@
 <template>
-  <LoadingView :loading="loading">
-    <template v-if="shouldOverrideMeta && resourceInformation">
-      <Head
-        :title="
-          __('Create :resource', {
-            resource: resourceInformation.singularLabel,
-          })
-        "
-      />
-    </template>
+  <loading-view :loading="loading">
+    <custom-create-header class="mb-3" :resource-name="resourceName" />
 
     <form
       v-if="panels"
@@ -17,83 +9,79 @@
       autocomplete="off"
       ref="form"
     >
-      <div class="mb-8 space-y-4">
-        <component
-          v-for="panel in panels"
-          :key="panel.id"
-          :is="'form-' + panel.component"
-          @field-changed="onUpdateFormStatus"
-          @file-upload-started="handleFileUploadStarted"
-          @file-upload-finished="handleFileUploadFinished"
-          :shown-via-new-relation-modal="shownViaNewRelationModal"
-          :panel="panel"
-          :name="panel.name"
-          :resource-name="resourceName"
-          :fields="panel.fields"
-          :form-unique-id="formUniqueId"
-          mode="form"
-          :validation-errors="validationErrors"
-          :via-resource="viaResource"
-          :via-resource-id="viaResourceId"
-          :via-relationship="viaRelationship"
-        />
-      </div>
+      <form-panel
+        class="mb-8"
+        v-for="panel in panelsWithFields"
+        @field-changed="onUpdateFormStatus"
+        @file-upload-started="handleFileUploadStarted"
+        @file-upload-finished="handleFileUploadFinished"
+        :shown-via-new-relation-modal="shownViaNewRelationModal"
+        :panel="panel"
+        :name="panel.name"
+        :key="panel.name"
+        :resource-name="resourceName"
+        :fields="panel.fields"
+        mode="form"
+        :validation-errors="validationErrors"
+        :via-resource="viaResource"
+        :via-resource-id="viaResourceId"
+        :via-relationship="viaRelationship"
+      />
 
       <!-- Create Button -->
-      <div
-        class="flex flex-col md:flex-row md:items-center justify-center md:justify-end space-y-2 md:space-y-0 space-x-3"
-      >
-        <CancelButton
-          tabindex="0"
-          dusk="cancel-create-button"
-          type="button"
-          @click="$emit('create-cancelled')"
-        />
+      <div class="flex items-center">
+        <cancel-button @click="$emit('cancelled-create')" />
 
-        <LoadingButton
+        <progress-button
           v-if="shouldShowAddAnotherButton"
           dusk="create-and-add-another-button"
-          type="button"
-          @click="submitViaCreateResourceAndAddAnother"
+          class="mr-3"
+          @click.native="submitViaCreateResourceAndAddAnother"
           :disabled="isWorking"
-          :loading="wasSubmittedViaCreateResourceAndAddAnother"
+          :processing="wasSubmittedViaCreateResourceAndAddAnother"
         >
           {{ __('Create & Add Another') }}
-        </LoadingButton>
+        </progress-button>
 
-        <LoadingButton
+        <progress-button
           dusk="create-button"
           type="submit"
           :disabled="isWorking"
-          :loading="wasSubmittedViaCreateResource"
+          :processing="wasSubmittedViaCreateResource"
         >
           {{ createButtonLabel }}
-        </LoadingButton>
+        </progress-button>
       </div>
     </form>
-  </LoadingView>
+  </loading-view>
 </template>
 
 <script>
-import each from 'lodash/each'
-import tap from 'lodash/tap'
 import {
-  Errors,
-  HandlesFormRequest,
-  HandlesUploads,
-  InteractsWithResourceInformation,
   mapProps,
-} from '@/mixins'
-import { mapActions, mapMutations } from 'vuex'
+  Errors,
+  Minimum,
+  InteractsWithResourceInformation,
+} from 'laravel-nova'
+import HandlesFormRequest from '@/mixins/HandlesFormRequest'
+import HandlesUploads from '@/mixins/HandlesUploads'
 
 export default {
-  emits: ['resource-created', 'create-cancelled', 'update-form-status'],
-
   mixins: [
+    InteractsWithResourceInformation,
     HandlesFormRequest,
     HandlesUploads,
-    InteractsWithResourceInformation,
   ],
+
+  metaInfo() {
+    if (this.shouldOverrideMeta && this.resourceInformation) {
+      return {
+        title: this.__('Create :resource', {
+          resource: this.resourceInformation.singularLabel,
+        }),
+      }
+    }
+  },
 
   props: {
     mode: {
@@ -102,8 +90,9 @@ export default {
       validator: val => ['modal', 'form'].includes(val),
     },
 
-    fromResourceId: {
-      default: null,
+    updateFormStatus: {
+      type: Function,
+      default: () => {},
     },
 
     ...mapProps([
@@ -125,7 +114,8 @@ export default {
   }),
 
   async created() {
-    if (Nova.missingResource(this.resourceName)) return Nova.visit('/404')
+    if (Nova.missingResource(this.resourceName))
+      return this.$router.push({ name: '404' })
 
     // If this create is via a relation index, then let's grab the field
     // and use the label for that as the one we use for the title and buttons
@@ -146,7 +136,13 @@ export default {
       if (this.isHasOneRelationship && this.alreadyFilled) {
         Nova.error(this.__('The HasOne relationship has already been filled.'))
 
-        Nova.visit(`/resources/${this.viaResource}/${this.viaResourceId}`)
+        this.$router.push({
+          name: 'detail',
+          params: {
+            resourceId: this.viaResourceId,
+            resourceName: this.viaResource,
+          },
+        })
       }
 
       if (this.isHasOneThroughRelationship && this.alreadyFilled) {
@@ -154,37 +150,20 @@ export default {
           this.__('The HasOneThrough relationship has already been filled.')
         )
 
-        Nova.visit(`/resources/${this.viaResource}/${this.viaResourceId}`)
+        this.$router.push({
+          name: 'detail',
+          params: {
+            resourceId: this.viaResourceId,
+            resourceName: this.viaResource,
+          },
+        })
       }
     }
 
     this.getFields()
-
-    this.mode == 'form' ? this.allowLeavingForm() : this.allowLeavingModal()
   },
 
   methods: {
-    ...mapMutations([
-      'allowLeavingForm',
-      'preventLeavingForm',
-      'allowLeavingModal',
-      'preventLeavingModal',
-    ]),
-    ...mapActions(['fetchPolicies']),
-
-    /**
-     * Handle resource loaded event.
-     */
-    handleResourceLoaded() {
-      this.loading = false
-
-      Nova.$emit('resource-loaded', {
-        resourceName: this.resourceName,
-        resourceId: null,
-        mode: 'create',
-      })
-    },
-
     /**
      * Get the available fields for the resource.
      */
@@ -200,7 +179,6 @@ export default {
           params: {
             editing: true,
             editMode: 'create',
-            fromResourceId: this.fromResourceId,
             viaResource: this.viaResource,
             viaResourceId: this.viaResourceId,
             viaRelationship: this.viaRelationship,
@@ -210,8 +188,7 @@ export default {
 
       this.panels = panels
       this.fields = fields
-
-      this.handleResourceLoaded()
+      this.loading = false
     },
 
     async submitViaCreateResource(e) {
@@ -239,12 +216,7 @@ export default {
             data: { redirect, id },
           } = await this.createRequest()
 
-          this.mode === 'form'
-            ? this.allowLeavingForm()
-            : this.allowLeavingModal()
-
-          // Reload the policies for Nova in case the user has new permissions
-          await this.fetchPolicies()
+          this.canLeave = true
 
           Nova.success(
             this.__('The :resource was created!', {
@@ -271,9 +243,9 @@ export default {
           this.submittedViaCreateResource = true
           this.isWorking = false
 
-          this.mode === 'form'
-            ? this.preventLeavingForm()
-            : this.preventLeavingModal()
+          if (this.resourceInformation.preventFormAbandonment) {
+            this.canLeave = false
+          }
 
           this.handleOnCreateResponseError(error)
         }
@@ -304,11 +276,9 @@ export default {
      * Create the form data for creating the resource.
      */
     createResourceFormData() {
-      return tap(new FormData(), formData => {
-        each(this.panels, panel => {
-          each(panel.fields, field => {
-            field.fill(formData)
-          })
+      return _.tap(new FormData(), formData => {
+        _.each(this.fields, field => {
+          field.fill(formData)
         })
 
         formData.append('viaResource', this.viaResource)
@@ -321,7 +291,9 @@ export default {
      * Prevent accidental abandonment only if form was changed.
      */
     onUpdateFormStatus() {
-      this.$emit('update-form-status')
+      if (this.resourceInformation.preventFormAbandonment) {
+        this.updateFormStatus()
+      }
     },
   },
 
@@ -332,6 +304,15 @@ export default {
 
     wasSubmittedViaCreateResourceAndAddAnother() {
       return this.isWorking && this.submittedViaCreateResourceAndAddAnother
+    },
+
+    panelsWithFields() {
+      return _.map(this.panels, panel => {
+        return {
+          ...panel,
+          fields: _.filter(this.fields, field => field.panel == panel.name),
+        }
+      })
     },
 
     singularName() {

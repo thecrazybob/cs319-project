@@ -6,22 +6,12 @@ use Closure;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Contracts\Deletable as DeletableContract;
-use Laravel\Nova\Contracts\Downloadable as DownloadableContract;
 use Laravel\Nova\Contracts\Storable as StorableContract;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-/**
- * @method static static make(mixed $name, string|null $attribute = null, callable|null $storageCallback = null)
- */
-class VaporFile extends Field implements StorableContract, DeletableContract, DownloadableContract
+class VaporFile extends Field implements StorableContract, DeletableContract, Downloadable
 {
-    use AcceptsTypes,
-        Deletable,
-        HasDownload,
-        HasPreview,
-        HasThumbnail,
-        Storable,
-        SupportsDependentFields;
+    use AcceptsTypes, Deletable, HasDownload, HasPreview, HasThumbnail, Storable;
 
     /**
      * The field's component.
@@ -45,16 +35,9 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
     public $textAlign = 'center';
 
     /**
-     * The callback that should be executed to store the file.
-     *
-     * @var callable(\Laravel\Nova\Http\Requests\NovaRequest, string, object, string):mixed
-     */
-    public $storageCallback;
-
-    /**
      * The callback that should be used to determine the file's storage name.
      *
-     * @var (callable(\Illuminate\Http\Request):string)|null
+     * @var callable|null
      */
     public $storeAsCallback;
 
@@ -69,8 +52,8 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
      * Create a new field.
      *
      * @param  string  $name
-     * @param  string|null  $attribute
-     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest, string, object, string):mixed)|null  $storageCallback
+     * @param  string  $attribute
+     * @param  callable|null  $storageCallback
      * @return void
      */
     public function __construct($name, $attribute = null, $storageCallback = null)
@@ -80,9 +63,9 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
         $this->prepareStorageCallback($storageCallback);
 
         $this->thumbnail(function () {
-            return null;
+            //
         })->preview(function () {
-            return null;
+            //
         })->download(function ($request, $model) {
             return Storage::disk($this->getStorageDisk())->download($this->value);
         })->delete(function () {
@@ -130,7 +113,7 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
     /**
      * Specify the callback that should be used to determine the file's storage name.
      *
-     * @param  callable(\Illuminate\Http\Request):string  $storeAsCallback
+     * @param  callable  $storeAsCallback
      * @return $this
      */
     public function storeAs(callable $storeAsCallback)
@@ -143,7 +126,7 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
     /**
      * Prepare the storage callback.
      *
-     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest, string, object, string):mixed)|null  $storageCallback
+     * @param  callable|null  $storageCallback
      * @return void
      */
     protected function prepareStorageCallback($storageCallback)
@@ -279,9 +262,10 @@ class VaporFile extends Field implements StorableContract, DeletableContract, Do
     /**
      * Prepare the field for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
             'thumbnailUrl' => $this->resolveThumbnailUrl(),

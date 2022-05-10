@@ -1,58 +1,52 @@
 <template>
   <div v-if="shouldShowButtons">
     <!-- Attach Related Models -->
-    <component
-      :is="component"
-      class="flex-shrink-0"
+    <router-link
       v-if="shouldShowAttachButton"
       dusk="attach-button"
-      :href="
-        $url(
-          `/resources/${viaResource}/${viaResourceId}/attach/${resourceName}`,
-          {
-            viaRelationship: viaRelationship,
-            polymorphic: relationshipType == 'morphToMany' ? '1' : '0',
-          }
-        )
-      "
+      :class="classes"
+      :to="{
+        name: 'attach',
+        params: {
+          resourceName: viaResource,
+          resourceId: viaResourceId,
+          relatedResourceName: resourceName,
+        },
+        query: {
+          viaRelationship: viaRelationship,
+          polymorphic: relationshipType == 'morphToMany' ? '1' : '0',
+        },
+      }"
     >
-      <slot>{{ __('Attach :resource', { resource: singularName }) }}</slot>
-    </component>
+      <slot> {{ __('Attach :resource', { resource: singularName }) }}</slot>
+    </router-link>
 
     <!-- Create Related Models -->
-    <component
-      :is="component"
-      class="flex-shrink-0"
+    <router-link
       v-else-if="shouldShowCreateButton"
       dusk="create-button"
-      :href="
-        $url(`/resources/${resourceName}/new`, {
+      :class="classes"
+      :to="{
+        name: 'create',
+        params: {
+          resourceName: resourceName,
+        },
+        query: {
           viaResource: viaResource,
           viaResourceId: viaResourceId,
           viaRelationship: viaRelationship,
-          relationshipType: relationshipType,
-        })
-      "
+        },
+      }"
     >
-      <span class="hidden md:inline-block">
-        {{ label }}
-      </span>
-      <span class="inline-block md:hidden">
-        {{ __('Create') }}
-      </span>
-    </component>
+      {{ label }}
+    </router-link>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    type: {
-      type: String,
-      default: 'button',
-      validator: val => ['button', 'outline-button'].includes(val),
-    },
-
+    classes: { default: 'btn btn-default btn-primary' },
     label: {},
     singularName: {},
     resourceName: {},
@@ -69,13 +63,6 @@ export default {
   },
 
   computed: {
-    component() {
-      return {
-        button: 'ButtonInertiaLink',
-        'outline-button': 'OutlineButtonInertiaLink',
-      }[this.type]
-    },
-
     /**
      * Determine if any buttons should be displayed.
      */

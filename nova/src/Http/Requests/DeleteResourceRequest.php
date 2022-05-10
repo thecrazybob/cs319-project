@@ -5,16 +5,13 @@ namespace Laravel\Nova\Http\Requests;
 use Closure;
 use Illuminate\Support\Collection;
 
-/**
- * @property-read string|array<int, mixed> $resources
- */
 class DeleteResourceRequest extends DeletionRequest
 {
     /**
      * Get the selected models for the action in chunks.
      *
      * @param  int  $count
-     * @param  \Closure(\Illuminate\Support\Collection):void  $callback
+     * @param  \Closure  $callback
      * @return mixed
      */
     public function chunks($count, Closure $callback)

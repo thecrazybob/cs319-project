@@ -1,60 +1,65 @@
 <template>
-  <Modal data-testid="restore-resource-modal" :show="show" maxWidth="sm">
+  <modal @modal-close="handleClose">
     <form
-      @submit.prevent="$emit('confirm')"
-      class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+      @submit.prevent="handleConfirm"
+      slot-scope="props"
+      class="bg-white rounded-lg shadow-lg overflow-hidden"
       style="width: 460px"
     >
       <slot>
-        <ModalHeader v-text="__('Restore Resource')" />
-        <ModalContent>
-          <p class="leading-normal">
+        <div class="p-8">
+          <heading :level="2" class="mb-6">{{
+            __('Restore Resource')
+          }}</heading>
+          <p class="text-80 leading-normal">
             {{ __('Are you sure you want to restore the selected resources?') }}
           </p>
-        </ModalContent>
+        </div>
       </slot>
 
-      <ModalFooter>
+      <div class="bg-30 px-6 py-3 flex">
         <div class="ml-auto">
-          <LinkButton
+          <button
             type="button"
             data-testid="cancel-button"
-            dusk="cancel-restore-button"
-            @click.prevent="$emit('close')"
-            class="mr-3"
+            @click.prevent="handleClose"
+            class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
           >
             {{ __('Cancel') }}
-          </LinkButton>
+          </button>
 
-          <DefaultButton
+          <button
             ref="confirmButton"
+            id="confirm-restore-button"
             data-testid="confirm-button"
-            dusk="confirm-restore-button"
             type="submit"
+            class="btn btn-default btn-primary"
           >
             {{ __('Restore') }}
-          </DefaultButton>
+          </button>
         </div>
-      </ModalFooter>
+      </div>
     </form>
-  </Modal>
+  </modal>
 </template>
 
 <script>
 export default {
-  emits: ['confirm', 'close'],
+  methods: {
+    handleClose() {
+      this.$emit('close')
+    },
 
-  props: {
-    show: { type: Boolean, default: false },
+    handleConfirm() {
+      this.$emit('confirm')
+    },
   },
 
   /**
    * Mount the component.
    */
   mounted() {
-    this.$nextTick(() => {
-      // this.$refs.confirmButton.focus()
-    })
+    this.$refs.confirmButton.focus()
   },
 }
 </script>

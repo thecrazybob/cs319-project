@@ -25,16 +25,16 @@ class CallQueuedAction
      * @param  string  $method
      * @param  \Laravel\Nova\Fields\ActionFields  $fields
      * @param  \Illuminate\Support\Collection  $models
-     * @param  string  $actionBatchId
+     * @param  string  $batchId
      * @return void
      */
-    public function __construct(Action $action, $method, ActionFields $fields, Collection $models, $actionBatchId)
+    public function __construct(Action $action, $method, ActionFields $fields, Collection $models, $batchId)
     {
         $this->action = $action;
         $this->method = $method;
         $this->fields = $fields;
         $this->models = $models;
-        $this->actionBatchId = $actionBatchId;
+        $this->batchId = $batchId;
     }
 
     /**
@@ -44,8 +44,8 @@ class CallQueuedAction
      */
     public function handle()
     {
-        $this->callAction(function ($action) {
-            return $action->withActionBatchId($this->actionBatchId)->{$this->method}($this->fields, $this->models);
+        return $this->callAction(function ($action) {
+            return $action->withBatchId($this->batchId)->{$this->method}($this->fields, $this->models);
         });
     }
 
@@ -57,9 +57,7 @@ class CallQueuedAction
      */
     public function failed($e)
     {
-        Nova::usingActionEvent(function ($actionEvent) use ($e) {
-            $actionEvent->markBatchAsFailed($this->actionBatchId, $e);
-        });
+        Nova::actionEvent()->markBatchAsFailed($this->batchId, $e);
 
         if ($method = $this->failedMethodName()) {
             call_user_func([$this->action, $method], $this->fields, $this->models, $e);

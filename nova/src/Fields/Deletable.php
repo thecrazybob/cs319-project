@@ -7,7 +7,7 @@ trait Deletable
     /**
      * The callback used to delete the field.
      *
-     * @var callable|null
+     * @var callable
      */
     public $deleteCallback;
 

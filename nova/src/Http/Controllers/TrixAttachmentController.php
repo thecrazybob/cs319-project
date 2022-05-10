@@ -11,7 +11,7 @@ class TrixAttachmentController extends Controller
      * Store an attachment for a Trix field.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(NovaRequest $request)
     {
@@ -43,8 +43,6 @@ class TrixAttachmentController extends Controller
         call_user_func(
             $field->detachCallback, $request
         );
-
-        return response()->noContent(200);
     }
 
     /**
@@ -64,7 +62,5 @@ class TrixAttachmentController extends Controller
         call_user_func(
             $field->discardCallback, $request
         );
-
-        return response()->noContent(200);
     }
 }

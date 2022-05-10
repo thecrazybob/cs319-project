@@ -3,23 +3,14 @@
 namespace Laravel\Nova\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Laravel\Nova\MemoizesMethods;
 
-/**
- * @property-read string|null $resource
- * @property-read mixed|null $resourceId
- * @property-read string|null $relatedResource
- * @property-read mixed|null $relatedResourceId
- * @property-read string|null $viaResource
- * @property-read mixed|null $viaResourceId
- * @property-read string|null $viaRelationship
- * @property-read string|null $relationshipType
- */
 class NovaRequest extends FormRequest
 {
-    use InteractsWithResources, InteractsWithRelatedResources, InteractsWithResourcesSelection;
+    use InteractsWithResources, InteractsWithRelatedResources, MemoizesMethods;
 
     /**
-     * Determine if this request is via a many-to-many relationship.
+     * Determine if this request is via a many to many relationship.
      *
      * @return bool
      */
@@ -38,8 +29,7 @@ class NovaRequest extends FormRequest
      */
     public function isCreateOrAttachRequest()
     {
-        return $this instanceof ResourceCreateOrAttachRequest
-                    || ($this->editing && in_array($this->editMode, ['create', 'attach']));
+        return $this->editing && in_array($this->editMode, ['create', 'attach']);
     }
 
     /**
@@ -49,8 +39,7 @@ class NovaRequest extends FormRequest
      */
     public function isUpdateOrUpdateAttachedRequest()
     {
-        return $this instanceof ResourceUpdateOrUpdateAttachedRequest
-                   || ($this->editing && in_array($this->editMode, ['update', 'update-attached']));
+        return $this->editing && in_array($this->editMode, ['update', 'update-attached']);
     }
 
     /**

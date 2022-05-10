@@ -7,11 +7,7 @@ use Laravel\Nova\Contracts\ListableField;
 use Laravel\Nova\Contracts\RelatableField;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
-use Laravel\Nova\Panel;
 
-/**
- * @method static static make(mixed $name, string|null $attribute = null, string|null $resource = null)
- */
 class HasOneThrough extends Field implements ListableField, RelatableField
 {
     /**
@@ -24,7 +20,7 @@ class HasOneThrough extends Field implements ListableField, RelatableField
     /**
      * The class name of the related resource.
      *
-     * @var class-string<\Laravel\Nova\Resource>
+     * @var string
      */
     public $resourceClass;
 
@@ -50,9 +46,9 @@ class HasOneThrough extends Field implements ListableField, RelatableField
     public $hasOneThroughRelationship;
 
     /**
-     * The callback used to determine if the HasOne field has already been filled.
+     * The callback use to determine if the HasOne field has already been filled.
      *
-     * @var \Closure(\Laravel\Nova\Http\Requests\NovaRequest):bool
+     * @var \Closure
      */
     public $filledCallback;
 
@@ -61,7 +57,7 @@ class HasOneThrough extends Field implements ListableField, RelatableField
      *
      * @param  string  $name
      * @param  string|null  $attribute
-     * @param  class-string<\Laravel\Nova\Resource>|null  $resource
+     * @param  string|null  $resource
      * @return void
      */
     public function __construct($name, $attribute = null, $resource = null)
@@ -72,40 +68,20 @@ class HasOneThrough extends Field implements ListableField, RelatableField
 
         $this->resourceClass = $resource;
         $this->resourceName = $resource::uriKey();
-        $this->hasOneThroughRelationship = $this->attribute = $attribute ?? ResourceRelationshipGuesser::guessRelation($name);
+        $this->hasOneThroughRelationship = $this->attribute;
         $this->singularLabel = $resource::singularLabel();
 
         $this->alreadyFilledWhen(function ($request) {
-            $parentResource = Nova::resourceForKey($request->viaResource);
+            $resource = Nova::resourceForKey($request->viaResource);
 
-            if ($parentResource && $request->viaResourceId) {
-                $parent = $parentResource::newModel()->find($request->viaResourceId);
+            if ($resource && $request->viaResourceId) {
+                $parent = $resource::newModel()->find($request->viaResourceId);
 
-                return optional($parent->{$this->attribute})->exists === true;
+                return ! is_null($parent->{$this->attribute});
             }
 
             return false;
         });
-    }
-
-    /**
-     * Get the relationship name.
-     *
-     * @return string
-     */
-    public function relationshipName()
-    {
-        return $this->hasOneThroughRelationship;
-    }
-
-    /**
-     * Get the relationship type.
-     *
-     * @return string
-     */
-    public function relationshipType()
-    {
-        return 'hasOneThrough';
     }
 
     /**
@@ -136,7 +112,6 @@ class HasOneThrough extends Field implements ListableField, RelatableField
     /**
      * Set the displayable singular label of the resource.
      *
-     * @param  string  $singularLabel
      * @return $this
      */
     public function singularLabel($singularLabel)
@@ -147,42 +122,28 @@ class HasOneThrough extends Field implements ListableField, RelatableField
     }
 
     /**
-     * Make current field behaves as panel.
-     *
-     * @return \Laravel\Nova\Panel
-     */
-    public function asPanel()
-    {
-        return Panel::make($this->name)
-                    ->withMeta([
-                        'fields' => [$this],
-                        'prefixComponent' => true,
-                    ])->withComponent('relationship-panel');
-    }
-
-    /**
      * Prepare the field for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
-        return with(app(NovaRequest::class), function ($request) {
-            return array_merge([
-                'resourceName' => $this->resourceName,
-                'hasOneThroughRelationship' => $this->hasOneThroughRelationship,
-                'relationshipType' => $this->relationshipType(),
-                'relatable' => true,
-                'singularLabel' => $this->singularLabel,
-                'alreadyFilled' => $this->alreadyFilled($request),
-            ], parent::jsonSerialize());
-        });
+        $request = app(NovaRequest::class);
+
+        return array_merge([
+            'resourceName' => $this->resourceName,
+            'hasOneThroughRelationship' => $this->hasOneThroughRelationship,
+            'listable' => true,
+            'singularLabel' => $this->singularLabel,
+            'alreadyFilled' => $this->alreadyFilled($request),
+        ], parent::jsonSerialize());
     }
 
     /**
      * Set the Closure used to determine if the HasOne field has already been filled.
      *
-     * @param  \Closure(\Laravel\Nova\Http\Requests\NovaRequest):bool  $callback
+     * @param  \Closure  $callback
      * @return $this
      */
     public function alreadyFilledWhen($callback)

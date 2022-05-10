@@ -1,43 +1,14 @@
-<template>
-  <VDropdown
-    :triggers="triggers"
-    :distance="distance"
-    :skidding="skidding"
-    :placement="placement"
-    :boundary="boundary"
-    :prevent-overflow="preventOverflow"
-    theme="Nova"
-  >
-    <span>
-      <slot />
-    </span>
-
-    <template #popper>
-      <slot name="content"></slot>
-    </template>
-  </VDropdown>
-</template>
-
 <script>
-import { PopperWrapper } from 'floating-vue'
-
 export default {
-  ...PopperWrapper,
-
   props: {
-    distance: {
-      type: Number,
-      default: 0,
-    },
-
-    skidding: {
-      type: Number,
+    offset: {
+      type: [Number, String],
       default: 3,
     },
 
-    triggers: {
-      type: Array,
-      default: ['hover'],
+    trigger: {
+      default: 'hover',
+      validator: val => ['click', 'hover'].includes(val),
     },
 
     placement: {
@@ -52,8 +23,42 @@ export default {
 
     preventOverflow: {
       type: Boolean,
-      default: true,
+      default: false,
     },
+  },
+
+  data() {
+    return {
+      popperOptions: {
+        modifiers: {
+          preventOverflow: {
+            boundariesElement: this.boundary,
+            enabled: this.preventOverflow,
+          },
+        },
+      },
+    }
+  },
+
+  render(h) {
+    return (
+      <v-popover
+        trigger={this.trigger}
+        offset={this.offset}
+        placement={this.placement}
+        boundariesElement={this.boundary}
+        popperOptions={this.popperOptions}
+        popoverClass="z-50"
+        popoverBaseClass=""
+        popoverWrapperClass=""
+        popoverArrowClass=""
+        popoverInnerClass=""
+      >
+        <span>{this.$slots.default}</span>
+
+        <template slot="popover">{this.$slots.content}</template>
+      </v-popover>
+    )
   },
 }
 </script>

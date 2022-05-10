@@ -1,64 +1,59 @@
 <template>
-  <Modal
-    :show="show"
-    data-testid="confirm-upload-removal-modal"
-    role="alertdialog"
-  >
+  <modal @modal-close="handleClose">
     <div
-      class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+      class="bg-white rounded-lg shadow-lg overflow-hidden"
       style="width: 460px"
     >
-      <ModalHeader v-text="__('Delete File')" />
-      <ModalContent>
-        <p class="leading-tight">
+      <div class="p-8">
+        <heading :level="2" class="mb-6">{{ __('Delete File') }}</heading>
+        <p class="text-80">
           {{ __('Are you sure you want to delete this file?') }}
         </p>
-      </ModalContent>
-      <ModalFooter>
+      </div>
+
+      <div class="bg-30 px-6 py-3 flex">
         <div class="ml-auto">
-          <LinkButton
+          <button
             dusk="cancel-upload-delete-button"
             type="button"
-            @click.prevent="$emit('close')"
-            class="mr-3"
+            @click.prevent="handleClose"
+            class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
           >
             {{ __('Cancel') }}
-          </LinkButton>
+          </button>
 
-          <LoadingButton
-            @click.prevent="handleConfirm"
+          <progress-button
+            @click.prevent.native="handleConfirm"
             ref="confirmButton"
             dusk="confirm-upload-delete-button"
             :disabled="clicked"
             :processing="clicked"
-            component="DangerButton"
+            class="btn-danger"
           >
             {{ __('Delete') }}
-          </LoadingButton>
+          </progress-button>
         </div>
-      </ModalFooter>
+      </div>
     </div>
-  </Modal>
+  </modal>
 </template>
 
 <script>
 export default {
-  emits: ['confirm', 'close'],
-
-  props: {
-    show: { type: Boolean, default: false },
-  },
-
   /**
    * Mount the component.
    */
   mounted() {
-    // this.$refs.confirmButton.focus()
+    this.$refs.confirmButton.focus()
   },
 
   data: () => ({ clicked: false }),
 
   methods: {
+    handleClose() {
+      this.$emit('close')
+    },
+
     handleConfirm() {
       this.clicked = true
       this.$emit('confirm')

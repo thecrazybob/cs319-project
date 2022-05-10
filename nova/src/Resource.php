@@ -10,34 +10,24 @@ use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Illuminate\Http\Resources\DelegatesToResource;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 use JsonSerializable;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Scout\Searchable;
 
-/**
- * @template TModel of \Illuminate\Database\Eloquent\Model
- *
- * @mixin TModel
- *
- * @method mixed getKey()
- */
 abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
 {
     use Authorizable,
         ConditionallyLoadsAttributes,
         DelegatesToResource,
         FillsFields,
-        PerformsQueries,
         PerformsValidation,
+        PerformsQueries,
         ResolvesActions,
-        ResolvesCards,
         ResolvesFields,
         ResolvesFilters,
         ResolvesLenses,
-        SupportsPolling,
-        HasLifecycleMethods;
+        ResolvesCards;
 
     /**
      * The default displayable pivot class name.
@@ -63,7 +53,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * The underlying model resource instance.
      *
-     * @var TModel|null
+     * @var \Illuminate\Database\Eloquent\Model|null
      */
     public $resource;
 
@@ -161,7 +151,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * The cached soft deleting statuses for various resources.
      *
-     * @var array<class-string<\Illuminate\Database\Eloquent\Model>, bool>
+     * @var array
      */
     public static $softDeletes = [];
 
@@ -173,11 +163,39 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     public static $trafficCop = true;
 
     /**
+     * Indicates whether Nova should prevent the user from leaving an unsaved form, losing their data.
+     *
+     * @var bool
+     */
+    public static $preventFormAbandonment = false;
+
+    /**
      * The maximum value of the resource's primary key column.
      *
      * @var int
      */
     public static $maxPrimaryKeySize = PHP_INT_MAX;
+
+    /**
+     * Indicates whether the resource should automatically poll for new resources.
+     *
+     * @var bool
+     */
+    public static $polling = false;
+
+    /**
+     * The interval at which Nova should poll for new resources.
+     *
+     * @var int
+     */
+    public static $pollingInterval = 15;
+
+    /**
+     * Indicates whether to show the polling toggle button inside Nova.
+     *
+     * @var bool
+     */
+    public static $showPollingToggle = false;
 
     /**
      * The debounce amount to use when searching this resource.
@@ -187,16 +205,9 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     public static $debounce = 0.5;
 
     /**
-     * The callbacks to be called after saving an individual resource.
-     *
-     * @var array
-     */
-    public static $afterCallbacks = [];
-
-    /**
      * Create a new resource instance.
      *
-     * @param  TModel|null  $resource
+     * @param  \Illuminate\Database\Eloquent\Model|null  $resource
      * @return void
      */
     public function __construct($resource)
@@ -207,42 +218,19 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    abstract public function fields(NovaRequest $request);
+    abstract public function fields(Request $request);
 
     /**
      * Get the underlying model instance for the resource.
      *
-     * @return TModel|null
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function model()
     {
         return $this->resource;
-    }
-
-    /**
-     * Return a replicated resource.
-     *
-     * @return static
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function replicate()
-    {
-        $model = $this->model();
-
-        if ($model->exists !== true) {
-            throw new InvalidArgumentException('Unable to replicate from non-existing resource');
-        }
-
-        return new static($model->replicate(
-            $this->deletableFields(resolve(NovaRequest::class))
-                    ->map(function ($field) {
-                        return $field->attribute;
-                    })->all()
-        ));
     }
 
     /**
@@ -346,6 +334,18 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     }
 
     /**
+     * Prepare search column value.
+     *
+     * @param  string  $column
+     * @param  string  $search
+     * @return string
+     */
+    protected static function searchableKeyword($column, $search)
+    {
+        return '%'.$search.'%';
+    }
+
+    /**
      * Get the value that should be displayed to represent the resource.
      *
      * @return string
@@ -388,11 +388,10 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get a fresh instance of the model represented by the resource.
      *
-     * @return TModel
+     * @return mixed
      */
     public static function newModel()
     {
-        /** @var TModel $model */
         $model = static::$model;
 
         return new $model;
@@ -409,10 +408,10 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     }
 
     /**
-     * Get meta information about this resource for client side consumption.
+     * Get meta information about this resource for client side comsumption.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
+     * @return array
      */
     public static function additionalInformation(Request $request)
     {
@@ -422,7 +421,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * The pagination per-page options configured for this resource.
      *
-     * @return array<int, int>
+     * @return array
      */
     public static function perPageOptions()
     {
@@ -441,25 +440,34 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     }
 
     /**
+     * Indicates whether Nova should prevent the user from leaving an unsaved form, losing their data.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public static function preventFormAbandonment(Request $request)
+    {
+        return static::$preventFormAbandonment;
+    }
+
+    /**
      * Prepare the resource for JSON serialization.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Support\Collection<int, \Laravel\Nova\Fields\Field>  $fields
-     * @return array<string, mixed>
+     * @param  \Illuminate\Support\Collection  $fields
+     * @return array
      */
     public function serializeForIndex(NovaRequest $request, $fields = null)
     {
         return array_merge($this->serializeWithId($fields ?: $this->indexFields($request)), [
-            'title' => $this->title(),
-            'actions' => $this->availableActionsOnTableRow($request),
+            'title' => static::title(),
+            'actions' => $this->availableActions($request),
             'authorizedToView' => $this->authorizedToView($request),
             'authorizedToCreate' => $this->authorizedToCreate($request),
-            'authorizedToReplicate' => $this->authorizedToReplicate($request),
             'authorizedToUpdate' => $this->authorizedToUpdateForSerialization($request),
             'authorizedToDelete' => $this->authorizedToDeleteForSerialization($request),
             'authorizedToRestore' => static::softDeletes() && $this->authorizedToRestore($request),
             'authorizedToForceDelete' => static::softDeletes() && $this->authorizedToForceDelete($request),
-            'authorizedToImpersonate' => $this->authorizedToImpersonate($request),
             'softDeletes' => static::softDeletes(),
             'softDeleted' => $this->isSoftDeleted(),
         ]);
@@ -470,34 +478,18 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
-     * @return array<string, mixed>
+     * @return array
      */
     public function serializeForDetail(NovaRequest $request, Resource $resource)
     {
         return array_merge($this->serializeWithId($this->detailFieldsWithinPanels($request, $resource)), [
-            'title' => $this->title(),
+            'title' => static::title(),
             'authorizedToCreate' => $this->authorizedToCreate($request),
-            'authorizedToReplicate' => $this->authorizedToReplicate($request),
             'authorizedToUpdate' => $this->authorizedToUpdate($request),
             'authorizedToDelete' => $this->authorizedToDelete($request),
             'authorizedToRestore' => static::softDeletes() && $this->authorizedToRestore($request),
             'authorizedToForceDelete' => static::softDeletes() && $this->authorizedToForceDelete($request),
-            'authorizedToImpersonate' => $this->authorizedToImpersonate($request),
             'softDeletes' => static::softDeletes(),
-            'softDeleted' => $this->isSoftDeleted(),
-        ]);
-    }
-
-    /**
-     * Prepare the resource for JSON serialization.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array<string, mixed>
-     */
-    public function serializeForPreview(NovaRequest $request)
-    {
-        return array_merge($this->serializeWithId($this->previewFields($request)), [
-            'title' => $this->title(),
             'softDeleted' => $this->isSoftDeleted(),
         ]);
     }
@@ -549,9 +541,10 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return $this->serializeWithId($this->resolveFields(
             resolve(NovaRequest::class)
@@ -561,7 +554,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the resource for JSON serialization using the given fields.
      *
-     * @param  \Illuminate\Support\Collection<int, \Laravel\Nova\Fields\Field>  $fields
+     * @param  \Illuminate\Support\Collection  $fields
      * @return array
      */
     protected function serializeWithId(Collection $fields)
@@ -577,7 +570,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
-     * @return \Laravel\Nova\URL|string
+     * @return string
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
@@ -589,7 +582,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
-     * @return \Laravel\Nova\URL|string
+     * @return string
      */
     public static function redirectAfterUpdate(NovaRequest $request, $resource)
     {
@@ -600,7 +593,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
      * Return the location to redirect the user after deletion.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Laravel\Nova\URL|string|null
+     * @return string|null
      */
     public static function redirectAfterDelete(NovaRequest $request)
     {
@@ -620,7 +613,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Return a fresh resource instance.
      *
-     * @return static
+     * @return \Laravel\Nova\Resource
      */
     protected static function newResource()
     {
@@ -630,7 +623,7 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Determine whether to show borders for each column on the X-axis.
      *
-     * @return bool
+     * @return string
      */
     public static function showColumnBorders()
     {

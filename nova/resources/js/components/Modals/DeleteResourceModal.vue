@@ -1,64 +1,58 @@
 <template>
-  <Modal
-    data-testid="delete-resource-modal"
-    :show="show"
-    role="alertdialog"
-    maxWidth="sm"
-  >
+  <modal @modal-close="handleClose">
     <form
-      @submit.prevent="$emit('confirm')"
-      class="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+      @submit.prevent="handleConfirm"
+      slot-scope="props"
+      class="bg-white rounded-lg shadow-lg overflow-hidden"
+      style="width: 460px"
     >
-      <slot>
-        <ModalHeader v-text="__(`${uppercaseMode} Resource`)" />
-        <ModalContent>
-          <p class="leading-normal">
+      <slot :uppercaseMode="uppercaseMode" :mode="mode">
+        <div class="p-8">
+          <heading :level="2" class="mb-6">{{
+            __(uppercaseMode + ' Resource')
+          }}</heading>
+          <p class="text-80 leading-normal">
             {{
               __(
                 'Are you sure you want to ' + mode + ' the selected resources?'
               )
             }}
           </p>
-        </ModalContent>
+        </div>
       </slot>
 
-      <ModalFooter>
+      <div class="bg-30 px-6 py-3 flex">
         <div class="ml-auto">
-          <LinkButton
+          <button
             type="button"
             data-testid="cancel-button"
             dusk="cancel-delete-button"
-            @click.prevent="$emit('close')"
-            class="mr-3"
+            @click.prevent="handleClose"
+            class="btn text-80 font-normal h-9 px-3 mr-3 btn-link"
           >
             {{ __('Cancel') }}
-          </LinkButton>
+          </button>
 
-          <LoadingButton
+          <loading-button
+            id="confirm-delete-button"
             ref="confirmButton"
-            dusk="confirm-delete-button"
+            data-testid="confirm-button"
             :processing="working"
             :disabled="working"
-            component="DangerButton"
             type="submit"
+            class="btn btn-default btn-danger"
           >
             {{ __(uppercaseMode) }}
-          </LoadingButton>
+          </loading-button>
         </div>
-      </ModalFooter>
+      </div>
     </form>
-  </Modal>
+  </modal>
 </template>
 
 <script>
-import startCase from 'lodash/startCase'
-
 export default {
-  emits: ['confirm', 'close'],
-
   props: {
-    show: { type: Boolean, default: false },
-
     mode: {
       type: String,
       default: 'delete',
@@ -88,14 +82,12 @@ export default {
    * Mount the component.
    */
   mounted() {
-    this.$nextTick(() => {
-      // this.$refs.confirmButton.button.focus()
-    })
+    this.$refs.confirmButton.focus()
   },
 
   computed: {
     uppercaseMode() {
-      return startCase(this.mode)
+      return _.startCase(this.mode)
     },
   },
 }

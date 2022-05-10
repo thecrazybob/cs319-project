@@ -10,7 +10,7 @@ class Authorize
      * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request):mixed  $next
+     * @param  \Closure  $next
      * @return \Illuminate\Http\Response
      */
     public function handle($request, $next)

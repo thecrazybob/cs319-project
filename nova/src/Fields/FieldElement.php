@@ -10,42 +10,42 @@ abstract class FieldElement extends Element
     /**
      * The field's assigned panel.
      *
-     * @var string|null
+     * @var string
      */
     public $panel;
 
     /**
      * Indicates if the element should be shown on the index view.
      *
-     * @var (callable():bool)|bool
+     * @var \Closure|bool
      */
     public $showOnIndex = true;
 
     /**
      * Indicates if the element should be shown on the detail view.
      *
-     * @var (callable():bool)|bool
+     * @var \Closure|bool
      */
     public $showOnDetail = true;
 
     /**
      * Indicates if the element should be shown on the creation view.
      *
-     * @var (callable(\Laravel\Nova\Http\Requests\NovaRequest):bool)|bool
+     * @var \Closure|bool
      */
     public $showOnCreation = true;
 
     /**
      * Indicates if the element should be shown on the update view.
      *
-     * @var (callable(\Laravel\Nova\Http\Requests\NovaRequest, mixed):bool)|bool
+     * @var \Closure|bool
      */
     public $showOnUpdate = true;
 
     /**
      * Specify that the element should be hidden from the index view.
      *
-     * @param  (callable():bool)|bool  $callback
+     * @param  \Closure|bool  $callback
      * @return $this
      */
     public function hideFromIndex($callback = true)
@@ -61,7 +61,7 @@ abstract class FieldElement extends Element
     /**
      * Specify that the element should be hidden from the detail view.
      *
-     * @param  (callable():bool)|bool  $callback
+     * @param  \Closure|bool  $callback
      * @return $this
      */
     public function hideFromDetail($callback = true)
@@ -77,7 +77,7 @@ abstract class FieldElement extends Element
     /**
      * Specify that the element should be hidden from the creation view.
      *
-     * @param  (callable():bool)|bool  $callback
+     * @param  \Closure|bool  $callback
      * @return $this
      */
     public function hideWhenCreating($callback = true)
@@ -93,7 +93,7 @@ abstract class FieldElement extends Element
     /**
      * Specify that the element should be hidden from the update view.
      *
-     * @param  (callable():bool)|bool  $callback
+     * @param  \Closure|bool  $callback
      * @return $this
      */
     public function hideWhenUpdating($callback = true)
@@ -109,7 +109,7 @@ abstract class FieldElement extends Element
     /**
      * Specify that the element should be hidden from the index view.
      *
-     * @param  (callable():bool)|bool  $callback
+     * @param  \Closure|bool  $callback
      * @return $this
      */
     public function showOnIndex($callback = true)
@@ -122,7 +122,7 @@ abstract class FieldElement extends Element
     /**
      * Specify that the element should be hidden from the detail view.
      *
-     * @param  (callable():bool)|bool  $callback
+     * @param  \Closure|bool  $callback
      * @return $this
      */
     public function showOnDetail($callback = true)
@@ -135,7 +135,7 @@ abstract class FieldElement extends Element
     /**
      * Specify that the element should be hidden from the creation view.
      *
-     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest):bool)|bool  $callback
+     * @param  \Closure|bool  $callback
      * @return $this
      */
     public function showOnCreating($callback = true)
@@ -148,7 +148,7 @@ abstract class FieldElement extends Element
     /**
      * Specify that the element should be hidden from the update view.
      *
-     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest, mixed):bool)|bool  $callback
+     * @param  \Closure|bool  $callback
      * @return $this
      */
     public function showOnUpdating($callback = true)
@@ -191,7 +191,7 @@ abstract class FieldElement extends Element
     }
 
     /**
-     * Determine if the field is to be shown on the detail view.
+     * Check showing on detail.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  mixed  $resource
@@ -204,18 +204,6 @@ abstract class FieldElement extends Element
         }
 
         return $this->showOnDetail;
-    }
-
-    /**
-     * Determine if the field is to be shown in the preview modal.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  mixed  $resource
-     * @return bool
-     */
-    public function isShownOnPreview(NovaRequest $request, $resource): bool
-    {
-        return $this->showOnPreview;
     }
 
     /**
@@ -298,9 +286,10 @@ abstract class FieldElement extends Element
     /**
      * Prepare the field element for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
             'panel' => $this->panel,

@@ -1,29 +1,26 @@
 <template>
-  <FilterContainer>
-    <span>{{ filter.name }}</span>
+  <div>
+    <h3 class="text-sm uppercase tracking-wide text-80 bg-30 p-3">
+      {{ filter.name }}
+    </h3>
 
-    <template #filter>
-      <SelectControl
-        class="w-full block"
-        size="sm"
-        :dusk="`${filter.name}-select-filter`"
-        v-model:selected="value"
-        @change="value = $event"
+    <div class="p-2">
+      <select-control
+        :dusk="`${filter.name}-filter-select`"
+        class="block w-full form-control-sm form-select"
+        :value="value"
+        @change="handleChange"
         :options="filter.options"
-        label="label"
+        label="name"
       >
-        <option value="" :selected="value == ''">&mdash;</option>
-      </SelectControl>
-    </template>
-  </FilterContainer>
+        <option value="" selected>&mdash;</option>
+      </select-control>
+    </div>
+  </div>
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
-
 export default {
-  emits: ['change'],
-
   props: {
     resourceName: {
       type: String,
@@ -36,39 +33,11 @@ export default {
     lens: String,
   },
 
-  data: () => ({
-    value: null,
-    debouncedHandleChange: null,
-  }),
-
-  created() {
-    this.debouncedHandleChange = debounce(() => this.handleChange(), 500)
-    this.setCurrentFilterValue()
-  },
-
-  mounted() {
-    Nova.$on('filter-reset', this.setCurrentFilterValue)
-  },
-
-  beforeUnmount() {
-    Nova.$off('filter-reset', this.setCurrentFilterValue)
-  },
-
-  watch: {
-    value() {
-      this.debouncedHandleChange()
-    },
-  },
-
   methods: {
-    setCurrentFilterValue() {
-      this.value = this.filter.currentValue
-    },
-
-    handleChange() {
+    handleChange(event) {
       this.$store.commit(`${this.resourceName}/updateFilterState`, {
         filterClass: this.filterKey,
-        value: this.value,
+        value: event.target.value,
       })
 
       this.$emit('change')
@@ -80,6 +49,10 @@ export default {
       return this.$store.getters[`${this.resourceName}/getFilter`](
         this.filterKey
       )
+    },
+
+    value() {
+      return this.filter.currentValue
     },
   },
 }

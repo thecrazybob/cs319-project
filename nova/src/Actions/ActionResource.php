@@ -13,25 +13,14 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource;
 
-/**
- * @template TActionModel of \Laravel\Nova\Actions\ActionEvent
- * @extends \Laravel\Nova\Resource<TActionModel>
- */
 class ActionResource extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<TActionModel>
-     */
-    public static $model = ActionEvent::class;
-
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
-    public static $title = 'name';
+    public static $model = ActionEvent::class;
 
     /**
      * Indicates if the resource should be globally searchable.
@@ -83,10 +72,10 @@ class ActionResource extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(Request $request)
     {
         return [
             ID::make('ID', 'id'),

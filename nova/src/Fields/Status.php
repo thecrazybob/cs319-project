@@ -2,10 +2,6 @@
 
 namespace Laravel\Nova\Fields;
 
-use Illuminate\Support\Arr;
-use Laravel\Nova\Fields\Filters\StatusFilter;
-use Laravel\Nova\Http\Requests\NovaRequest;
-
 class Status extends Text
 {
     /**
@@ -30,16 +26,9 @@ class Status extends Text
     public $showOnUpdate = false;
 
     /**
-     * Indicate if field require explicit filterable callback.
-     *
-     * @var bool
-     */
-    public $requiresExplicitFilterableCallback = true;
-
-    /**
      * Specify the values that should be considered "loading".
      *
-     * @param  array<int, string>  $loadingWords
+     * @param  array  $loadingWords
      * @return $this
      */
     public function loadingWhen(array $loadingWords)
@@ -50,39 +39,11 @@ class Status extends Text
     /**
      * Specify the values that should be considered "failed".
      *
-     * @param  array<int, string>  $failedWords
+     * @param  array  $failedWords
      * @return $this
      */
     public function failedWhen(array $failedWords)
     {
         return $this->withMeta(['failedWords' => $failedWords]);
-    }
-
-    /**
-     * Make the field filter.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Laravel\Nova\Fields\Filters\Filter
-     */
-    protected function makeFilter(NovaRequest $request)
-    {
-        return new StatusFilter($this);
-    }
-
-    /**
-     * Prepare the field for JSON serialization.
-     *
-     * @return array
-     */
-    public function serializeForFilter()
-    {
-        return transform($this->jsonSerialize(), function ($field) {
-            return Arr::only($field, [
-                'uniqueKey',
-                'name',
-                'attribute',
-                'options',
-            ]);
-        });
     }
 }

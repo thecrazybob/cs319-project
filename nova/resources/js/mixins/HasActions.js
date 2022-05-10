@@ -1,5 +1,3 @@
-import filter from 'lodash/filter'
-
 export default {
   data: () => ({
     actions: [],
@@ -11,7 +9,7 @@ export default {
      * Determine whether there are any standalone actions.
      */
     haveStandaloneActions() {
-      return filter(this.allActions, a => a.standalone == true).length > 0
+      return _.filter(this.allActions, a => a.standalone == true).length > 0
     },
 
     /**

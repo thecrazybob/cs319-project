@@ -9,11 +9,16 @@
 </template>
 
 <script>
-import { MetricBehavior } from '@/mixins'
-import { minimum } from '@/util'
+import { Minimum } from 'laravel-nova'
+import BasePartitionMetric from './Base/PartitionMetric'
+import MetricBehavior from './MetricBehavior'
 
 export default {
   mixins: [MetricBehavior],
+
+  components: {
+    BasePartitionMetric,
+  },
 
   props: {
     card: {
@@ -52,23 +57,11 @@ export default {
     this.fetch()
   },
 
-  mounted() {
-    if (this.card && this.card.refreshWhenFiltersChange === true) {
-      Nova.$on('filter-changed', this.fetch)
-    }
-  },
-
-  beforeUnmount() {
-    if (this.card && this.card.refreshWhenFiltersChange === true) {
-      Nova.$off('filter-changed', this.fetch)
-    }
-  },
-
   methods: {
     fetch() {
       this.loading = true
 
-      minimum(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(
+      Minimum(Nova.request(this.metricEndpoint)).then(
         ({
           data: {
             value: { value },
@@ -90,21 +83,6 @@ export default {
       } else {
         return `/nova-api/metrics/${this.card.uriKey}`
       }
-    },
-
-    metricPayload() {
-      const payload = { params: {} }
-
-      if (
-        !Nova.missingResource(this.resourceName) &&
-        this.card &&
-        this.card.refreshWhenFiltersChange === true
-      ) {
-        payload.params.filter =
-          this.$store.getters[`${this.resourceName}/currentEncodedFilters`]
-      }
-
-      return payload
     },
   },
 }

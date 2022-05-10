@@ -2,30 +2,23 @@
   <trix-editor
     ref="theEditor"
     @keydown.stop
-    :input="uid"
-    v-bind="$attrs"
     @trix-change="handleChange"
     @trix-initialize="initialize"
     @trix-attachment-add="handleAddFile"
     @trix-attachment-remove="handleRemoveFile"
     @trix-file-accept="handleFileAccept"
+    :value="value"
     :placeholder="placeholder"
     class="trix-content"
   />
-  <input type="hidden" :name="name" :id="uid" :value="value" />
 </template>
 
 <script>
-import { uid } from 'uid/single'
 import Trix from 'trix'
 import 'trix/dist/trix.css'
 
 export default {
   name: 'trix-vue',
-
-  inheritAttrs: false,
-
-  emits: ['change', 'file-added', 'file-removed'],
 
   props: {
     name: { type: String },
@@ -34,10 +27,6 @@ export default {
     withFiles: { type: Boolean, default: true },
     disabled: { type: Boolean, default: false },
   },
-
-  data: () => ({
-    uid: uid(),
-  }),
 
   methods: {
     initialize() {
@@ -59,11 +48,11 @@ export default {
     },
 
     handleAddFile(event) {
-      this.$emit('file-added', event)
+      this.$emit('file-add', event)
     },
 
     handleRemoveFile(event) {
-      this.$emit('file-removed', event)
+      this.$emit('file-remove', event)
     },
   },
 }

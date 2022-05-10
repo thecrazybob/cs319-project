@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Contracts\Deletable;
 use Laravel\Nova\DeleteField;
 use Laravel\Nova\Http\Requests\DetachResourceRequest;
@@ -16,7 +17,7 @@ class ResourceDetachController extends Controller
      * @param  \Laravel\Nova\Http\Requests\DetachResourceRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(DetachResourceRequest $request)
+    public function handle(DetachResourceRequest $request)
     {
         $parent = tap($request->findParentResourceOrFail(), function ($resource) use ($request) {
             abort_unless($resource->hasRelatableField($request, $request->viaRelationship), 409);
@@ -43,8 +44,6 @@ class ResourceDetachController extends Controller
                 }
             }
         });
-
-        return response()->noContent(200);
     }
 
     /**
@@ -64,8 +63,8 @@ class ResourceDetachController extends Controller
 
         $pivot->delete();
 
-        Nova::usingActionEvent(function ($actionEvent) use ($pivot, $model, $parent, $request) {
-            $actionEvent->insert(
+        tap(Nova::actionEvent(), function ($actionEvent) use ($pivot, $model, $parent, $request) {
+            DB::connection($actionEvent->getConnectionName())->table('action_events')->insert(
                 $actionEvent->forResourceDetach(
                     $request->user(), $parent, collect([$model]), $pivot->getMorphClass()
                 )->map->getAttributes()->all()

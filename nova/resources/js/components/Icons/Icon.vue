@@ -1,12 +1,15 @@
 <template>
-  <component
-    class="inline-block"
-    :is="iconName"
-    role="presentation"
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="fill-current"
     :width="width"
     :height="height"
     :viewBox="viewBox"
-  />
+    :aria-labelledby="type"
+    role="presentation"
+  >
+    <component :is="iconName" />
+  </svg>
 </template>
 
 <script>
@@ -16,31 +19,23 @@ export default {
       type: String,
       default: 'delete',
     },
-    solid: {
-      type: Boolean,
-      default: false,
+    viewBox: {
+      type: String,
+      default: '0 0 20 20',
+    },
+    width: {
+      type: [Number, String],
+      default: 20,
+    },
+    height: {
+      type: [Number, String],
+      default: 20,
     },
   },
 
   computed: {
-    style() {
-      return this.solid ? 'solid' : 'outline'
-    },
-
     iconName() {
-      return `heroicons-${this.style}-${this.type}`
-    },
-
-    viewBox() {
-      return this.solid ? '0 0 20 20' : '0 0 24 24'
-    },
-
-    width() {
-      return this.solid ? 20 : 24
-    },
-
-    height() {
-      return this.solid ? 20 : 24
+      return `icon-${this.type}`
     },
   },
 }

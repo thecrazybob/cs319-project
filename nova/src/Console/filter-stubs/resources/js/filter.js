@@ -1,5 +1,3 @@
-import Filter from './components/Filter'
-
-Nova.booting((app, store) => {
-  app.component('{{ component }}', Filter)
+Nova.booting((Vue, router, store) => {
+  Vue.component('{{ component }}', require('./components/Filter'))
 })

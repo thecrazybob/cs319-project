@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Testing\Browser\Pages;
 
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Nova;
 
 class Lens extends Index
 {
@@ -19,8 +20,16 @@ class Lens extends Index
     {
         $this->lens = $lens;
         $this->resourceName = $resourceName;
+    }
 
-        $this->setNovaPage("/resources/{$this->resourceName}/lens/{$this->lens}");
+    /**
+     * Get the URL for the page.
+     *
+     * @return string
+     */
+    public function url()
+    {
+        return Nova::path().'/resources/'.$this->resourceName.'/lens/'.$this->lens;
     }
 
     /**
@@ -31,18 +40,6 @@ class Lens extends Index
      */
     public function assert(Browser $browser)
     {
-        $browser->assertOk()->waitFor('@nova-resource-lens');
-    }
-
-    /**
-     * Get the element shortcuts for the page.
-     *
-     * @return array
-     */
-    public function elements()
-    {
-        return [
-            '@nova-resource-lens' => '#app [data-testid="content"] [dusk="'.$this->lens.'-lens-component"]',
-        ];
+        //
     }
 }

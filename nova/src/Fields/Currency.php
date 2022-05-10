@@ -55,7 +55,7 @@ class Currency extends Number
     /**
      * The context to use when creating the Money instance.
      *
-     * @var \Brick\Money\Context|null
+     * @var Context|null
      */
     public $context = null;
 
@@ -63,8 +63,8 @@ class Currency extends Number
      * Create a new field.
      *
      * @param  string  $name
-     * @param  string|\Closure|callable|object|null  $attribute
-     * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
+     * @param  string|null  $attribute
+     * @param  mixed|null  $resolveCallback
      * @return void
      */
     public function __construct($name, $attribute = null, $resolveCallback = null)
@@ -74,19 +74,17 @@ class Currency extends Number
         $this->locale = config('app.locale', 'en');
         $this->currency = config('nova.currency', 'USD');
 
-        $this->step($this->getStepValue())
-            ->fillUsing(function ($request, $model, $attribute) {
-                $value = $request->$attribute;
+        $this->step($this->getStepValue());
 
-                if ($this->minorUnits && ! $this->isNullValue($value)) {
-                    $model->$attribute = $this->toMoneyInstance(
-                        $value * (10 ** Currencies::getFractionDigits($this->currency)),
-                        $this->currency
-                    )->getMinorAmount()->toInt();
-                } else {
-                    $model->$attribute = $value;
-                }
-            })
+        $this->fillUsing(function ($request, $model, $attribute) {
+            $value = $request->$attribute;
+
+            if ($this->minorUnits && ! $this->isNullValue($value)) {
+                $model->$attribute = $this->toMoneyInstance($value)->getMinorAmount()->toInt();
+            } else {
+                $model->$attribute = $value;
+            }
+        })
             ->displayUsing(function ($value) {
                 return ! $this->isNullValue($value) ? $this->formatMoney($value) : null;
             })
@@ -191,6 +189,7 @@ class Currency extends Number
     public function asMinorUnits()
     {
         $this->minorUnits = true;
+        $this->step('1.0');
 
         return $this;
     }
@@ -203,6 +202,7 @@ class Currency extends Number
     public function asMajorUnits()
     {
         $this->minorUnits = false;
+        $this->step($this->getStepValue());
 
         return $this;
     }
@@ -224,7 +224,7 @@ class Currency extends Number
     /**
      * Set the context used to create the Money instance.
      *
-     * @param  \Brick\Money\Context  $context
+     * @param  Context  $context
      * @return $this
      */
     public function context(Context $context)
@@ -256,15 +256,20 @@ class Currency extends Number
      */
     protected function getStepValue()
     {
+        if ($this->minorUnits) {
+            return '1.0';
+        }
+
         return (string) 0.1 ** Currencies::getFractionDigits($this->currency);
     }
 
     /**
      * Prepare the field for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
             'currency' => $this->resolveCurrencySymbol(),

@@ -13,8 +13,6 @@
 
 <script>
 export default {
-  emits: ['input'],
-
   props: {
     checked: Boolean,
     name: { type: String, required: false },

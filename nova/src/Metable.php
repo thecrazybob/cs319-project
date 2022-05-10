@@ -7,14 +7,14 @@ trait Metable
     /**
      * The meta data for the element.
      *
-     * @var array<string, mixed>
+     * @var array
      */
     public $meta = [];
 
     /**
      * Get additional meta information to merge with the element payload.
      *
-     * @return array<string, mixed>
+     * @return array
      */
     public function meta()
     {
@@ -24,7 +24,7 @@ trait Metable
     /**
      * Set additional meta information for the element.
      *
-     * @param  array<string, mixed>  $meta
+     * @param  array  $meta
      * @return $this
      */
     public function withMeta(array $meta)

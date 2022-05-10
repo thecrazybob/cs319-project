@@ -9,13 +9,6 @@ use Laravel\Nova\Resource;
 trait FormatsRelatableDisplayValues
 {
     /**
-     * The column that should be displayed for the field.
-     *
-     * @var (callable(mixed):string)|null
-     */
-    public $display;
-
-    /**
      * Format the associatable display value.
      *
      * @param  mixed  $resource
@@ -27,7 +20,7 @@ trait FormatsRelatableDisplayValues
             $resource = Nova::newResourceFromModel($resource);
         }
 
-        if (is_callable($this->display)) {
+        if ($this->display) {
             return call_user_func($this->display, $resource);
         }
 
@@ -37,7 +30,7 @@ trait FormatsRelatableDisplayValues
     /**
      * Set the column that should be displayed for the field.
      *
-     * @param  (\Closure(mixed):string)|string  $display
+     * @param  \Closure|string  $display
      * @return $this
      */
     public function display($display)

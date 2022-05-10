@@ -10,8 +10,8 @@ class Badge extends Field
      * Create a new field.
      *
      * @param  string  $name
-     * @param  string|\Closure|callable|object|null  $attribute
-     * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
+     * @param  string|callable|null  $attribute
+     * @param  callable|null  $resolveCallback
      * @return void
      */
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
@@ -45,7 +45,7 @@ class Badge extends Field
     /**
      * The callback used to determine the field's label.
      *
-     * @var callable|null
+     * @var callable
      */
     public $labelCallback;
 
@@ -59,19 +59,19 @@ class Badge extends Field
     /**
      * The built-in badge types and their corresponding CSS classes.
      *
-     * @var array<string, string>
+     * @var array
      */
     public $types = [
-        'success' => 'bg-green-100 text-green-600 dark:bg-green-500 dark:text-green-900',
-        'info' => 'bg-blue-100 text-blue-600 dark:bg-blue-600 dark:text-blue-900',
-        'danger' => 'bg-red-100 text-red-600 dark:bg-red-400 dark:text-red-900',
-        'warning' => 'bg-yellow-100 text-yellow-600 dark:bg-yellow-300 dark:text-yellow-800',
+        'success' => 'bg-success-light text-success-dark',
+        'info' => 'bg-info-light text-info-dark',
+        'danger' => 'bg-danger-light text-danger-dark',
+        'warning' => 'bg-warning-light text-warning-dark',
     ];
 
     /**
      * Add badge types and their corresponding CSS classes to the built-in ones.
      *
-     * @param  array<string, string>  $types
+     * @param  array  $types
      * @return $this
      */
     public function addTypes(array $types)
@@ -84,7 +84,7 @@ class Badge extends Field
     /**
      * Set the badge types and their corresponding CSS classes.
      *
-     * @param  array<string, string>  $types
+     * @param  array  $types
      * @return $this
      */
     public function types(array $types)
@@ -137,18 +137,16 @@ class Badge extends Field
      * Resolve the Badge's CSS classes based on the field's value.
      *
      * @return string
-     *
-     * @throws \Exception
      */
     public function resolveBadgeClasses()
     {
-        $mappedValue = $this->map[$this->value] ?? $this->value;
+        try {
+            $mappedValue = $this->map[$this->value] ?? $this->value;
 
-        if (! isset($this->types[$mappedValue])) {
+            return $this->types[$mappedValue];
+        } catch (Exception $e) {
             throw new Exception("Error trying to find type [{$mappedValue}] inside of the field's type mapping.");
         }
-
-        return $this->types[$mappedValue];
     }
 
     /**
@@ -168,9 +166,10 @@ class Badge extends Field
     /**
      * Prepare the element for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
             'label' => $this->resolveLabel(),

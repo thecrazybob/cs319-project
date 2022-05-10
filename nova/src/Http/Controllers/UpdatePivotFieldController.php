@@ -3,39 +3,45 @@
 namespace Laravel\Nova\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest;
-use Laravel\Nova\Http\Resources\UpdatePivotFieldResource;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UpdatePivotFieldController extends Controller
 {
     /**
      * List the pivot fields for the given resource and relation.
      *
-     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Illuminate\Http\Response
      */
-    public function __invoke(ResourceUpdateOrUpdateAttachedRequest $request)
+    public function index(NovaRequest $request)
     {
-        return UpdatePivotFieldResource::make()->toResponse($request);
-    }
+        $resource = tap($request->findResourceOrFail(), function ($resource) use ($request) {
+            abort_unless($resource->hasRelatableField($request, $request->viaRelationship), 404);
+        });
 
-    /**
-     * Synchronize the pivot field for updating.
-     *
-     * @param  \Laravel\Nova\Http\Requests\ResourceUpdateOrUpdateAttachedRequest  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function sync(ResourceUpdateOrUpdateAttachedRequest $request)
-    {
-        $resource = UpdatePivotFieldResource::make()->newResourceWith($request);
+        $model = $resource->model();
 
-        return response()->json(
-            $resource->updatePivotFields(
-                $request, $request->relatedResource
-            )->filter(function ($field) use ($request) {
-                return $request->query('field') === $field->attribute;
-            })->each->applyDependsOn($request)
-            ->first()
+        $relation = $model->{$request->viaRelationship}();
+
+        $accessor = $relation->getPivotAccessor();
+
+        if ($request->viaPivotId) {
+            tap($relation->getPivotClass(), function ($pivotClass) use ($relation, $request) {
+                $relation->wherePivot((new $pivotClass())->getKeyName(), $request->viaPivotId);
+            });
+        }
+
+        $model->setRelation(
+            $accessor,
+            $relation->withoutGlobalScopes()->findOrFail($request->relatedResourceId)->{$accessor}
         );
+
+        return response()->json([
+            'title' => $resource->title(),
+            'fields' => $resource->updatePivotFields(
+                $request,
+                $request->relatedResource
+            )->all(),
+        ]);
     }
 }

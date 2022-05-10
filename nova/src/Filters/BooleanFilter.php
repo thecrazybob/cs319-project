@@ -2,7 +2,8 @@
 
 namespace Laravel\Nova\Filters;
 
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Container\Container;
+use Illuminate\Http\Request;
 
 abstract class BooleanFilter extends Filter
 {
@@ -20,7 +21,9 @@ abstract class BooleanFilter extends Filter
      */
     public function default()
     {
-        return collect($this->options(app(NovaRequest::class)))->values()->mapWithKeys(function ($option) {
+        $container = Container::getInstance();
+
+        return collect($this->options($container->make(Request::class)))->values()->mapWithKeys(function ($option) {
             return [$option => false];
         })->all();
     }

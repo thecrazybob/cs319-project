@@ -46,9 +46,11 @@ class PivotFieldDestroyRequest extends NovaRequest
      */
     public function findRelatedResource()
     {
-        return Nova::newResourceFromModel(
-            $this->findRelatedModel()
-        );
+        $related = $this->findRelatedModel();
+
+        $resource = Nova::resourceForModel($related);
+
+        return new $resource($related);
     }
 
     /**

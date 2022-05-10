@@ -1,5 +1,9 @@
-import Tool from './pages/Tool'
-
-Nova.booting((app, store) => {
-  Nova.inertia('{{ class }}', Tool)
+Nova.booting((Vue, router, store) => {
+  router.addRoutes([
+    {
+      name: '{{ component }}',
+      path: '/{{ component }}',
+      component: require('./components/Tool'),
+    },
+  ])
 })

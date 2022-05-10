@@ -13,9 +13,9 @@ class MorphableController extends Controller
      * List the available morphable resources for a given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return \Illuminate\Http\Response
      */
-    public function __invoke(NovaRequest $request)
+    public function index(NovaRequest $request)
     {
         $relatedResource = Nova::resourceForKey($request->type);
 

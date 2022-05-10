@@ -6,19 +6,17 @@ use JsonSerializable;
 
 class ValueResult implements JsonSerializable
 {
-    use TransformsResults;
-
     /**
      * The value of the result.
      *
-     * @var int|float|numeric-string|null
+     * @var mixed
      */
     public $value;
 
     /**
      * The previous value.
      *
-     * @var int|float|numeric-string|null
+     * @var mixed
      */
     public $previous;
 
@@ -67,7 +65,7 @@ class ValueResult implements JsonSerializable
     /**
      * Create a new value result instance.
      *
-     * @param  int|float|numeric-string|null  $value
+     * @param  mixed  $value
      * @return void
      */
     public function __construct($value)
@@ -78,7 +76,7 @@ class ValueResult implements JsonSerializable
     /**
      * Set the previous value for the metric.
      *
-     * @param  int|float|numeric-string|null  $previous
+     * @param  mixed  $previous
      * @param  string  $label
      * @return $this
      */
@@ -179,13 +177,14 @@ class ValueResult implements JsonSerializable
     /**
      * Prepare the metric result for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return [
-            'value' => $this->resolveTransformedValue($this->value),
-            'previous' => $this->resolveTransformedValue($this->previous),
+            'value' => $this->value,
+            'previous' => $this->previous,
             'previousLabel' => $this->previousLabel,
             'prefix' => $this->prefix,
             'suffix' => $this->suffix,

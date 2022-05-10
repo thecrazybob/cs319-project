@@ -4,9 +4,6 @@ namespace Laravel\Nova\Fields;
 
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-/**
- * @method static static make(string $name, string|array|null $attribute = null, array $lines = [])
- */
 class Stack extends Field
 {
     /**
@@ -19,21 +16,21 @@ class Stack extends Field
     /**
      * Indicates if the element should be shown on the creation view.
      *
-     * @var (callable(\Laravel\Nova\Http\Requests\NovaRequest):bool)|bool
+     * @var \Closure|bool
      */
     public $showOnCreation = false;
 
     /**
      * Indicates if the element should be shown on the update view.
      *
-     * @var (callable(\Laravel\Nova\Http\Requests\NovaRequest, mixed):bool)|bool
+     * @var \Closure|bool
      */
     public $showOnUpdate = false;
 
     /**
      * The contents of the Stack field.
      *
-     * @var array|\Illuminate\Support\Collection
+     * @var array
      */
     public $lines;
 
@@ -41,8 +38,8 @@ class Stack extends Field
      * Create a new Stack field.
      *
      * @param  string  $name
-     * @param  string|array<int, class-string<\Laravel\Nova\Fields\Field>|callable>|null  $attribute
-     * @param  array<int, class-string<\Laravel\Nova\Fields\Field>|callable>  $lines
+     * @param  string|array|null  $attribute
+     * @param  array  $lines
      * @return void
      */
     public function __construct($name, $attribute = null, $lines = [])
@@ -72,9 +69,10 @@ class Stack extends Field
     /**
      * Prepare the stack for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
             'lines' => $this->lines->all(),

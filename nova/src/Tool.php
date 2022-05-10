@@ -42,10 +42,12 @@ abstract class Tool
     }
 
     /**
-     * Build the menu that renders the navigation links for the tool.
+     * Build the view that renders the navigation links for the tool.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
+     * @return \Illuminate\View\View|string
      */
-    abstract public function menu(Request $request);
+    public function renderNavigation()
+    {
+        return '';
+    }
 }

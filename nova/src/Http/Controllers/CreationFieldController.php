@@ -3,47 +3,25 @@
 namespace Laravel\Nova\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest;
-use Laravel\Nova\Http\Resources\CreateViewResource;
-use Laravel\Nova\Http\Resources\ReplicateViewResource;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class CreationFieldController extends Controller
 {
     /**
      * List the creation fields for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
-     * @return \Illuminate\Http\JsonResponse
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Illuminate\Http\Response
      */
-    public function __invoke(ResourceCreateOrAttachRequest $request)
+    public function index(NovaRequest $request)
     {
-        if ($request->has('fromResourceId')) {
-            return ReplicateViewResource::make($request->fromResourceId)->toResponse($request);
-        }
+        $resourceClass = $request->resource();
 
-        return CreateViewResource::make()->toResponse($request);
-    }
+        $resourceClass::authorizeToCreate($request);
 
-    /**
-     * Synchronize the field for creation view.
-     *
-     * @param  \Laravel\Nova\Http\Requests\ResourceCreateOrAttachRequest  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function sync(ResourceCreateOrAttachRequest $request)
-    {
-        $resource = $request->has('fromResourceId')
-                        ? ReplicateViewResource::make($request->fromResourceId)->newResourceWith($request)
-                        : CreateViewResource::make()->newResourceWith($request);
-
-        return response()->json(
-            $resource->creationFields($request)
-                ->filter(function ($field) use ($request) {
-                    return $request->query('field') === $field->attribute;
-                })->each->syncDependsOn($request)
-                ->first()
-        );
+        return response()->json([
+            'fields' => $request->newResource()->creationFieldsWithinPanels($request),
+            'panels' => $request->newResource()->availablePanelsForCreate($request),
+        ]);
     }
 }

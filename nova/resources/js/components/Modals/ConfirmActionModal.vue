@@ -1,23 +1,27 @@
 <template>
-  <Modal
-    :show="show"
-    @showing="handleShowingModal"
-    @close-via-escape="handlePreventModalAbandonmentOnClose"
+  <modal
     data-testid="confirm-action-modal"
     tabindex="-1"
     role="dialog"
+    :closes-via-backdrop="canLeave"
+    @modal-close="handleClose"
   >
     <form
-      ref="theForm"
       autocomplete="off"
-      @change="onUpdateFormStatus"
-      @submit.prevent.stop="$emit('confirm')"
-      class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+      @keydown="handleKeydown"
+      @submit.prevent.stop="handleConfirm"
+      class="bg-white rounded-lg shadow-lg overflow-hidden"
+      :class="{
+        'w-action-fields': action.fields.length > 0,
+        'w-action': action.fields.length == 0,
+      }"
     >
       <div>
-        <ModalHeader v-text="action.name" />
+        <heading :level="2" class="border-b border-40 py-8 px-8">{{
+          action.name
+        }}</heading>
 
-        <p v-if="action.fields.length == 0" class="px-8 my-8">
+        <p v-if="action.fields.length == 0" class="text-80 px-8 my-8">
           {{ action.confirmText }}
         </p>
 
@@ -37,48 +41,42 @@
               :resource-name="resourceName"
               :field="field"
               :show-help-text="field.helpText != null"
-              @field-changed="onUpdateFormStatus"
             />
           </div>
         </div>
       </div>
 
-      <ModalFooter>
+      <div class="bg-30 px-6 py-3 flex">
         <div class="flex items-center ml-auto">
-          <CancelButton
-            component="button"
-            type="button"
+          <button
             dusk="cancel-action-button"
-            class="ml-auto mr-3"
-            @click="$emit('close')"
-          />
+            type="button"
+            @click.prevent="handleClose"
+            class="btn btn-link dim cursor-pointer text-80 ml-auto mr-6"
+          >
+            {{ action.cancelButtonText }}
+          </button>
 
-          <LoadingButton
-            type="submit"
+          <loading-button
             ref="runButton"
             dusk="confirm-action-button"
+            :processing="working"
             :disabled="working"
-            :loading="working"
-            :component="action.destructive ? 'DangerButton' : 'DefaultButton'"
+            type="submit"
+            class="btn btn-default"
+            :class="action.class"
           >
             {{ action.confirmButtonText }}
-          </LoadingButton>
+          </loading-button>
         </div>
-      </ModalFooter>
+      </div>
     </form>
-  </Modal>
+  </modal>
 </template>
 
 <script>
-import { PreventsModalAbandonment } from '@/mixins'
-
 export default {
-  emits: ['confirm', 'close'],
-
-  mixins: [PreventsModalAbandonment],
-
   props: {
-    show: { type: Boolean, default: false },
     working: Boolean,
     resourceName: { type: String, required: true },
     action: { type: Object, required: true },
@@ -87,51 +85,64 @@ export default {
   },
 
   created() {
-    document.addEventListener('keydown', this.handleKeydown)
+    const listenToDatePickerOpened = event => {
+      this.canLeave = false
+    }
+
+    const listenToDatePickerClosed = event => {
+      this.canLeave = true
+    }
+
+    Nova.$on('datepicker-opened', listenToDatePickerOpened)
+    Nova.$on('datepicker-closed', listenToDatePickerClosed)
+
+    this.$once('hook:beforeDestroy', () => {
+      Nova.$off('datepicker-opened', listenToDatePickerOpened)
+      Nova.$off('datepicker-closed', listenToDatePickerClosed)
+    })
   },
 
-  beforeUnmount() {
-    document.removeEventListener('keydown', this.handleKeydown)
+  /**
+   * Mount the component.
+   */
+  mounted() {
+    // If the modal has inputs, let's highlight the first one, otherwise
+    // let's highlight the submit button
+    if (document.querySelectorAll('.modal input').length) {
+      document.querySelectorAll('.modal input')[0].focus()
+    } else {
+      this.$refs.runButton.focus()
+    }
   },
+
+  data: () => ({
+    canLeave: true,
+  }),
 
   methods: {
     /**
-     * Prevent accidental abandonment only if form was changed.
+     * Stop propogation of input events unless it's for an escape or enter keypress
      */
-    onUpdateFormStatus() {
-      this.updateModalStatus()
+    handleKeydown(e) {
+      if (['Escape', 'Enter'].indexOf(e.key) !== -1) {
+        return
+      }
+
+      e.stopPropagation()
     },
 
     /**
-     * Handle focus when modal being shown.
+     * Execute the selected action.
      */
-    handleShowingModal(e) {
-      // If the modal has inputs, let's highlight the first one, otherwise
-      // let's highlight the submit button
-      this.$nextTick(() => {
-        if (this.$refs.theForm) {
-          let formFields = this.$refs.theForm.querySelectorAll(
-            'input, textarea, select'
-          )
-
-          formFields.length > 0
-            ? formFields[0].focus()
-            : this.$refs.runButton.focus()
-        } else {
-          this.$refs.runButton.focus()
-        }
-      })
+    handleConfirm() {
+      this.$emit('confirm')
     },
 
-    handlePreventModalAbandonmentOnClose() {
-      this.handlePreventModalAbandonment(
-        () => {
-          this.$emit('close')
-        },
-        () => {
-          e.stopPropagation()
-        }
-      )
+    /**
+     * Close the modal.
+     */
+    handleClose() {
+      this.$emit('close')
     },
   },
 }

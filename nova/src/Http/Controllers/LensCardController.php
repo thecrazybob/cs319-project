@@ -13,7 +13,7 @@ class LensCardController extends Controller
      * @param  \Laravel\Nova\Http\Requests\LensCardRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function __invoke(LensCardRequest $request)
+    public function index(LensCardRequest $request)
     {
         return response()->json(
             $request->availableCards()

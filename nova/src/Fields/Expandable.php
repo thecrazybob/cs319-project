@@ -7,7 +7,7 @@ trait Expandable
     /**
      * The callback to be used to determine whether the field should be expanded.
      *
-     * @var (callable():bool)|null
+     * @var \Closure
      */
     public $expandableCallback;
 
@@ -33,7 +33,7 @@ trait Expandable
     /**
      * Define the callback that should be used to determine whether the field should be collapsed.
      *
-     * @param  callable():bool  $expandableCallback
+     * @param  callable
      * @return $this
      */
     public function shouldShow(callable $expandableCallback)

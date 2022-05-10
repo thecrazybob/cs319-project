@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Http\Requests;
 
-use Laravel\Nova\Contracts\QueryBuilder;
 use Laravel\Nova\Nova;
 
 trait InteractsWithResources
@@ -44,16 +43,13 @@ trait InteractsWithResources
     /**
      * Get the class name of the resource being requested.
      *
-     * @return class-string<\Laravel\Nova\Resource>
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return mixed
      */
     public function resource()
     {
-        return tap(once(function () {
-            return Nova::resourceForKey($this->route('resource'));
-        }), function ($resource) {
+        return tap(Nova::resourceForKey($this->route('resource')), function ($resource) {
             abort_if(is_null($resource), 404);
+            abort_if(! $resource::authorizedToViewAny($this), 403);
         });
     }
 
@@ -74,8 +70,6 @@ trait InteractsWithResources
      *
      * @param  mixed|null  $resourceId
      * @return \Laravel\Nova\Resource
-     *
-     * @throw \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function findResourceOrFail($resourceId = null)
     {
@@ -83,12 +77,10 @@ trait InteractsWithResources
     }
 
     /**
-     * Find the model instance for the request or throw an exception.
+     * Find the model instance for the request.
      *
      * @param  mixed|null  $resourceId
      * @return \Illuminate\Database\Eloquent\Model
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function findModelOrFail($resourceId = null)
     {
@@ -102,19 +94,6 @@ trait InteractsWithResources
     }
 
     /**
-     * Find the model instance for the request.
-     *
-     * @param  mixed|null  $resourceId
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function findModel($resourceId = null)
-    {
-        return rescue(function () use ($resourceId) {
-            return $this->findModelOrFail($resourceId);
-        }, $this->model(), false);
-    }
-
-    /**
      * Get the query to find the model instance for the request.
      *
      * @param  mixed|null  $resourceId
@@ -122,11 +101,9 @@ trait InteractsWithResources
      */
     public function findModelQuery($resourceId = null)
     {
-        return app()->make(QueryBuilder::class, [$this->resource()])
-                    ->whereKey(
-                        $this->newQueryWithoutScopes(),
-                        $resourceId ?? $this->resourceId
-                    )->toBase();
+        return $this->newQueryWithoutScopes()->whereKey(
+            $resourceId ?? $this->resourceId
+        );
     }
 
     /**

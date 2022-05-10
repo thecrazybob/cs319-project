@@ -4,13 +4,13 @@ namespace Laravel\Nova\Lenses;
 
 use ArrayAccess;
 use Illuminate\Contracts\Routing\UrlRoutable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Illuminate\Http\Resources\DelegatesToResource;
 use Illuminate\Support\Str;
 use JsonSerializable;
 use Laravel\Nova\AuthorizedToSee;
+use Laravel\Nova\Contracts\ListableField;
 use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\LensRequest;
@@ -21,20 +21,19 @@ use Laravel\Nova\ProxiesCanSeeToGate;
 use Laravel\Nova\ResolvesActions;
 use Laravel\Nova\ResolvesCards;
 use Laravel\Nova\ResolvesFilters;
-use Laravel\Nova\SupportsPolling;
 use stdClass;
 
 abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
 {
-    use AuthorizedToSee,
+    use
+        AuthorizedToSee,
         ConditionallyLoadsAttributes,
         DelegatesToResource,
         Makeable,
         ProxiesCanSeeToGate,
         ResolvesActions,
         ResolvesCards,
-        ResolvesFilters,
-        SupportsPolling;
+        ResolvesFilters;
 
     /**
      * The displayable name of the lens.
@@ -46,7 +45,7 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * The underlying model resource instance.
      *
-     * @var \Illuminate\Database\Eloquent\Model|\stdClass
+     * @var \Illuminate\Database\Eloquent\Model|stdClass
      */
     public $resource;
 
@@ -62,10 +61,10 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get the fields displayed by the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array<int, \Laravel\Nova\Fields\Field>
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
-    abstract public function fields(NovaRequest $request);
+    abstract public function fields(Request $request);
 
     /**
      * Create a new lens instance.
@@ -101,21 +100,33 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Get the actions available on the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array<int, \Laravel\Nova\Actions\Action>
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
-    public function actions(NovaRequest $request)
+    public function actions(Request $request)
     {
-        return $request->newResourceWith(
-            $this->resource instanceof Model ? $this->resource : $request->model()
-        )->actions($request);
+        return $request->newResource()->actions($request);
+    }
+
+    /**
+     * Prepare the resource for JSON serialization.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function serializeForIndex(NovaRequest $request)
+    {
+        return $this->serializeWithId($this->resolveFields($request)
+                ->reject(function ($field) {
+                    return $field instanceof ListableField || ! $field->showOnIndex;
+                }));
     }
 
     /**
      * Resolve the given fields to their values.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Laravel\Nova\Fields\FieldCollection<int, \Laravel\Nova\Fields\Field>
+     * @return \Laravel\Nova\Fields\FieldCollection
      */
     public function resolveFields(NovaRequest $request)
     {
@@ -123,19 +134,6 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
             ->resolve($this->resource)
             ->authorized($request)
             ->resolveForDisplay($this->resource);
-    }
-
-    /**
-     * Resolve the filterable fields.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Laravel\Nova\Fields\FieldCollection<int, \Laravel\Nova\Fields\Field>
-     */
-    public function filterableFields(NovaRequest $request)
-    {
-        return $this->availableFields($request)
-                    ->withOnlyFilterableFields()
-                    ->authorized($request);
     }
 
     /**
@@ -152,7 +150,7 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the lens for JSON serialization using the given fields.
      *
-     * @param  \Laravel\Nova\Fields\FieldCollection<int, \Laravel\Nova\Fields\Field>  $fields
+     * @param  \Laravel\Nova\Fields\FieldCollection  $fields
      * @return array
      */
     protected function serializeWithId(FieldCollection $fields)
@@ -166,9 +164,10 @@ abstract class Lens implements ArrayAccess, JsonSerializable, UrlRoutable
     /**
      * Prepare the lens for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return [
             'name' => $this->name(),

@@ -1,14 +1,6 @@
-import each from 'lodash/each'
-import filter from 'lodash/filter'
-import find from 'lodash/find'
-import isNil from 'lodash/isNil'
-import tap from 'lodash/tap'
-import { Errors } from 'form-backend-validation'
-import { mapActions } from 'vuex'
+import { Errors } from 'laravel-nova'
 
 export default {
-  emits: ['actionExecuted'],
-
   props: {
     resourceName: String,
 
@@ -22,6 +14,18 @@ export default {
       type: String,
       default: null,
     },
+
+    queryString: {
+      type: Object,
+      default: () => ({
+        currentSearch: '',
+        encodedFilters: '',
+        currentTrashed: '',
+        viaResource: '',
+        viaResourceId: '',
+        viaRelationship: '',
+      }),
+    },
   },
 
   data: () => ({
@@ -32,14 +36,6 @@ export default {
   }),
 
   methods: {
-    ...mapActions(['fetchPolicies']),
-
-    handleSelectionChange(event) {
-      this.selectedActionKey = event
-      this.determineActionStrategy()
-      this.$refs.selectControl.resetSelection()
-    },
-
     /**
      * Determine whether the action should redirect or open a confirmation modal
      */
@@ -77,8 +73,8 @@ export default {
      * Initialize all of the action fields to empty strings.
      */
     initializeActionFields() {
-      each(this.allActions, action => {
-        each(action.fields, field => {
+      _(this.allActions).each(action => {
+        _(action.fields).each(field => {
           field.fill = () => ''
         })
       })
@@ -89,40 +85,23 @@ export default {
      */
     executeAction() {
       this.working = true
-      Nova.$progress.start()
-
-      let responseType = this.selectedAction.responseType ?? 'json'
 
       Nova.request({
         method: 'post',
         url: this.endpoint || `/nova-api/${this.resourceName}/action`,
         params: this.actionRequestQueryString,
         data: this.actionFormData(),
-        responseType,
       })
-        .then(async response => {
+        .then(response => {
           this.confirmActionModalOpened = false
-          await this.fetchPolicies()
-
-          this.handleActionResponse(response.data, response.headers)
-
+          this.handleActionResponse(response.data)
           this.working = false
-          Nova.$progress.done()
-          this.$refs.selectControl.selectedIndex = 0
         })
         .catch(error => {
           this.working = false
-          Nova.$progress.done()
 
-          if (error.response && error.response.status == 422) {
-            if (responseType === 'blob') {
-              error.response.data.text().then(data => {
-                this.errors = new Errors(JSON.parse(data).errors)
-              })
-            } else {
-              this.errors = new Errors(error.response.data.errors)
-            }
-
+          if (error.response.status == 422) {
+            this.errors = new Errors(error.response.data.errors)
             Nova.error(this.__('There was a problem executing the action.'))
           }
         })
@@ -132,75 +111,43 @@ export default {
      * Gather the action FormData for the given action.
      */
     actionFormData() {
-      return tap(new FormData(), formData => {
+      return _.tap(new FormData(), formData => {
         formData.append('resources', this.selectedResources)
 
-        each(this.selectedAction.fields, field => {
+        _.each(this.selectedAction.fields, field => {
           field.fill(formData)
         })
       })
     },
 
-    emitResponseCallback(callback) {
-      this.$emit('actionExecuted')
-      Nova.$emit('action-executed')
-
-      if (typeof callback === 'function') {
-        callback()
-      }
-    },
-
     /**
      * Handle the action response. Typically either a message, download or a redirect.
      */
-    handleActionResponse(data, headers) {
-      let contentDisposition = headers['content-disposition']
+    handleActionResponse(data) {
+      let execute = callback => {
+        this.$emit('actionExecuted')
+        Nova.$emit('action-executed')
 
-      if (
-        data instanceof Blob &&
-        isNil(contentDisposition) &&
-        data.type === 'application/json'
-      ) {
-        data.text().then(jsonStringData => {
-          this.handleActionResponse(JSON.parse(jsonStringData), headers)
-        })
-
-        return
+        if (typeof callback === 'function') {
+          callback()
+        }
       }
 
-      if (data instanceof Blob) {
-        this.emitResponseCallback(() => {
-          let fileName = 'unknown'
-          let url = window.URL.createObjectURL(new Blob([data]))
-          let link = document.createElement('a')
-          link.href = url
-
-          if (contentDisposition) {
-            let fileNameMatch = contentDisposition.match(/filename="(.+)"/)
-            if (fileNameMatch.length === 2) fileName = fileNameMatch[1]
-          }
-
-          link.setAttribute('download', fileName)
-          document.body.appendChild(link)
-          link.click()
-          link.remove()
-          window.URL.revokeObjectURL(url)
-        })
-      } else if (data.modal) {
+      if (data.modal) {
         this.actionResponseData = data
         this.showActionResponseModal = true
       } else if (data.message) {
-        this.emitResponseCallback(() => {
+        execute(() => {
           Nova.success(data.message)
         })
       } else if (data.deleted) {
-        this.emitResponseCallback()
+        execute()
       } else if (data.danger) {
-        this.emitResponseCallback(() => {
+        execute(() => {
           Nova.error(data.danger)
         })
       } else if (data.download) {
-        this.emitResponseCallback(() => {
+        execute(() => {
           let link = document.createElement('a')
           link.href = data.download
           link.download = data.name
@@ -210,28 +157,17 @@ export default {
         })
       } else if (data.redirect) {
         window.location = data.redirect
-      } else if (data.visit) {
-        Nova.visit({
-          url: Nova.url(data.visit.path, data.visit.options),
-          remote: false,
-        })
+      } else if (data.push) {
+        this.$router.push(data.push)
       } else if (data.openInNewTab) {
-        this.emitResponseCallback(() => {
+        execute(() => {
           window.open(data.openInNewTab, '_blank')
         })
       } else {
-        this.emitResponseCallback(() => {
+        execute(() => {
           Nova.success(this.__('The action ran successfully!'))
         })
       }
-    },
-
-    /**
-     * Handle an Action button click
-     */
-    handleActionClick(uriKey) {
-      this.selectedActionKey = uriKey
-      this.determineActionStrategy()
     },
   },
 
@@ -243,12 +179,12 @@ export default {
       return {
         action: this.selectedActionKey,
         pivotAction: this.selectedActionIsPivotAction,
-        search: this.currentSearch,
-        filters: this.encodedFilters,
-        trashed: this.currentTrashed,
-        viaResource: this.viaResource,
-        viaResourceId: this.viaResourceId,
-        viaRelationship: this.viaRelationship,
+        search: this.queryString.currentSearch,
+        filters: this.queryString.encodedFilters,
+        trashed: this.queryString.currentTrashed,
+        viaResource: this.queryString.viaResource,
+        viaResourceId: this.queryString.viaResourceId,
+        viaRelationship: this.queryString.viaRelationship,
       }
     },
 
@@ -256,10 +192,6 @@ export default {
      * Get all of the available actions.
      */
     allActions() {
-      if (!this.pivotActions) {
-        return this.actions
-      }
-
       return this.actions.concat(this.pivotActions.actions)
     },
 
@@ -268,7 +200,7 @@ export default {
      */
     selectedAction() {
       if (this.selectedActionKey) {
-        return find(this.allActions, a => a.uriKey == this.selectedActionKey)
+        return _.find(this.allActions, a => a.uriKey == this.selectedActionKey)
       }
     },
 
@@ -278,7 +210,9 @@ export default {
     selectedActionIsPivotAction() {
       return (
         this.hasPivotActions &&
-        Boolean(find(this.pivotActions.actions, a => a === this.selectedAction))
+        Boolean(
+          _.find(this.pivotActions.actions, a => a === this.selectedAction)
+        )
       )
     },
 
@@ -286,35 +220,41 @@ export default {
      * Get all of the available actions for the resource.
      */
     availableActions() {
-      return filter(this.actions, action => {
-        return this.selectedResources.length > 0 && !action.standalone
-      })
+      return _(this.actions)
+        .filter(action => {
+          return this.selectedResources.length > 0 && !action.standalone
+        })
+        .value()
     },
 
     /**
      * Get all of the available actions for the resource.
      */
     availableStandaloneActions() {
-      return filter(this.actions, action => {
-        return action.standalone
-      })
+      return _(this.actions)
+        .filter(action => {
+          return action.standalone
+        })
+        .value()
     },
 
     /**
      * Get all of the available pivot actions for the resource.
      */
     availablePivotActions() {
-      if (!this.pivotActions) {
-        return []
-      }
+      return _(this.pivotActions.actions)
+        .filter(action => {
+          if (this.selectedResources.length == 0) {
+            return action.standalone
+          }
 
-      return filter(this.pivotActions.actions, action => {
-        if (this.selectedResources.length == 0) {
-          return action.standalone
-        }
+          if (this.selectedResources != 'all') {
+            return true
+          }
 
-        return true
-      })
+          return action.availableForEntireResource
+        })
+        .value()
     },
 
     /**

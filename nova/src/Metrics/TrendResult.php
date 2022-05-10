@@ -6,19 +6,17 @@ use JsonSerializable;
 
 class TrendResult implements JsonSerializable
 {
-    use TransformsResults;
-
     /**
      * The value of the result.
      *
-     * @var int|float|numeric-string|null
+     * @var string|null
      */
     public $value;
 
     /**
      * The trend data of the result.
      *
-     * @var array<string, int|float|numeric-string|null>
+     * @var array
      */
     public $trend = [];
 
@@ -53,7 +51,7 @@ class TrendResult implements JsonSerializable
     /**
      * Create a new trend result instance.
      *
-     * @param  int|float|numeric-string|null  $value
+     * @param  string|null  $value
      * @return void
      */
     public function __construct($value = null)
@@ -64,7 +62,7 @@ class TrendResult implements JsonSerializable
     /**
      * Set the primary result amount for the trend.
      *
-     * @param  int|float|numeric-string|null  $value
+     * @param  string|null  $value
      * @return $this
      */
     public function result($value = null)
@@ -81,7 +79,11 @@ class TrendResult implements JsonSerializable
      */
     public function showLatestValue()
     {
-        return $this->result(last($this->trend));
+        if (is_array($this->trend)) {
+            return $this->result(last($this->trend));
+        }
+
+        return $this;
     }
 
     /**
@@ -91,13 +93,17 @@ class TrendResult implements JsonSerializable
      */
     public function showSumValue()
     {
-        return $this->result(array_sum(array_values($this->trend)));
+        if (is_array($this->trend)) {
+            return $this->result(array_sum(array_values($this->trend)));
+        }
+
+        return $this;
     }
 
     /**
      * Set the trend of data for the metric.
      *
-     * @param  array<string, int|float|numeric-string|null>  $trend
+     * @param  array  $trend
      * @return $this
      */
     public function trend(array $trend)
@@ -183,12 +189,13 @@ class TrendResult implements JsonSerializable
     /**
      * Prepare the metric result for JSON serialization.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function jsonSerialize(): array
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return [
-            'value' => $this->resolveTransformedValue($this->value),
+            'value' => $this->value,
             'trend' => $this->trend,
             'prefix' => $this->prefix,
             'suffix' => $this->suffix,

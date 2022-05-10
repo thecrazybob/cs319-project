@@ -42,6 +42,11 @@ class PublishCommand extends Command
             '--force' => $this->option('force'),
         ]);
 
+        $this->call('vendor:publish', [
+            '--tag' => 'nova-views',
+            '--force' => $this->option('force'),
+        ]);
+
         $this->call('view:clear');
     }
 }

@@ -11,8 +11,8 @@ class Transaction
     /**
      * Perform the given callbacks within a batch transaction.
      *
-     * @param  callable(string):mixed  $callback
-     * @param  (callable(string):void)|null  $finished
+     * @param  callable  $callback
+     * @param  callable|null  $finished
      * @return mixed
      *
      * @throws \Throwable
@@ -22,11 +22,11 @@ class Transaction
         try {
             DB::beginTransaction();
 
-            $actionBatchId = (string) Str::orderedUuid();
+            $batchId = (string) Str::orderedUuid();
 
-            return tap($callback($actionBatchId), function ($response) use ($finished, $actionBatchId) {
+            return tap($callback($batchId), function ($response) use ($finished, $batchId) {
                 if ($finished) {
-                    $finished($actionBatchId);
+                    $finished($batchId);
                 }
 
                 DB::commit();

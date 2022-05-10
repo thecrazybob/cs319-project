@@ -3,8 +3,9 @@
 namespace Laravel\Nova\Testing\Browser\Components;
 
 use Laravel\Dusk\Browser;
+use Laravel\Dusk\Component as BaseComponent;
 
-class IndexComponent extends Component
+class IndexComponent extends BaseComponent
 {
     public $resourceName;
 
@@ -51,23 +52,7 @@ class IndexComponent extends Component
      */
     public function waitForTable(Browser $browser, $seconds = null)
     {
-        $browser->whenAvailable('table[data-testid="resource-table"]', function ($browser) use ($seconds) {
-            $browser->waitFor('> tbody', $seconds);
-        }, $seconds);
-    }
-
-    /**
-     * Wait for empty dialog to be ready.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  int|null  $seconds
-     * @return void
-     *
-     * @throws \Facebook\WebDriver\Exception\TimeOutException
-     */
-    public function waitForEmptyDialog(Browser $browser, $seconds = null)
-    {
-        $browser->waitFor('div[dusk="'.$this->resourceName.'-empty-dialog"]', $seconds);
+        $browser->waitFor('table[data-testid="resource-table"]', $seconds);
     }
 
     /**
@@ -136,123 +121,13 @@ class IndexComponent extends Component
     public function selectAllMatching(Browser $browser)
     {
         $browser->click('[dusk="select-all-dropdown"]')
-                        ->elsewhereWhenAvailable('[dusk="select-all-matching-button"]', function ($browser) {
-                            $browser->click('input[type="checkbox"]');
+                        ->elsewhere('', function ($browser) {
+                            $browser->whenAvailable('[dusk="select-all-matching-button"]', function ($browser) {
+                                $browser->click('input[type="checkbox"]')->pause(250);
+                            });
                         })
-                        ->pause(250)
-                        ->closeCurrentDropdown();
-    }
-
-    /**
-     * Set the given filter and filter value for the index.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  callable|null  $fieldCallback
-     * @return void
-     */
-    public function runFilter(Browser $browser, $fieldCallback = null)
-    {
-        $browser->openFilterSelector()->pause(500);
-
-        if (! is_null($fieldCallback)) {
-            $browser->elsewhere('[data-menu-open="true"]', function ($browser) use ($fieldCallback) {
-                $fieldCallback($browser);
-            });
-        }
-
-        $browser->closeCurrentDropdown()->pause(1000);
-    }
-
-    /**
-     * Set the per page value for the index.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @return void
-     */
-    public function setPerPage(Browser $browser, $value)
-    {
-        $this->runFilter($browser, function ($browser) use ($value) {
-            $browser->whenAvailable('select[dusk="per-page-select"]', function ($browser) use ($value) {
-                $browser->select('', $value);
-            });
-        });
-    }
-
-    /**
-     * Set the given filter and filter value for the index.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $name
-     * @param  string  $value
-     * @return void
-     */
-    public function selectFilter(Browser $browser, $name, $value)
-    {
-        $this->runFilter($browser, function ($browser) use ($name, $value) {
-            $browser->whenAvailable('select[dusk="'.$name.'-select-filter"]', function ($browser) use ($value) {
-                $browser->select('', $value);
-            });
-        });
-    }
-
-    /**
-     * Indicate that trashed records should not be displayed.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @return void
-     */
-    public function withoutTrashed(Browser $browser)
-    {
-        $this->runFilter($browser, function ($browser) {
-            $browser->whenAvailable('[dusk="filter-soft-deletes"]', function ($browser) {
-                $browser->select('select[dusk="trashed-select"]', '');
-            });
-        });
-    }
-
-    /**
-     * Indicate that only trashed records should be displayed.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @return void
-     */
-    public function onlyTrashed(Browser $browser)
-    {
-        $this->runFilter($browser, function ($browser) {
-            $browser->whenAvailable('[dusk="filter-soft-deletes"]', function ($browser) {
-                $browser->select('select[dusk="trashed-select"]', 'only');
-            });
-        });
-    }
-
-    /**
-     * Indicate that trashed records should be displayed.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @return void
-     */
-    public function withTrashed(Browser $browser)
-    {
-        $this->runFilter($browser, function ($browser) {
-            $browser->whenAvailable('[dusk="filter-soft-deletes"]', function ($browser) {
-                $browser->select('select[dusk="trashed-select"]', 'with');
-            });
-        });
-    }
-
-    /**
-     * Open the action selector.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @return void
-     *
-     * @throws \Facebook\WebDriver\Exception\TimeOutException
-     */
-    public function openActionSelector(Browser $browser)
-    {
-        $browser->whenAvailable('@action-select', function ($browser) {
-            $browser->click('')->pause(100);
-        });
+                        ->click('')
+                        ->pause(250);
     }
 
     /**
@@ -265,87 +140,131 @@ class IndexComponent extends Component
      */
     public function openFilterSelector(Browser $browser)
     {
-        $browser->whenAvailable('@filter-selector', function ($browser) {
-            $browser->click('')->pause(100);
-        });
+        $browser->waitFor('@filter-selector')
+                    ->click('@filter-selector')
+                    ->pause(100);
+    }
+
+    /**
+     * Set the per page value for the index.
+     *
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @return void
+     */
+    public function setPerPage(Browser $browser, $value)
+    {
+        $browser->openFilterSelector()
+                    ->elsewhere('', function ($browser) use ($value) {
+                        $browser->whenAvailable('@per-page-select', function ($browser) use ($value) {
+                            $browser->select('', $value);
+                        });
+                    })
+                    ->pause(250);
+    }
+
+    /**
+     * Set the given filter and filter value for the index.
+     *
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @param  string  $name
+     * @param  string  $value
+     * @return void
+     */
+    public function applyFilter(Browser $browser, $name, $value)
+    {
+        $browser->openFilterSelector()
+                    ->pause(500)
+                    ->elsewhere('', function ($browser) use ($name, $value) {
+                        $browser->select('[dusk="'.$name.'-filter-select"]', $value);
+                    })->click('')->pause(250);
+    }
+
+    /**
+     * Indicate that trashed records should not be displayed.
+     *
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @return void
+     */
+    public function withoutTrashed(Browser $browser)
+    {
+        $browser->openFilterSelector()
+                ->elsewhere('', function ($browser) {
+                    $browser->whenAvailable('[dusk="filter-soft-deletes"]', function ($browser) {
+                        $browser->select('[dusk="trashed-select"]', '');
+                    })->click('')->pause(350);
+                });
+    }
+
+    /**
+     * Indicate that only trashed records should be displayed.
+     *
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @return void
+     */
+    public function onlyTrashed(Browser $browser)
+    {
+        $browser->openFilterSelector()
+                ->elsewhere('', function ($browser) {
+                    $browser->whenAvailable('[dusk="filter-soft-deletes"]', function ($browser) {
+                        $browser->select('[dusk="trashed-select"]', 'only');
+                    })->click('')->pause(350);
+                });
+    }
+
+    /**
+     * Indicate that trashed records should be displayed.
+     *
+     * @param  \Laravel\Dusk\Browser  $browser
+     * @return void
+     */
+    public function withTrashed(Browser $browser)
+    {
+        $browser->openFilterSelector()
+                ->elsewhere('', function ($browser) {
+                    $browser->whenAvailable('[dusk="filter-soft-deletes"]', function ($browser) {
+                        $browser->select('[dusk="trashed-select"]', 'with');
+                    })->click('')->pause(350);
+                });
     }
 
     /**
      * Open the action selector.
      *
      * @param  \Laravel\Dusk\Browser  $browser
-     * @param  int|string  $id
      * @return void
      *
      * @throws \Facebook\WebDriver\Exception\TimeOutException
      */
-    public function openControlSelectorById(Browser $browser, $id)
-    {
-        $browser->closeCurrentDropdown()
-                ->whenAvailable('@'.$id.'-control-selector', function ($browser) {
-                    $browser->click('')->pause(300);
-                });
-    }
-
-    /**
-     * Select the action with the given URI key.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $uriKey
-     * @param  callable  $fieldCallback
-     * @return void
-     *
-     * @throws \Facebook\WebDriver\Exception\TimeOutException
-     */
-    public function selectAction(Browser $browser, $uriKey, $fieldCallback)
+    public function openActionSelector(Browser $browser)
     {
         $browser->waitFor('@action-select')
-                    ->select('select[dusk="action-select"]', $uriKey);
-
-        $browser->elsewhereWhenAvailable('.modal[data-modal-open=true]', function ($browser) use ($fieldCallback) {
-            $fieldCallback($browser);
-        });
+                    ->click('@action-select')
+                    ->pause(100);
     }
 
     /**
      * Run the action with the given URI key.
      *
      * @param  \Laravel\Dusk\Browser  $browser
-     * @param  string  $uriKey
-     * @param  callable|null  $fieldCallback
      * @return void
      *
      * @throws \Facebook\WebDriver\Exception\TimeOutException
      */
     public function runAction(Browser $browser, $uriKey, $fieldCallback = null)
     {
-        $this->selectAction($browser, $uriKey, function ($browser) use ($fieldCallback) {
-            if ($fieldCallback) {
-                $fieldCallback($browser);
-            }
+        $browser->waitFor('@action-select')
+                    ->select('@action-select', $uriKey)
+                    ->pause(100)
+                    ->click('@run-action-button');
 
-            $browser->waitForText('Run Action')->click('[dusk="confirm-action-button"]')->pause(250);
-        });
-    }
+        $browser->elsewhere('', function ($browser) use ($fieldCallback) {
+            $browser->whenAvailable('.modal', function ($browser) use ($fieldCallback) {
+                if ($fieldCallback) {
+                    $fieldCallback($browser);
+                }
 
-    /**
-     * Select the action with the given URI key.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  int|string  $id
-     * @param  string  $uriKey
-     * @param  callable  $fieldCallback
-     * @return void
-     */
-    public function selectInlineAction(Browser $browser, $id, $uriKey, $fieldCallback)
-    {
-        $browser->openControlSelectorById($id)
-            ->elsewhereWhenAvailable("@{$id}-inline-action-{$uriKey}", function ($browser) {
-                $browser->click('');
-            })->pause(500);
-
-        $browser->elsewhereWhenAvailable('.modal[data-modal-open=true]', function ($browser) use ($fieldCallback) {
-            $fieldCallback($browser);
+                $browser->click('[dusk="confirm-action-button"]')->pause(250);
+            });
         });
     }
 
@@ -355,17 +274,23 @@ class IndexComponent extends Component
      * @param  \Laravel\Dusk\Browser  $browser
      * @param  int|string  $id
      * @param  string  $uriKey
-     * @param  callable|null  $fieldCallback
+     * @param  callable  $fieldCallback
      * @return void
      */
     public function runInlineAction(Browser $browser, $id, $uriKey, $fieldCallback = null)
     {
-        $this->selectInlineAction($browser, $id, $uriKey, function ($browser) use ($fieldCallback) {
-            if ($fieldCallback) {
-                $fieldCallback($browser);
-            }
+        $browser->within('[dusk="'.$id.'-row"]', function ($browser) use ($uriKey) {
+            $browser->click('[dusk="run-inline-action-button"][data-testid="'.$uriKey.'"]');
+        });
 
-            $browser->click('[dusk="confirm-action-button"]')->pause(250);
+        $browser->elsewhere('', function ($browser) use ($fieldCallback) {
+            $browser->whenAvailable('.modal', function ($browser) use ($fieldCallback) {
+                if ($fieldCallback) {
+                    $fieldCallback($browser);
+                }
+
+                $browser->click('[dusk="confirm-action-button"]')->pause(250);
+            });
         });
     }
 
@@ -383,36 +308,6 @@ class IndexComponent extends Component
     }
 
     /**
-     * Replicate the given resource table row index.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  int|string  $id
-     * @return void
-     */
-    public function replicateResourceById(Browser $browser, $id)
-    {
-        $browser->openControlSelectorById($id)
-                        ->elsewhereWhenAvailable('@'.$id.'-replicate-button', function ($browser) {
-                            $browser->click('');
-                        })->pause(500);
-    }
-
-    /**
-     * Preview the given resource table row index.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @param  int|string  $id
-     * @return void
-     */
-    public function previewResourceById(Browser $browser, $id)
-    {
-        $browser->openControlSelectorById($id)
-                        ->elsewhereWhenAvailable("@{$id}-preview-button", function ($browser) {
-                            $browser->click('');
-                        })->pause(500);
-    }
-
-    /**
      * Delete the user at the given resource table row index.
      *
      * @param  \Laravel\Dusk\Browser  $browser
@@ -422,8 +317,10 @@ class IndexComponent extends Component
     public function deleteResourceById(Browser $browser, $id)
     {
         $browser->click('@'.$id.'-delete-button')
-                        ->elsewhereWhenAvailable('.modal[data-modal-open=true]', function ($browser) {
-                            $browser->click('@confirm-delete-button');
+                        ->elsewhere('', function ($browser) {
+                            $browser->whenAvailable('.modal', function ($browser) {
+                                $browser->click('#confirm-delete-button');
+                            });
                         })->pause(500);
     }
 
@@ -437,8 +334,10 @@ class IndexComponent extends Component
     public function restoreResourceById(Browser $browser, $id)
     {
         $browser->click('@'.$id.'-restore-button')
-                        ->elsewhereWhenAvailable('.modal[data-modal-open=true]', function ($browser) {
-                            $browser->click('@confirm-restore-button');
+                        ->elsewhere('', function ($browser) {
+                            $browser->whenAvailable('.modal', function ($browser) {
+                                $browser->click('#confirm-restore-button');
+                            });
                         })->pause(500);
     }
 
@@ -454,8 +353,8 @@ class IndexComponent extends Component
                     ->pause(300)
                     ->elsewhere('', function ($browser) {
                         $browser->click('[dusk="delete-selected-button"]')
-                            ->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
-                                $browser->click('@confirm-delete-button');
+                            ->whenAvailable('.modal', function ($browser) {
+                                $browser->click('#confirm-delete-button');
                             });
                     })->pause(1000);
     }
@@ -472,8 +371,8 @@ class IndexComponent extends Component
                     ->pause(300)
                     ->elsewhere('', function ($browser) {
                         $browser->click('[dusk="restore-selected-button"]')
-                            ->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
-                                $browser->click('@confirm-restore-button');
+                            ->whenAvailable('.modal', function ($browser) {
+                                $browser->click('#confirm-restore-button');
                             });
                     })->pause(1000);
     }
@@ -490,8 +389,8 @@ class IndexComponent extends Component
                     ->pause(300)
                     ->elsewhere('', function ($browser) {
                         $browser->click('[dusk="force-delete-selected-button"]')
-                            ->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
-                                $browser->click('@confirm-delete-button');
+                            ->whenAvailable('.modal', function ($browser) {
+                                $browser->click('#confirm-delete-button');
                             });
                     })->pause(1000);
     }
@@ -509,7 +408,7 @@ class IndexComponent extends Component
         $browser->pause(500);
 
         tap($this->selector(), function ($selector) use ($browser) {
-            $browser->waitFor($selector)
+            $browser->waitFor($selector, 25)
                     ->assertVisible($selector)
                     ->scrollIntoView($selector);
         });
@@ -520,16 +419,11 @@ class IndexComponent extends Component
      *
      * @param  \Laravel\Dusk\Browser  $browser
      * @param  int|string  $id
-     * @param  int|string|null  $pivotId
      * @return void
      */
-    public function assertSeeResource(Browser $browser, $id, $pivotId = null)
+    public function assertSeeResource(Browser $browser, $id)
     {
-        if (! is_null($pivotId)) {
-            $browser->assertVisible('[dusk="'.$id.'-row"][data-pivot-id="'.$pivotId.'"]');
-        } else {
-            $browser->assertVisible('@'.$id.'-row');
-        }
+        $browser->assertVisible('@'.$id.'-row');
     }
 
     /**
@@ -537,16 +431,11 @@ class IndexComponent extends Component
      *
      * @param  \Laravel\Dusk\Browser  $browser
      * @param  int|string  $id
-     * @param  int|string|null  $pivotId
      * @return void
      */
-    public function assertDontSeeResource(Browser $browser, $id, $pivotId = null)
+    public function assertDontSeeResource(Browser $browser, $id)
     {
-        if (! is_null($pivotId)) {
-            $browser->assertMissing('[dusk="'.$id.'-row"][data-pivot-id="'.$pivotId.'"]');
-        } else {
-            $browser->assertMissing('@'.$id.'-row');
-        }
+        $browser->assertMissing('@'.$id.'-row');
     }
 
     /**
@@ -559,8 +448,10 @@ class IndexComponent extends Component
     public function assertSelectAllMatchingCount(Browser $browser, $count)
     {
         $browser->click('@select-all-dropdown')
-                        ->elsewhereWhenAvailable('@select-all-matching-button', function (Browser $browser) use ($count) {
-                            $browser->assertSeeIn('span:nth-child(2)', $count);
+                        ->elsewhere('', function (Browser $browser) use ($count) {
+                            $browser->whenAvailable('@select-all-matching-button', function (Browser $browser) use ($count) {
+                                $browser->assertSee('('.$count.')');
+                            });
                         });
     }
 

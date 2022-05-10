@@ -2,15 +2,40 @@
 
 namespace Laravel\Nova\Testing\Browser\Pages;
 
+use Laravel\Dusk\Browser;
+
 class HomePage extends Page
 {
     /**
-     * Create a new page instance.
+     * Get the URL for the page.
      *
+     * @return string
+     */
+    public function url()
+    {
+        return '/';
+    }
+
+    /**
+     * Assert that the browser is on the page.
+     *
+     * @param  \Laravel\Dusk\Browser  $browser
      * @return void
      */
-    public function __construct()
+    public function assert(Browser $browser)
     {
-        parent::__construct('/');
+        //
+    }
+
+    /**
+     * Get the element shortcuts for the page.
+     *
+     * @return array
+     */
+    public function elements()
+    {
+        return [
+            '@element' => '#selector',
+        ];
     }
 }

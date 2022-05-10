@@ -6,9 +6,6 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use LogicException;
 
-/**
- * @property-read string|array<int, mixed> $resources
- */
 class LensResourceDeletionRequest extends NovaRequest
 {
     use InteractsWithLenses, QueriesResources;
@@ -17,13 +14,13 @@ class LensResourceDeletionRequest extends NovaRequest
      * Get the selected models for the action in chunks.
      *
      * @param  int  $count
-     * @param  \Closure(\Illuminate\Support\Collection):void  $callback
-     * @param  \Closure(\Illuminate\Support\Collection):\Illuminate\Support\Collection  $authCallback
+     * @param  \Closure  $callback
+     * @param  \Closure  $authCallback
      * @return mixed
      */
     protected function chunkWithAuthorization($count, Closure $callback, Closure $authCallback)
     {
-        $this->toSelectedResourceQuery()->when(! $this->allResourcesSelected(), function ($query) {
+        $this->toSelectedResourceQuery()->when(! $this->forAllMatchingResources(), function ($query) {
             $query->whereKey($this->resources);
         })->tap(function ($query) {
             $query->getQuery()->orders = [];
@@ -43,7 +40,7 @@ class LensResourceDeletionRequest extends NovaRequest
      */
     protected function toSelectedResourceQuery()
     {
-        return $this->allResourcesSelected()
+        return $this->forAllMatchingResources()
                     ? $this->toQuery()
                     : $this->newQueryWithoutScopes();
     }
@@ -60,5 +57,15 @@ class LensResourceDeletionRequest extends NovaRequest
                 throw new LogicException('Lens must return an Eloquent query instance in order to perform this action.');
             }
         });
+    }
+
+    /**
+     * Determine if the request is for all matching resources.
+     *
+     * @return bool
+     */
+    public function forAllMatchingResources()
+    {
+        return $this->resources === 'all';
     }
 }

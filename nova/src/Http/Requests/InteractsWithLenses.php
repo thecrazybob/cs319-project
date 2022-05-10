@@ -2,9 +2,6 @@
 
 namespace Laravel\Nova\Http\Requests;
 
-/**
- * @property-read string|null $lens
- */
 trait InteractsWithLenses
 {
     /**
@@ -26,11 +23,7 @@ trait InteractsWithLenses
      */
     public function availableLenses()
     {
-        return transform($this->newResource(), function ($resource) {
-            abort_unless($resource::authorizedToViewAny($this), 403);
-
-            return $resource->availableLenses($this);
-        });
+        return $this->newResource()->availableLenses($this);
     }
 
     /**
