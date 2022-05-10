@@ -27,7 +27,7 @@ class InvoiceFactory extends Factory
             'patient_id' => Patient::all()->random()->id,
             'amount' => $this->faker->randomFloat(0, 0, 9999.99),
             'status' => $this->faker->randomElement(["unpaid","paid","cancelled","refunded","partial"]),
-            'description' => $this->faker->text,
+            'description' => $this->faker->sentence(3),
         ];
     }
 }

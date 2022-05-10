@@ -5,8 +5,14 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ __('Invoices') }}
                 </h2>
-                <p class="mt-2 text-sm text-gray-700">All your invoices for the services you receive in the health center.
-                </p>
+                <p class="mt-2 text-sm text-gray-700">Your relevant bill payment details.</p>
+            </div>
+            <div>
+                <a href="{{ route('invoice.index') }}">
+                    <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+                        {{ __('Cancel the Payment') }}
+                    </x-jet-button>
+                </a>
             </div>
         </div>
     </x-slot>
@@ -18,7 +24,7 @@
                 <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                         <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                            <livewire:invoice.table />
+                            <livewire:invoice.form-pay :id="$invoice->id" />
                         </div>
                     </div>
                 </div>

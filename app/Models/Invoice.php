@@ -48,9 +48,4 @@ class Invoice extends Model
     {
         return $this->belongsTo(Patient::class);
     }
-
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
 }
