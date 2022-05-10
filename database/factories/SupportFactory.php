@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Department;
 use App\Models\Patient;
 use App\Models\Support;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SupportFactory extends Factory
 {
@@ -26,10 +25,10 @@ class SupportFactory extends Factory
     {
         return [
             'department_id' => Department::all()->random()->id,
-            'patient_id' => Patient::all()->random()->id,
-            'subject' => $this->faker->word,
-            'status' => $this->faker->randomElement(["new","answered","awaiting","hold","closed", "reopened"]),
-            'priority' => $this->faker->randomElement(["low","medium","high","critical"]),
+            'patient_id'    => Patient::all()->random()->id,
+            'subject'       => $this->faker->word,
+            'status'        => $this->faker->randomElement(['new', 'answered', 'awaiting', 'hold', 'closed', 'reopened']),
+            'priority'      => $this->faker->randomElement(['low', 'medium', 'high', 'critical']),
         ];
     }
 }

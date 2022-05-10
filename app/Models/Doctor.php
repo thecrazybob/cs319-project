@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $user_id
- * @property int $department_id
- * @property bool $active
+ * @property int            $id
+ * @property int            $user_id
+ * @property int            $department_id
+ * @property bool           $active
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -34,10 +34,10 @@ class Doctor extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'user_id' => 'integer',
+        'id'            => 'integer',
+        'user_id'       => 'integer',
         'department_id' => 'integer',
-        'active' => 'boolean',
+        'active'        => 'boolean',
     ];
 
     /**

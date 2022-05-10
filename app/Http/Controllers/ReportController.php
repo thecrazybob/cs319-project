@@ -9,6 +9,7 @@ class ReportController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -18,13 +19,15 @@ class ReportController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Report $report
+     * @param \App\Models\Report       $report
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, Report $report)
     {
         $this->authorize('view', $report);
         $file_path = $report->file->file_path;
+
         return response()->download(storage_path('app/public/'.$file_path));
     }
 }

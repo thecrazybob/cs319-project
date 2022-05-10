@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $patient_id
- * @property double $amount
- * @property string $status
- * @property string $description
+ * @property int            $id
+ * @property int            $patient_id
+ * @property float          $amount
+ * @property string         $status
+ * @property string         $description
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -36,9 +36,9 @@ class Invoice extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id'         => 'integer',
         'patient_id' => 'integer',
-        'amount' => 'double',
+        'amount'     => 'double',
     ];
 
     /**

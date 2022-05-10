@@ -3,15 +3,15 @@
 namespace App\Http\Livewire\Support;
 
 use App\Models\Support;
-use Livewire\Component;
-use Illuminate\Contracts\View\View;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\ButtonAction;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\IconButtonAction;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Livewire\Component;
 
 class Table extends Component implements HasTable
 {
@@ -31,14 +31,14 @@ class Table extends Component implements HasTable
             BadgeColumn::make('status')
                 ->colors([
                     'primary',
-                    'danger' => 'hold',
+                    'danger'  => 'hold',
                     'warning' => 'awaiting',
                     'success' => 'answered',
                 ])->formatStateUsing(fn ($state) => ucfirst($state)),
             BadgeColumn::make('priority')
                 ->colors([
                     'primary',
-                    'danger' => 'critical',
+                    'danger'  => 'critical',
                     'warning' => 'high',
                     'success' => 'low',
                 ])->formatStateUsing(fn ($state) => ucfirst($state)),

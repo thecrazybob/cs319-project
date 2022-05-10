@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\BloodDonatioRequest;
 use App\Http\Requests\BloodDonationRequestStoreRequest;
 use App\Http\Requests\BloodDonationRequestUpdateRequest;
 use App\Models\BloodDonationRequest;
@@ -12,6 +11,7 @@ class BloodDonationRequestController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -23,6 +23,7 @@ class BloodDonationRequestController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
@@ -32,6 +33,7 @@ class BloodDonationRequestController extends Controller
 
     /**
      * @param \App\Http\Requests\BloodDonationRequestStoreRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(BloodDonationRequestStoreRequest $request)
@@ -43,7 +45,8 @@ class BloodDonationRequestController extends Controller
 
     /**
      * @param \App\Http\Requests\BloodDonationRequestUpdateRequest $request
-     * @param \App\Models\BloodDonationRequest $bloodDonationRequest
+     * @param \App\Models\BloodDonationRequest                     $bloodDonationRequest
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(BloodDonationRequestUpdateRequest $request, BloodDonationRequest $bloodDonationRequest)
@@ -54,8 +57,9 @@ class BloodDonationRequestController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request         $request
      * @param \App\Models\BloodDonationRequest $bloodDonationRequest
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, BloodDonationRequest $bloodDonationRequest)

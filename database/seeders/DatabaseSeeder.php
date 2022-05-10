@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,19 +15,19 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
 
-            # Initially static data
+            // Initially static data
             DepartmentSeeder::class,
             PatientConditionSeeder::class,
             WorkingDaySeeder::class,
 
-            # Actors
+            // Actors
             // UserSeeder::class,
             PatientSeeder::class,
             DoctorSeeder::class,
             DoctorScheduleSeeder::class,
             TimeSlotSeeder::class,
 
-            # Modules
+            // Modules
             AnnouncementSeeder::class,
             AppointmentSeeder::class,
             BloodDonationRequestSeeder::class,
@@ -39,16 +38,16 @@ class DatabaseSeeder extends Seeder
             VaccineSeeder::class,
             VisitSeeder::class,
 
-            # Support
+            // Support
             SupportSeeder::class,
             SupportMessageSeeder::class,
 
-            # Payments
+            // Payments
             PaymentGatewaySeeder::class,
             InvoiceSeeder::class,
             TransactionSeeder::class,
 
-            # Roles
+            // Roles
             RolesAndPermissionsSeeder::class,
 
         ]);

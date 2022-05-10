@@ -3,12 +3,12 @@
 namespace App\Http\Livewire\Invoice;
 
 use App\Models\Invoice;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Components\TextInput;
 use Usernotnull\Toast\Concerns\WireToast;
-use Filament\Forms\Concerns\InteractsWithForms;
 
 class FormPay extends Component implements HasForms
 {
@@ -20,13 +20,13 @@ class FormPay extends Component implements HasForms
     {
         $this->invoice_id = $id;
 
-        if (Invoice::find($this->invoice_id)->status  == "paid") {
+        if (Invoice::find($this->invoice_id)->status == 'paid') {
             toast()->danger('This invoice has already been paid.')->pushOnNextPage();
             redirect(route('invoice.index'));
         }
 
         $this->form->fill([
-            'amount' => Invoice::find($this->invoice_id)->amount,
+            'amount'      => Invoice::find($this->invoice_id)->amount,
             'description' => Invoice::find($this->invoice_id)->description,
         ]);
     }

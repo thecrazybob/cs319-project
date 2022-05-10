@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\BloodDonationRequest;
 use App\Models\Patient;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BloodDonationRequestFactory extends Factory
 {
@@ -25,9 +24,9 @@ class BloodDonationRequestFactory extends Factory
     {
         return [
             'patient_id' => Patient::all()->random()->id,
-            'blood_type' => $this->faker->randomElement(["AA","AO","BB","BO","AB","OO"]),
-            'urgency' => $this->faker->randomElement(["low","medium","high","critical"]),
-            'approved' => $this->faker->boolean,
+            'blood_type' => $this->faker->randomElement(['AA', 'AO', 'BB', 'BO', 'AB', 'OO']),
+            'urgency'    => $this->faker->randomElement(['low', 'medium', 'high', 'critical']),
+            'approved'   => $this->faker->boolean,
         ];
     }
 }

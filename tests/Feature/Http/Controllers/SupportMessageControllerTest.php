@@ -13,7 +13,9 @@ use Tests\TestCase;
  */
 class SupportMessageControllerTest extends TestCase
 {
-    use AdditionalAssertions, RefreshDatabase, WithFaker;
+    use AdditionalAssertions;
+    use RefreshDatabase;
+    use WithFaker;
 
     /**
      * @test
@@ -28,7 +30,6 @@ class SupportMessageControllerTest extends TestCase
         $response->assertViewIs('support.show');
         $response->assertViewHas('messages');
     }
-
 
     /**
      * @test

@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Support;
 use App\Models\SupportMessage;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SupportMessageFactory extends Factory
 {
@@ -26,8 +25,8 @@ class SupportMessageFactory extends Factory
     {
         return [
             'support_id' => Support::all()->random()->id,
-            'user_id' => User::all()->random()->id,
-            'message' => $this->faker->text,
+            'user_id'    => User::all()->random()->id,
+            'message'    => $this->faker->text,
         ];
     }
 }

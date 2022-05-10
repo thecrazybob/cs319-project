@@ -34,7 +34,7 @@ class TimeSlotSeeder extends Seeder
                 TimeSlot::factory()->create(
                     [
                         'starting_time' => $nextDay,
-                        'duration' => 30,
+                        'duration'      => 30,
                     ]
                 );
 

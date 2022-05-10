@@ -27,7 +27,6 @@ class VisitControllerTest extends TestCase
         $response->assertViewHas('visits');
     }
 
-
     /**
      * @test
      */

@@ -27,7 +27,6 @@ class ReportControllerTest extends TestCase
         $response->assertViewHas('reports');
     }
 
-
     /**
      * @test
      */

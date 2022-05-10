@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Document;
 use App\Models\File;
 use App\Models\Patient;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DocumentFactory extends Factory
 {
@@ -26,8 +25,8 @@ class DocumentFactory extends Factory
     {
         return [
             'patient_id' => Patient::all()->random()->id,
-            'file_id' => File::factory(),
-            'name' => $this->faker->name,
+            'file_id'    => File::factory(),
+            'name'       => $this->faker->name,
         ];
     }
 }

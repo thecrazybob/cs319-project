@@ -2,15 +2,15 @@
 
 namespace App\Nova;
 
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Text;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Support extends Resource
@@ -46,7 +46,8 @@ class Support extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -57,31 +58,32 @@ class Support extends Resource
             BelongsTo::make('Patient')->sortable(),
             HasMany::make('Support Messages')->sortable(),
             Select::make('Status')->sortable()->options([
-                'new' => 'New',
+                'new'      => 'New',
                 'answered' => 'Answered',
-                'closed' => 'Closed',
+                'closed'   => 'Closed',
                 'awaiting' => 'Awaiting',
-                'hold' => 'Hold',
+                'hold'     => 'Hold',
                 'reopened' => 'Reopened',
             ])->onlyOnForms()->required(),
             Badge::make('Status')->addTypes([
                 'new' => 'whitespace-nowrap px-2 py-1 rounded-full uppercase text-xs font-bold text-dark dark:text-white',
             ])->map([
-                'new' => 'new',
+                'new'      => 'new',
                 'answered' => 'info',
-                'closed' => 'success',
+                'closed'   => 'success',
                 'awaiting' => 'danger',
-                'hold' => 'warning',
+                'hold'     => 'warning',
                 'reopened' => 'warning',
             ])->sortable(),
             Text::make('Priority')->sortable()->displayUsing(function ($priortiy) {
                 $converted = Str::of($priortiy)->studly();
+
                 return  $converted;
             })->onlyOnIndex(),
             Select::make('Priority')->sortable()->options([
-                'low' => 'Low',
-                'medium' => 'Medium',
-                'high' => 'High',
+                'low'      => 'Low',
+                'medium'   => 'Medium',
+                'high'     => 'High',
                 'critical' => 'Critical',
             ])->required()->onlyOnForms(),
             Text::make('Subject')->sortable(),
@@ -93,7 +95,8 @@ class Support extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -104,7 +107,8 @@ class Support extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -115,7 +119,8 @@ class Support extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -126,7 +131,8 @@ class Support extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function actions(NovaRequest $request)

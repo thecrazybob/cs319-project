@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Invoice;
 use App\Models\PaymentGateway;
 use App\Models\Transaction;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TransactionFactory extends Factory
 {
@@ -25,10 +24,10 @@ class TransactionFactory extends Factory
     public function definition()
     {
         return [
-            'invoice_id' => Invoice::all()->random()->id,
+            'invoice_id'         => Invoice::all()->random()->id,
             'payment_gateway_id' => PaymentGateway::all()->random()->id,
-            'amount' => $this->faker->randomFloat(2, 0, 499.99),
-            'description' => $this->faker->text,
+            'amount'             => $this->faker->randomFloat(2, 0, 499.99),
+            'description'        => $this->faker->text,
         ];
     }
 }

@@ -24,10 +24,10 @@ class VaccineUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'patient_id' => ['required', 'integer', 'exists:patients,id'],
+            'patient_id'   => ['required', 'integer', 'exists:patients,id'],
             'vaccine_type' => ['required', 'in:covid,other'],
             'vaccine_date' => ['required', 'date'],
-            'dose_no' => ['required', 'integer'],
+            'dose_no'      => ['required', 'integer'],
         ];
     }
 }

@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Announcement;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AnnouncementFactory extends Factory
 {
@@ -23,9 +22,9 @@ class AnnouncementFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->sentence(4),
-            'description' => $this->faker->text,
-            'private' => $this->faker->boolean,
+            'title'             => $this->faker->sentence(4),
+            'description'       => $this->faker->text,
+            'private'           => $this->faker->boolean,
             'announcement_date' => $this->faker->dateTimeThisYear(),
         ];
     }

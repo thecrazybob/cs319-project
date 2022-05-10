@@ -25,7 +25,7 @@ class AppointmentStoreRequest extends FormRequest
     {
         return [
             'appointment_date' => ['required', 'date'],
-            'description' => ['required', 'string'],
+            'description'      => ['required', 'string'],
         ];
     }
 }

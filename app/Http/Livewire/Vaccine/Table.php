@@ -2,22 +2,20 @@
 
 namespace App\Http\Livewire\Vaccine;
 
-
 use App\Models\Vaccine;
-use Livewire\Component;
-use Illuminate\Contracts\View\View;
-use Filament\Tables\Actions\LinkAction;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Actions\ButtonAction;
-use Illuminate\Database\Eloquent\Builder;
-use Usernotnull\Toast\Concerns\WireToast;
 use Filament\Tables\Actions\IconButtonAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Illuminate\Database\Eloquent\Builder;
+use Livewire\Component;
+use Usernotnull\Toast\Concerns\WireToast;
 
 class Table extends Component implements HasTable
 {
-    use InteractsWithTable, WireToast;
+    use InteractsWithTable;
+    use WireToast;
 
     protected function getTableQuery(): Builder
     {

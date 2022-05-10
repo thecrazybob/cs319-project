@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\PaymentGateway;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PaymentGatewayFactory extends Factory
 {
@@ -24,7 +23,7 @@ class PaymentGatewayFactory extends Factory
     {
         return [
             'gateway_name' => $this->faker->word,
-            'enabled' => $this->faker->boolean,
+            'enabled'      => $this->faker->boolean,
         ];
     }
 }

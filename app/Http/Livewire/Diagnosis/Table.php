@@ -2,16 +2,13 @@
 
 namespace App\Http\Livewire\Diagnosis;
 
-use App\Models\User;
 use App\Models\Diagnosis;
-use App\Models\Department;
-use Livewire\Component;
-use Illuminate\Contracts\View\View;
+use Filament\Tables\Actions\IconButtonAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Actions\IconButtonAction;
-use Filament\Tables\Concerns\InteractsWithTable;
+use Livewire\Component;
 
 class Table extends Component implements HasTable
 {

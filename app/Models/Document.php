@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $patient_id
- * @property int $file_id
- * @property string $name
- * @property string $type
+ * @property int            $id
+ * @property int            $patient_id
+ * @property int            $file_id
+ * @property string         $name
+ * @property string         $type
  * @property \Carbon\Carbon $upload_date
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -37,9 +37,9 @@ class Document extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'patient_id' => 'integer',
-        'file_id' => 'integer',
+        'id'          => 'integer',
+        'patient_id'  => 'integer',
+        'file_id'     => 'integer',
         'upload_date' => 'date',
     ];
 

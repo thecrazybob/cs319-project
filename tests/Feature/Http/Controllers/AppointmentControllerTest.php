@@ -16,7 +16,9 @@ use Tests\TestCase;
  */
 class AppointmentControllerTest extends TestCase
 {
-    use AdditionalAssertions, RefreshDatabase, WithFaker;
+    use AdditionalAssertions;
+    use RefreshDatabase;
+    use WithFaker;
 
     /**
      * @test
@@ -32,7 +34,6 @@ class AppointmentControllerTest extends TestCase
         $response->assertViewHas('appointments');
     }
 
-
     /**
      * @test
      */
@@ -47,7 +48,6 @@ class AppointmentControllerTest extends TestCase
         $response->assertViewHas('appointment');
     }
 
-
     /**
      * @test
      */
@@ -58,7 +58,6 @@ class AppointmentControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('appointment.create');
     }
-
 
     /**
      * @test
@@ -82,7 +81,7 @@ class AppointmentControllerTest extends TestCase
 
         $response = $this->post(route('appointment.store'), [
             'appointment_date' => $appointment_date,
-            'description' => $description,
+            'description'      => $description,
         ]);
 
         $appointments = Appointment::query()
@@ -94,7 +93,6 @@ class AppointmentControllerTest extends TestCase
 
         $response->assertRedirect(route('appointment.index'));
     }
-
 
     /**
      * @test
@@ -121,11 +119,11 @@ class AppointmentControllerTest extends TestCase
         $confirmed = $this->faker->boolean;
 
         $response = $this->put(route('appointment.update', $appointment), [
-            'patient_id' => $patient->id,
-            'department_id' => $department->id,
+            'patient_id'       => $patient->id,
+            'department_id'    => $department->id,
             'appointment_date' => $appointment_date,
-            'description' => $description,
-            'confirmed' => $confirmed,
+            'description'      => $description,
+            'confirmed'        => $confirmed,
         ]);
 
         $appointment->refresh();
@@ -138,7 +136,6 @@ class AppointmentControllerTest extends TestCase
         $this->assertEquals($description, $appointment->description);
         $this->assertEquals($confirmed, $appointment->confirmed);
     }
-
 
     /**
      * @test

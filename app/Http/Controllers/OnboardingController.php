@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class OnboardingController extends Controller
 {
     public function index()
@@ -12,6 +10,7 @@ class OnboardingController extends Controller
             return view('onboarding.index');
         } else {
             toast()->info('You have already completed onboarding!')->push();
+
             return redirect(route('dashboard'));
         }
     }

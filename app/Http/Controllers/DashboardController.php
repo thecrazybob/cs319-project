@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\Appointment;
 use App\Models\User;
 use App\Models\Vaccine;
-use App\Models\Appointment;
 use App\Models\Visit;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -22,6 +21,7 @@ class DashboardController extends Controller
         $visits = Visit::where('patient_id', auth()->user()->patient_id);
         $visit_count = $visits->count();
         $appointment_count = $appointments->count();
-        return view('dashboard', compact('announcements','vaccines', 'dose_count', 'appointments', 'visits', 'visit_count', 'appointment_count' , 'users'));
+
+        return view('dashboard', compact('announcements', 'vaccines', 'dose_count', 'appointments', 'visits', 'visit_count', 'appointment_count', 'users'));
     }
 }

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Visit;
 use App\Models\Appointment;
+use App\Models\Visit;
 use Illuminate\Http\Request;
 
 class VisitController extends Controller
 {
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)

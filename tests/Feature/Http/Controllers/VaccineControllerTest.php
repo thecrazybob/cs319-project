@@ -15,7 +15,9 @@ use Tests\TestCase;
  */
 class VaccineControllerTest extends TestCase
 {
-    use AdditionalAssertions, RefreshDatabase, WithFaker;
+    use AdditionalAssertions;
+    use RefreshDatabase;
+    use WithFaker;
 
     /**
      * @test
@@ -31,7 +33,6 @@ class VaccineControllerTest extends TestCase
         $response->assertViewHas('vaccines');
     }
 
-
     /**
      * @test
      */
@@ -46,7 +47,6 @@ class VaccineControllerTest extends TestCase
         $response->assertViewHas('vaccine');
     }
 
-
     /**
      * @test
      */
@@ -57,7 +57,6 @@ class VaccineControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('vaccine.create');
     }
-
 
     /**
      * @test
@@ -82,7 +81,7 @@ class VaccineControllerTest extends TestCase
 
         $response = $this->post(route('vaccine.store'), [
             'vaccine_type' => $vaccine_type,
-            'dose_no' => $dose_no,
+            'dose_no'      => $dose_no,
             'vaccine_date' => $vaccine_date,
         ]);
 
@@ -96,7 +95,6 @@ class VaccineControllerTest extends TestCase
 
         $response->assertRedirect(route('vaccine.index'));
     }
-
 
     /**
      * @test
@@ -122,10 +120,10 @@ class VaccineControllerTest extends TestCase
         $dose_no = $this->faker->numberBetween(-10000, 10000);
 
         $response = $this->put(route('vaccine.update', $vaccine), [
-            'patient_id' => $patient->id,
+            'patient_id'   => $patient->id,
             'vaccine_type' => $vaccine_type,
             'vaccine_date' => $vaccine_date,
-            'dose_no' => $dose_no,
+            'dose_no'      => $dose_no,
         ]);
 
         $vaccine->refresh();
@@ -137,7 +135,6 @@ class VaccineControllerTest extends TestCase
         $this->assertEquals(Carbon::parse($vaccine_date), $vaccine->vaccine_date);
         $this->assertEquals($dose_no, $vaccine->dose_no);
     }
-
 
     /**
      * @test

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $invoice_id
- * @property int $payment_gateway_id
- * @property double $amount
- * @property string $description
+ * @property int            $id
+ * @property int            $invoice_id
+ * @property int            $payment_gateway_id
+ * @property float          $amount
+ * @property string         $description
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -36,10 +36,10 @@ class Transaction extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'invoice_id' => 'integer',
+        'id'                 => 'integer',
+        'invoice_id'         => 'integer',
         'payment_gateway_id' => 'integer',
-        'amount' => 'double',
+        'amount'             => 'double',
     ];
 
     /**
