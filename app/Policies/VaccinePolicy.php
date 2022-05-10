@@ -55,3 +55,4 @@ class VaccinePolicy
             return true;
         }
     }
+}
