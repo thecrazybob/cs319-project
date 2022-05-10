@@ -23,7 +23,7 @@ class VaccinePolicy
         if ($user->can('view_test')) {
             return true;
         }
-        if ($vaccine->patient_id == $user->patient->id) {
+        if ($vaccine->patient_id == $user->patient?->id) {
             return true;
         }
     }
@@ -41,7 +41,7 @@ class VaccinePolicy
         if ($user->can('modify_test')) {
             return true;
         }
-        if ($vaccine->patient_id == $user->patient->id) {
+        if ($vaccine->patient_id == $user->patient?->id) {
             return true;
         }
     }
@@ -51,7 +51,7 @@ class VaccinePolicy
         if ($user->can('modify_test')) {
             return true;
         }
-        if ($vaccine->patient_id == $user->patient->id) {
+        if ($vaccine->patient_id == $user->patient?->id) {
             return true;
         }
     }

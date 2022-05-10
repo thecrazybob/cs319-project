@@ -22,38 +22,38 @@ class DocumentPolicy
         if ($user->can('view_file')) {
             return true;
         }
-        if ($document->patient_id == $user->patient->id) {
+        if ($document->patient_id == $user->patient?->id) {
             return true;
         }
     }
 
 
-    public function create(User $user,Document $document = null)
+    public function create(User $user, Document $document = null)
     {
         if ($user->can('create_file')) {
             return true;
         }
-        if ($document->patient_id == $user->patient->id) {
+        if ($document->patient_id == $user->patient?->id) {
             return true;
         }
     }
 
-    public function update(User $user,Document $document = null)
+    public function update(User $user, Document $document = null)
     {
         if ($user->can('modify_file')) {
             return true;
         }
-        if ($document->patient_id == $user->patient->id) {
+        if ($document->patient_id == $user->patient?->id) {
             return true;
         }
     }
 
-    public function delete(User $user,Document $document = null)
+    public function delete(User $user, Document $document = null)
     {
         if ($user->can('modify_file')) {
             return true;
         }
-        if ($document->patient_id == $user->patient->id) {
+        if ($document->patient_id == $user->patient?->id) {
             return true;
         }
     }

@@ -29,7 +29,7 @@ class TestPolicy
     {
         if ($user->can('view_test')) {
             return true;
-        } elseif ($test->patient_id == $user->patient->id) {
+        } elseif ($test->patient_id == $user->patient?->id) {
             return true;
         }
     }
@@ -55,7 +55,4 @@ class TestPolicy
             return true;
         }
     }
-
-
-
 }

@@ -22,7 +22,7 @@ class ReportPolicy
         if ($user->can('view_report')) {
             return true;
         }
-        if ($report->patient_id == $user->patient->id) {
+        if ($report->patient_id == $user->patient?->id) {
             return true;
         }
     }
