@@ -55,9 +55,10 @@ class Vaccine extends Resource
             Select::make('Vaccine Type')->options([
                 'covid' => 'Covid',
                 'other' => 'Other'
-            ])->sortable()->onlyOnForms(),
-            Number::make('Vaccine Dose', 'dose_no')->min(0)->max(6)->step(1)->sortable(),
-            Date::make('Vaccine Date')->sortable(),
+            ])->sortable()->onlyOnForms()->required(),
+            Number::make('Vaccine Dose', 'dose_no')->min(0)->max(6)->step(1)->sortable()->required(),
+            Date::make('Vaccine Date')->sortable()->required(),
+            BelongsTo::make('File')->sortable()->showCreateRelationButton(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
         ];

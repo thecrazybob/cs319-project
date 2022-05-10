@@ -2,11 +2,13 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Test extends Resource
@@ -51,7 +53,11 @@ class Test extends Resource
             Select::make('Test Type')->sortable()->options([
                 'pcr' => 'PCR',
                 'regular' => 'Regular',
-            ])->required(),
+            ])->required()->onlyOnForms(),
+            Text::make('Test Type')->sortable()->displayUsing(function ($test) {
+                $converted = Str::of($test)->studly();
+                return  $converted;
+            })->onlyOnIndex(),
             Date::make('Test Date')->sortable()->required(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),

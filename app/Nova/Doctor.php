@@ -14,7 +14,7 @@ class Doctor extends Resource
 {
     public function title()
 {
-    return \App\Models\User::where('doctor_id', $this->id)->first()->name;;
+    return \App\Models\User::where('id', $this->user_id)->first()->name;;
 }
 
     /**
@@ -44,10 +44,8 @@ class Doctor extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name', function () {
-                return \App\Models\User::where('doctor_id', $this->id)->first()->name;
-            }),
             BelongsTo::make('Department')->sortable(),
+            BelongsTo::make('User')->sortable()->showCreateRelationButton(),
             Boolean::make('Active')->sortable(),
             Date::make('Created At')->sortable()->onlyOnDetail(),
             Date::make('Updated At')->sortable()->onlyOnDetail(),
