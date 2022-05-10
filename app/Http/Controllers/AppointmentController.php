@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AppointmentStoreRequest;
-use App\Http\Requests\AppointmentUpdateRequest;
-use App\Models\Appointment;
 use App\Models\User;
+use App\Models\Visit;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use App\Http\Requests\AppointmentStoreRequest;
+use App\Http\Requests\AppointmentUpdateRequest;
 
 class AppointmentController extends Controller
 {
@@ -17,9 +18,15 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
+        $visits = Visit::where('patient_id', auth()->user()->patient->id);
         $appointments = Appointment::where('patient_id', auth()->user()->patient->id);
+        $visit_count = $visits->count();
+        $visit_date = $visits->latest('visit_date')
+        ->first()?->visit_date->format('d M Y');
+        $appointment_date = $appointments->oldest('appointment_date')
+        ->first()?->appointment_date->format('d M Y');
 
-        return view('appointment.index', compact('appointments'));
+        return view('appointment.index', compact('appointments','visits', 'visit_count', 'visit_date', 'appointment_date'));
     }
 
     /**
