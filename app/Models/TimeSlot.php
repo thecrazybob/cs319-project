@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int $id
@@ -36,4 +37,9 @@ class TimeSlot extends Model
     protected $casts = [
         'id' => 'integer',
     ];
+
+    public function getStartingTimeAttribute($value)
+    {
+        return Carbon::parse($value)->format('H:i');
+    }
 }

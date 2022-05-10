@@ -24,6 +24,9 @@ class PatientFactory extends Factory
     public function definition()
     {
         return [
+            'user_id' => User::factory()->state([
+                'staff' => false,
+            ]),
             'bilkent_id' => 2 . $this->faker->numberBetween(1, 2) . $this->faker->randomNumber(6, true),
             'birth_date' => $this->faker->dateTime(),
             'gender' => $this->faker->randomElement(["female","male","other"]),

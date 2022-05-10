@@ -9,7 +9,6 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -32,8 +31,6 @@ class User extends Authenticatable
         'email',
         'password',
         'onboarding_completed',
-        'patient_id',
-        'doctor_id',
         'staff',
     ];
 
@@ -69,11 +66,11 @@ class User extends Authenticatable
 
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->hasOne(Patient::class);
     }
 
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->hasOne(Doctor::class);
     }
 }

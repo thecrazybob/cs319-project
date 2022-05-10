@@ -26,24 +26,14 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $isStaff = $this->faker->boolean;
-
-        if ($isStaff) {
-            $staffArray = ['doctor_id' => Doctor::factory()];
-        } else {
-            $staffArray = ['patient_id' => Patient::factory()];
-        }
-
-        $initArray = [
+        return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'staff' => $isStaff,
+            'staff' => $this->faker->boolean,
         ];
-
-        return array_merge($staffArray, $initArray);
     }
 
     /**

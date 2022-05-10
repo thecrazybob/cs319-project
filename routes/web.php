@@ -46,7 +46,7 @@ Route::middleware(['auth:sanctum', 'verified', 'onboarding.completed'])->group(f
 
     Route::resource('vaccine', App\Http\Controllers\VaccineController::class);
 
-    Route::resource('appointment', App\Http\Controllers\AppointmentController::class)->except('edit');
+    Route::resource('appointment', App\Http\Controllers\AppointmentController::class);
 
     Route::resource('time-slot', App\Http\Controllers\TimeSlotController::class)->only('index', 'update');
 

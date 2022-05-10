@@ -14,21 +14,36 @@ class TimeSlotSeeder extends Seeder
      */
     public function run()
     {
+
+        // Suppose health center works from 09:00 - 17:00
+        // Thats 8 hours
+        $slotsInDay = 8 * 2; // since each slot is half an hour
+
+        // Appointments are available for the next 7 days excluding today
         $days = 7;
-        $slotsInDay = 24 * 2; // since each slot is half an hour
-        $totalSlots = $days * $slotsInDay;
 
-        $timeNow = now()->minute(60)->second(0);
+        $nextDay = today()->addDay(1)->setTime(9, 0);
 
-        for ($i = 0; $i < $totalSlots; $i++) {
-            $timeNow = $timeNow->addMinutes(30);
+        // Loop for days
+        for ($day = 0; $day < $days; $day++) {
 
-            TimeSlot::factory()->create(
-                [
-                    'starting_time' => $timeNow,
-                    'duration' => 30,
-                ]
-            );
+            // Loop for timeslots in day
+            for ($slot = 0; $slot < $slotsInDay; $slot++) {
+
+                // Create 30 minutes timeslot
+                TimeSlot::factory()->create(
+                    [
+                        'starting_time' => $nextDay,
+                        'duration' => 30,
+                    ]
+                );
+
+                // Increment time by 30 minutes
+                $nextDay = $nextDay->addMinutes(30);
+            }
+
+            // Move to next day
+            $nextDay->addDay(1)->setTime(9, 0);
         }
     }
 }
