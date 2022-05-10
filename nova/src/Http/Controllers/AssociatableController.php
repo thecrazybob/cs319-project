@@ -12,9 +12,9 @@ class AssociatableController extends Controller
      * List the available related resources for a given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function index(NovaRequest $request)
+    public function __invoke(NovaRequest $request)
     {
         $field = $request->newResource()
                     ->availableFields($request)

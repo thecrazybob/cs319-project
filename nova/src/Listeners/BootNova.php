@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Listeners;
 
-use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaServiceProvider;
 use Laravel\Nova\Tools\Dashboard;
@@ -20,21 +19,8 @@ class BootNova
     {
         app()->register(NovaServiceProvider::class);
 
-        $this->registerDashboards();
         $this->registerTools();
         $this->registerResources();
-    }
-
-    /**
-     * Register the dashboards used by Nova.
-     *
-     * @return void
-     */
-    protected function registerDashboards()
-    {
-        Nova::serving(function (ServingNova $event) {
-            Nova::copyDefaultDashboardCards();
-        });
     }
 
     /**

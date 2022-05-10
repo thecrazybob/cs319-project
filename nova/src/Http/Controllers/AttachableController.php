@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Laravel\Nova\Contracts\PivotableField;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class AttachableController extends Controller
@@ -11,9 +12,9 @@ class AttachableController extends Controller
      * List the available related resources for a given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function index(NovaRequest $request)
+    public function __invoke(NovaRequest $request)
     {
         $field = $request->newResource()
                     ->availableFields($request)
@@ -26,15 +27,10 @@ class AttachableController extends Controller
 
         $parentResource = $request->findResourceOrFail();
 
-        $viaResource = [
-            'key' => $parentResource->resource->getKey(),
-            'name' => $parentResource->singularLabel(),
-            'display' => $parentResource->title(),
-        ];
-
         return [
-            'viaResource' => $viaResource,
-            'resources' => $field->buildAttachableQuery($request, $withTrashed)->get()
+            'resources' => $field->buildAttachableQuery($request, $withTrashed)
+                        ->tap($this->getAttachableQueryResolver($request, $field))
+                        ->get()
                         ->mapInto($field->resourceClass)
                         ->filter(function ($resource) use ($request, $parentResource) {
                             return $parentResource->authorizedToAttach($request, $resource->resource);
@@ -69,5 +65,33 @@ class AttachableController extends Controller
         }
 
         return false;
+    }
+
+    /**
+     * Get attachable query resolver.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Contracts\PivotableField  $field
+     * @return callable(\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder):void
+     */
+    protected function getAttachableQueryResolver(NovaRequest $request, PivotableField $field)
+    {
+        return function ($query) use ($request, $field) {
+            if (
+                $request->first === 'true'
+                || $field->allowDuplicateRelations
+                || is_null($relatedModel = $request->findModel())
+            ) {
+                return;
+            }
+
+            $query->whereNotExists(function ($query) use ($field, $relatedModel) {
+                $relation = $relatedModel->{$field->manyToManyRelationship}();
+
+                return $relation->applyDefaultPivotQuery($query)
+                        ->select($relation->getRelatedPivotKeyName())
+                        ->whereColumn($relation->getQualifiedRelatedKeyName(), $relation->getQualifiedRelatedPivotKeyName());
+            });
+        };
     }
 }

@@ -1,30 +1,19 @@
 <template>
   <div :dusk="'dashboard-' + this.name">
-    <custom-dashboard-header class="mb-3" :dashboard-name="name" />
+    <Head :title="label" />
 
-    <heading v-if="cards.length > 1" class="mb-6">{{
-      __('Dashboard')
-    }}</heading>
+    <Heading v-if="label && cards.length > 1" class="mb-3">{{
+      __(label)
+    }}</Heading>
 
     <div v-if="shouldShowCards">
-      <cards v-if="smallCards.length > 0" :cards="smallCards" class="mb-3" />
-      <cards v-if="largeCards.length > 0" :cards="largeCards" size="large" />
+      <Cards v-if="cards.length > 0" :cards="cards" />
     </div>
   </div>
 </template>
 
 <script>
-import { CardSizes } from 'laravel-nova'
-
 export default {
-  metaInfo() {
-    return {
-      title: `${this.label}`,
-    }
-  },
-
-  data: () => ({ label: '', cards: '' }),
-
   props: {
     name: {
       type: String,
@@ -33,11 +22,7 @@ export default {
     },
   },
 
-  watch: {
-    name() {
-      this.fetchDashboard()
-    },
-  },
+  data: () => ({ label: '', cards: [] }),
 
   created() {
     this.fetchDashboard()
@@ -45,18 +30,22 @@ export default {
 
   methods: {
     async fetchDashboard() {
-      const {
-        data: { label, cards },
-      } = await Nova.request()
-        .get(this.dashboardEndpoint, {
+      try {
+        const {
+          data: { label, cards },
+        } = await Nova.request().get(this.dashboardEndpoint, {
           params: this.extraCardParams,
         })
-        .catch(e => {
-          this.$router.push({ name: '404' })
-        })
 
-      this.label = label
-      this.cards = cards
+        this.label = label
+        this.cards = cards
+      } catch (error) {
+        if (error.response.status == 401) {
+          return Nova.redirectToLogin()
+        }
+
+        Nova.visit('/404')
+      }
     },
   },
 
@@ -73,20 +62,6 @@ export default {
      */
     shouldShowCards() {
       return this.cards.length > 0
-    },
-
-    /**
-     * Return the small cards used for the Dashboard
-     */
-    smallCards() {
-      return _.filter(this.cards, c => CardSizes.indexOf(c.width) !== -1)
-    },
-
-    /**
-     * Return the full-width cards used for the Dashboard
-     */
-    largeCards() {
-      return _.filter(this.cards, c => c.width == 'full')
     },
 
     /**

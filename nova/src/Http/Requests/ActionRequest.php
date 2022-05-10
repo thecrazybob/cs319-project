@@ -8,6 +8,10 @@ use Illuminate\Support\Fluent;
 use Laravel\Nova\Actions\ActionModelCollection;
 use Laravel\Nova\Fields\ActionFields;
 
+/**
+ * @property-read string|null $resources
+ * @property-read string|null $pivotAction
+ */
 class ActionRequest extends NovaRequest
 {
     use QueriesResources;
@@ -15,7 +19,7 @@ class ActionRequest extends NovaRequest
     /**
      * Get the action instance specified by the request.
      *
-     * @return \Laravel\Nova\Actions\Action
+     * @return \Laravel\Nova\Actions\Action|\Laravel\Nova\Actions\DestructiveAction
      */
     public function action()
     {
@@ -79,21 +83,19 @@ class ActionRequest extends NovaRequest
      * Get the selected models for the action in chunks.
      *
      * @param  int  $count
-     * @param  \Closure  $callback
+     * @param  \Closure(\Laravel\Nova\Actions\ActionModelCollection):mixed  $callback
      * @return mixed
      */
     public function chunks($count, Closure $callback)
     {
         $output = [];
 
-        $this->toSelectedResourceQuery()->when(! $this->forAllMatchingResources(), function ($query) {
-            $query->whereKey(explode(',', $this->resources))
-                ->latest($this->model()->getQualifiedKeyName());
-        })->cursor()
-        ->chunk($count)
-        ->each(function ($chunk) use ($callback, &$output) {
-            $output[] = $callback($this->mapChunk($chunk));
-        });
+        $this->toSelectedResourceQuery()
+            ->cursor()
+            ->chunk($count)
+            ->each(function ($chunk) use ($callback, &$output) {
+                $output[] = $callback($this->mapChunk($chunk));
+            });
 
         return $output;
     }
@@ -103,13 +105,13 @@ class ActionRequest extends NovaRequest
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function toSelectedResourceQuery()
+    public function toSelectedResourceQuery()
     {
-        if ($this->forAllMatchingResources()) {
+        if ($this->allResourcesSelected()) {
             return $this->toQuery();
         }
 
-        return $this->viaRelationship()
+        $query = $this->viaRelationship()
                     ? $this->modelsViaRelationship()
                     : tap($this->newQueryWithoutScopes(), function ($query) {
                         $resource = $this->resource();
@@ -118,6 +120,11 @@ class ActionRequest extends NovaRequest
                             $this, $query->with($resource::$with)
                         );
                     });
+
+        return $query->tap(function ($query) {
+            $query->whereKey(explode(',', $this->resources))
+                ->latest($this->model()->getQualifiedKeyName());
+        });
     }
 
     /**
@@ -137,8 +144,8 @@ class ActionRequest extends NovaRequest
     /**
      * Map the chunk of models into an appropriate state.
      *
-     * @param  \Illuminate\Database\Eloquent\Collection  $chunk
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param  \Illuminate\Support\LazyCollection|\Illuminate\Database\Eloquent\Collection  $chunk
+     * @return \Laravel\Nova\Actions\ActionModelCollection
      */
     protected function mapChunk($chunk)
     {
@@ -151,6 +158,8 @@ class ActionRequest extends NovaRequest
      * Validate the given fields.
      *
      * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function validateFields()
     {
@@ -179,9 +188,11 @@ class ActionRequest extends NovaRequest
         return once(function () {
             $fields = new Fluent;
 
-            $results = collect($this->action()->fields())->mapWithKeys(function ($field) use ($fields) {
-                return [$field->attribute => $field->fillForAction($this, $fields)];
-            });
+            $results = collect($this->action()->fields($this))
+                            ->filter->authorizedToSee($this)
+                            ->mapWithKeys(function ($field) use ($fields) {
+                                return [$field->attribute => $field->fillForAction($this, $fields)];
+                            });
 
             return new ActionFields(collect($fields->getAttributes()), $results->filter(function ($field) {
                 return is_callable($field);
@@ -194,7 +205,7 @@ class ActionRequest extends NovaRequest
      *
      * When running pivot actions, this is the key of the owning model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return int
      */
     public function actionableKey($model)
@@ -223,7 +234,7 @@ class ActionRequest extends NovaRequest
      *
      * When running pivot actions, this is the key of the target model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return int
      */
     public function targetKey($model)
@@ -246,7 +257,7 @@ class ActionRequest extends NovaRequest
     /**
      * Get the many-to-many relationship for a pivot action.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\Relation
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany|\Illuminate\Database\Eloquent\Relations\BelongsToMany|null
      */
     public function pivotRelation()
     {
@@ -258,12 +269,12 @@ class ActionRequest extends NovaRequest
     }
 
     /**
-     * Determine if the request is for all matching resources.
+     * Determine if this request is an action request.
      *
      * @return bool
      */
-    public function forAllMatchingResources()
+    public function isActionRequest()
     {
-        return $this->resources === 'all';
+        return true;
     }
 }
