@@ -151,4 +151,4 @@ All of them are available on https://packagist.org/
 * [Requirement Analysis - Iteration 2](reports/ChickenNuggets_RequirementAnalysis_Iteration2.pdf)
 * [Design Report - Iteration 1](reports/ChickenNuggets_DesignReport_Iteration1.pdf)
 * [Design Report - Iteration 2](reports/ChickenNuggets_DesignReport_Iteration2.pdf)
-* Final Report
+* [Final Report](reports/ChickenNuggets_FinalReport.pdf)
